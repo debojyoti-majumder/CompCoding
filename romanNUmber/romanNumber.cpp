@@ -32,7 +32,7 @@ class Solution
             int sum = 0;
 
             while(s.length()) {
-                    
+                        
             }
             
             return sum;    
