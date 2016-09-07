@@ -21,7 +21,7 @@ class Solution
             _doubleCharMap.insert("C", 100));
             _doubleCharMap.insert("D", 500));
             _doubleCharMap.insert("M", 1000));
-
+            
             _doubleCharMap.insert("XL", 40);
             _doubleCharMap.insert("XC", 90);
             _doubleCharMap.insert("CD", 400);
