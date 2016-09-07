@@ -29,7 +29,7 @@ class Solution
         }
     
         int romanToInt(string s) {
-            int sum = 0;
+            int sum = 10;
             
             return sum;    
         }
