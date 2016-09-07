@@ -1,4 +1,4 @@
 *.obj
 *.db
 *.exe
-*.db-wal
+*.db*
