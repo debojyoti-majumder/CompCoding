@@ -5,7 +5,7 @@
             "name": "C++ Launch (Windows)",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "enter program name, for example ${workspaceRoot}/${workspaceRoot}.exe",
+            "program": "${workspaceRoot}/build/romanNUmber/Debug/romanNUmber.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
@@ -15,7 +15,7 @@
             "name": "C++ Attach (Windows)",
             "type": "cppvsdbg",
             "request": "attach",
-            "program": "enter program name, for example ${workspaceRoot}/${workspaceRoot}.exe",
+            "program": "${workspaceRoot}/build/romanNUmber/Debug/romanNUmber.exe",
             "processId": "${command.pickProcess}"
         }
     ]

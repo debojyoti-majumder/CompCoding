@@ -30,10 +30,6 @@ class Solution
     
         int romanToInt(string s) {
             int sum = 0;
-
-            while(s.length()) {
-                        
-            }
             
             return sum;    
         }
