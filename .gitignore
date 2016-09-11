@@ -2,4 +2,8 @@
 *.db
 *.exe
 *.db*
+*.cmake
+*.tlog
+*.log
+*.bin
 /build
