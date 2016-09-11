@@ -5,7 +5,7 @@
             "name": "C++ Launch (Windows)",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/build/romanNUmber/Debug/romanNUmber.exe",
+            "program": "${workspaceRoot}/build/TriangleProb/Triangle.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",

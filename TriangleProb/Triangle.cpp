@@ -49,9 +49,8 @@ public:
 		Point p2(startingPoint.x + 1, startingPoint.y + 1);
 
 		// Making the recursive calls
-		int cost1 = _triangle[startingPoint.x][startingPoint.y] + minimumCost(p1);
-		int cost2 = _triangle[startingPoint.x][startingPoint.y] + minimumCost(p2);
-		int cost = min(cost1, cost2);
+		int cost = min(_triangle[startingPoint.x][startingPoint.y] + minimumCost(p1), 
+				       _triangle[startingPoint.x][startingPoint.y] + minimumCost(p2));
 		
 		_dptable.insert(make_pair(startingPoint, cost));
 		return cost;

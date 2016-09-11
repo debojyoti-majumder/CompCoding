@@ -6,4 +6,16 @@
 *.tlog
 *.log
 *.bin
+*.vcxproj*
+*.sln
+*.rule
+*.filter
+*.stamp
+*.depend
+*.tcl
+*.list
+CmakeCache.txt
+TargetDirectories.txt
+cmake.check_cache
+
 /build
