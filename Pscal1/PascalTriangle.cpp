@@ -26,5 +26,14 @@ int main() {
     Solution sol;
 
     auto ret = sol.generate(5);
+
+    // Print the triangle
+    for(auto row: ret) {
+        for(auto item: row)
+            cout << item << " ";
+        
+        cout << endl;
+    }
+    
     return 0;
 }
