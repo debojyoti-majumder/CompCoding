@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -10,7 +11,7 @@ class Solution
 {
     private:
         map<string,int> _stringValueMap;
-    
+        map<string,int> _doubleCharMap;
     public:
         Solution() {
             // Making the roman character map
@@ -22,15 +23,31 @@ class Solution
             _stringValueMap.insert(make_pair("D", 500));
             _stringValueMap.insert(make_pair("M", 1000));
             
-            _stringValueMap.insert(make_pair("XL", 40));
-            _stringValueMap.insert(make_pair("XC", 90));
-            _stringValueMap.insert(make_pair("CD", 400));
-            _stringValueMap.insert(make_pair("CM", 900));
+            _doubleCharMap.insert(make_pair("XL", 40));
+            _doubleCharMap.insert(make_pair("XC", 90));
+            _doubleCharMap.insert(make_pair("CD", 400));
+            _doubleCharMap.insert(make_pair("CM", 900));
         }
     
         int romanToInt(string s) {
             int sum = 10;
-            
+            std::transform(s.begin(), s.end(),s.begin(), ::toupper);
+
+            while(s.length()) {
+                string f1 = s.substr(0,2);
+
+                auto doubleCharIt = _doubleCharMap.find(f1);
+                if( doubleCharIt == _doubleCharMap.end() ) {
+                    string f2 = s.substr(0,1);
+                    auto singleCharIt = _stringValueMap.find(f2);
+
+                    s.erase(0,1);
+                }
+                else {
+                    s.erase(0,2);
+                }
+            }
+
             return sum;    
         }
 };
