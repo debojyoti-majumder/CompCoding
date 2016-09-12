@@ -13,9 +13,20 @@ class Solution {
             vector<vector<int>> returnItem;
             vector<int> seedItem = {1};
 
-            for(int i=0; i<numRows; i++ ) {
+            if(numRows <= 0 )
+                return returnItem;
+            
+            if( numRows == 1 ) {
+                returnItem.push_back(seedItem);
+                return returnItem;
+            }
+
+            for(int i=1; i<numRows; i++ ) {
                 auto workingItem = seedItem;
                 
+                // Padding with zero
+                workingItem.push_back(0);
+                workingItem.insert(workingItem.begin(), 0);
             }
 
             return returnItem;
@@ -34,6 +45,6 @@ int main() {
         
         cout << endl;
     }
-    
+
     return 0;
 }
