@@ -1,12 +1,6 @@
 // Have to implement based on this code http://www.rapidtables.com/convert/number/how-roman-numerals-to-number.htm
 // Problem url https://leetcode.com/problems/integer-to-roman/
-/*Input:
-"MDCCCLXXXIV"
-Output:
-1886
-Expected:
-1884
-*/
+// Submitted and accepted
 
 #include <map>
 #include <string>
@@ -32,6 +26,8 @@ class Solution
             _stringValueMap.insert(make_pair("D", 500));
             _stringValueMap.insert(make_pair("M", 1000));
             
+            _doubleCharMap.insert(make_pair("IV",4));
+            _doubleCharMap.insert(make_pair("IX",9));
             _doubleCharMap.insert(make_pair("XL", 40));
             _doubleCharMap.insert(make_pair("XC", 90));
             _doubleCharMap.insert(make_pair("CD", 400));
