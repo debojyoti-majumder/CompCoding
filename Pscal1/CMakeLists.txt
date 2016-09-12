@@ -1,13 +1,7 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(CompCode VERSION 0.0.0)
 
-include(CTest)
-enable_testing()
-
-add_subdirectory(romanNUmber)
-add_subdirectory(TriangleProb)
-add_subdirectory(Pscal1)
+add_executable(PscalTri PascalTriangle.cpp)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-include(CPack)
