@@ -1,5 +1,5 @@
 // Leet code problem url: https://leetcode.com/problems/pascals-triangle/
-// Not yet submitted
+// Submitted and accepted
 
 #include <iostream>
 #include <vector>
@@ -14,12 +14,10 @@ class Solution {
             vector<int> seedItem = {1};
 
             if(numRows <= 0 )
-                return returnItem;
+                return returnItem;            
             
-            if( numRows == 1 ) {
-                returnItem.push_back(seedItem);
-                return returnItem;
-            }
+            // Basic seeding
+            returnItem.push_back(seedItem);
 
             for(int i=1; i<numRows; i++ ) {
                 auto workingItem = seedItem;
@@ -27,6 +25,14 @@ class Solution {
                 // Padding with zero
                 workingItem.push_back(0);
                 workingItem.insert(workingItem.begin(), 0);
+                seedItem.clear();
+
+                for(size_t j=1; j<workingItem.size(); j++) {
+                    int sum = workingItem[j] + workingItem[j-1];
+                    seedItem.push_back(sum);
+                }
+
+                returnItem.push_back(seedItem);
             }
 
             return returnItem;
@@ -35,8 +41,11 @@ class Solution {
 
 int main() {
     Solution sol;
-
-    auto ret = sol.generate(5);
+    
+    int num;
+    cin >> num;
+    
+    auto ret = sol.generate(num);
 
     // Print the triangle
     for(auto row: ret) {
