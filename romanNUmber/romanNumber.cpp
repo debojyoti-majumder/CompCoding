@@ -1,4 +1,5 @@
 // Have to implement based on this code http://www.rapidtables.com/convert/number/how-roman-numerals-to-number.htm
+// Problem url https://leetcode.com/problems/integer-to-roman/
 
 #include <map>
 #include <string>
@@ -12,6 +13,7 @@ class Solution
     private:
         map<string,int> _stringValueMap;
         map<string,int> _doubleCharMap;
+
     public:
         Solution() {
             // Making the roman character map
@@ -30,7 +32,7 @@ class Solution
         }
     
         int romanToInt(string s) {
-            int sum = 10;
+            int sum = 0;
             std::transform(s.begin(), s.end(),s.begin(), ::toupper);
 
             while(s.length()) {
@@ -40,10 +42,14 @@ class Solution
                 if( doubleCharIt == _doubleCharMap.end() ) {
                     string f2 = s.substr(0,1);
                     auto singleCharIt = _stringValueMap.find(f2);
+                    
+                    if( singleCharIt != _stringValueMap.end() )
+                        sum += singleCharIt->second;
 
                     s.erase(0,1);
                 }
                 else {
+                    sum += doubleCharIt->second;
                     s.erase(0,2);
                 }
             }
