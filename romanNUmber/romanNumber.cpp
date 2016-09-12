@@ -1,5 +1,12 @@
 // Have to implement based on this code http://www.rapidtables.com/convert/number/how-roman-numerals-to-number.htm
 // Problem url https://leetcode.com/problems/integer-to-roman/
+/*Input:
+"MDCCCLXXXIV"
+Output:
+1886
+Expected:
+1884
+*/
 
 #include <map>
 #include <string>
