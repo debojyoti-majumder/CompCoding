@@ -1,5 +1,6 @@
 // Leet code problem url: https://leetcode.com/problems/pascals-triangle/
 // Submitted and accepted
+// Add the part 2 of the probelm
 
 #include <iostream>
 #include <vector>
@@ -7,6 +8,18 @@
 using namespace std;
 
 class Solution {
+    private:
+        int factorial(int n) {
+            if( n < 1 )
+                return 1;
+            else
+                return n*factorial(n-1);
+        }
+
+        int nCrFactorialWay(int n,int r) {
+            
+        }
+
     public:
         vector<vector<int>> generate(int numRows) 
         {
@@ -27,15 +40,23 @@ class Solution {
                 workingItem.insert(workingItem.begin(), 0);
                 seedItem.clear();
 
+                // Doing the addition
                 for(size_t j=1; j<workingItem.size(); j++) {
                     int sum = workingItem[j] + workingItem[j-1];
                     seedItem.push_back(sum);
                 }
 
+                // Adding the data to the main result
                 returnItem.push_back(seedItem);
             }
 
             return returnItem;
+        }
+
+        vector<int> generatenthRow(int row) {
+            vector<int> retValue;
+
+            return retValue;
         }
 };
 
