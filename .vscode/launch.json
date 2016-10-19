@@ -5,7 +5,7 @@
             "name": "C++ Launch (Windows)",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/build/TriangleProb/Triangle.exe",
+            "program": "${workspaceRoot}/build/Pscal1/Debug/PscalTri.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
