@@ -9,10 +9,10 @@
 using namespace std;
 
 int adjHighAdjust(const vector<int>& kidratings, int i) {
-	if (kidratings[i] > kidratings[i + 1])
-		return 1;
-	else if (kidratings[i] > kidratings[i - 1])
+	if ( kidratings[i] > kidratings[i - 1])
 		return 2;
+	else if ( kidratings[i] > kidratings[i + 1] )
+		return 1;
 	else
 		return 0;
 }
@@ -21,10 +21,8 @@ vector<int> getCandyAssignment(const vector<int>& kidratings) {
 	vector<int> candies;
 
 	// Intializing values with zero
-	candies.push_back(0);
 	for (auto p : kidratings)
 		candies.push_back(0);
-	candies.push_back(0);
 
 	for (size_t i = 1; i<kidratings.size() - 1; i++) {
 		int code = adjHighAdjust(kidratings, i);
@@ -36,6 +34,7 @@ vector<int> getCandyAssignment(const vector<int>& kidratings) {
 		case 2:
 			candies[i] = candies[i - 1] + 1;
 			break;
+
 		default:
 			candies[i] = 1;
 		}
@@ -57,8 +56,14 @@ int main() {
 	}
 	ratings.push_back(0);
 
+	ratings[0] = ratings[1];
+	ratings[numofKids] = ratings[numofKids - 1];
+
 	auto assignment = getCandyAssignment(ratings);
 	int sum = 0;
+
+	assignment.erase(assignment.begin());
+	assignment.pop_back();
 
 	for (auto item : assignment)
 		sum += item;
