@@ -1,6 +1,21 @@
 var net = require('net');
+var trainmodel = false;
 
-parameterEventMap = {}
+parameterEventMap = {};
+exludedFunctions = ['StripAssign'];
+
+function isExcluded(functionName) {
+    var bFound = false;
+
+    for(f in exludedFunctions ) {
+        if( exludedFunctions[f] === functionName ) {
+            bFound = true;
+            break;
+        }
+    }
+
+    return bFound;
+}
 
 function handleParmeterChange(parametrChangeDescription) {
     var timeStamp = parametrChangeDescription.timestamp;
@@ -9,11 +24,14 @@ function handleParmeterChange(parametrChangeDescription) {
     tableKey = eventData.id;
 
     if( parameterEventMap[tableKey] == undefined ) {
+        
         parameterEventMap[tableKey] = {dirty:true, logs:[{function:eventData.functionName, channel: eventData.channelName, parameter: eventData.parameterName, value: eventData.parameterValue}], updateStamp:timeStamp };
     } 
     else {
         if( timeStamp - parameterEventMap[tableKey].updateStamp > 200 ) {
-            parameterEventMap[tableKey].logs.push({function:eventData.functionName, channel: eventData.channelName, parameter: eventData.parameterName, value: eventData.parameterValue});
+            // Just avoid the Non DSP functions like strip assignment
+            if( isExcluded(eventData.functionName) === false )
+                parameterEventMap[tableKey].logs.push({function:eventData.functionName, channel: eventData.channelName, parameter: eventData.parameterName, value: eventData.parameterValue});  
         }
         else {
             var len = parameterEventMap[tableKey].logs.length;
@@ -52,7 +70,9 @@ function handlePatchingAction(patchingActionEvent) {
 
 // This function should update the mongoDB database
 function updateEventDataBase(eventLogs) {
-    console.log(eventLogs);
+    if( trainmodel ) {
+        console.log(eventLogs);
+    }
 }
 
 // Gets called perodicly to check for event and flush out the new events
@@ -99,3 +119,6 @@ var server = net.createServer( function(socket) {
 });
 
 server.listen(3021,'127.0.0.1');
+
+if( process.argv.length > 2 )
+    trainmodel = true;
