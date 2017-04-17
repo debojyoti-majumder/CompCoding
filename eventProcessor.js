@@ -19,13 +19,17 @@ var instrumentTypeMap = {};
 var parameterEventMap = {};
 exludedFunctions = ['StripAssign'];
 
-var logSchema = new Schema({
-    channelName: String,
+var logEntrySchema = new Schema({
     functionName: String,
     parameterName: String,
-    instrumentType: String,
     value: Number
-})
+});
+
+var logSchema = new Schema({
+    channelName: String,
+    instrumentType: String,
+    dspChanges: [logEntrySchema]
+});
 
 var EventLog = mongoose.model('EventLog', logSchema);
 
@@ -69,6 +73,14 @@ function handleParmeterChange(parametrChangeDescription) {
 
 }
 
+function updateInstremntMapping( targetChannelName, sourcehwId ) {
+    var instrumentType = instrumentTypeMap[sourcehwId];
+
+    if( instrumentType ) {
+
+    }
+}
+
 // Handles paching action which will help us linking physical channel to virtual channels
 function handlePatchingAction(patchingActionEvent) {
     var eventData = patchingActionEvent.eventDescription;
@@ -87,7 +99,7 @@ function handlePatchingAction(patchingActionEvent) {
             
             if( sourceString.startsWith("Line In") ) {
                 var sourcehwId = parseInt(sourceString.substring(7,10));
-                console.log(targetChannelName, sourcehwId);
+                updateInstremntMapping(targetChannelName, sourcehwId);
             }
         }
     }
@@ -101,17 +113,27 @@ function updateEventDataBase(eventLogs) {
             var excl = isExcluded(logEntry.function);
 
             if( excl == false) {
-                var logEntry = new EventLog({
-                    channelName: logEntry.channel,
-                    functionName: logEntry.function,
-                    parameterName: logEntry.parameter,
-                    instrumentType: 'generic',
-                    value: logEntry.value
-                });
+                EventLog.findOne({'channelName':logEntry.channel}, function(err, item) {
+                    // Only sucessful items
+                    if( err == null ) {
+                        
+                        // Add the recode 
+                        if( item == null ) {
+                            // Adding new document for a channel type
+                            var logItem = new EventLog({
+                                    channelName: logEntry.channel,
+                                    instrumentType: 'generic',
+                                    dspChanges: [{functionName:logEntry.function,parameterName:logEntry.parameter,value:log}]
+                                });
 
-                logEntry.save(function(err) {
-                    if( err ) console.log("Error is saving data: ", err);
-                })
+                            logItem.save(function(err){console.log("channel document added", err)});
+                        }
+                        else {
+                            item.dspChanges.push({functionName:logEntry.function,parameterName:logEntry.parameter,value:log});
+                            item.save(function(err){console.log("data added",err)});
+                        }
+                    }
+                });
             }
         }
     }
