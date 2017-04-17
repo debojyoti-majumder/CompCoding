@@ -11,6 +11,7 @@ var logSchema = new Schema({
     channelName: String,
     functionName: String,
     parameterName: String,
+    instrumentType: String,
     value: Number
 })
 
@@ -88,7 +89,17 @@ function updateEventDataBase(eventLogs) {
             var excl = isExcluded(logEntry.function);
 
             if( excl == false) {
-                
+                var logEntry = new EventLog({
+                    channelName: logEntry.channel,
+                    functionName: logEntry.function,
+                    parameterName: logEntry.parameter,
+                    instrumentType: 'generic',
+                    value: logEntry.value
+                });
+
+                logEntry.save(function(err) {
+                    if( err ) console.log("Error is saving data: ", err);
+                })
             }
         }
     }
