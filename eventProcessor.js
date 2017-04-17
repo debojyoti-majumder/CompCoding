@@ -75,10 +75,17 @@ function handleParmeterChange(parametrChangeDescription) {
 
 function updateInstremntMapping( targetChannelName, sourcehwId ) {
     var instrumentType = instrumentTypeMap[sourcehwId];
+    EventLog.findOne({'channelName':targetChannelName }, function(err, item) {
 
-    if( instrumentType ) {
-
-    }
+        if( item != null ) {
+            if( instrumentType === undefined )  
+                instrumentType = "generic";
+            else
+                item.instrumentType = instrumentType;
+            
+            item.save(function(err){console.log("Device type updated",err)});
+        }
+    });
 }
 
 // Handles paching action which will help us linking physical channel to virtual channels
@@ -123,10 +130,11 @@ function updateEventDataBase(eventLogs) {
                             var logItem = new EventLog({
                                     channelName: logEntry.channel,
                                     instrumentType: 'generic',
-                                    dspChanges: [{functionName:logEntry.function,parameterName:logEntry.parameter,value:log}]
+                                    dspChanges: []
                                 });
-
-                            logItem.save(function(err){console.log("channel document added", err)});
+                            
+                            logItem.dspChanges.push({functionName:logEntry.function,parameterName:logEntry.parameter,value:log});
+                            logItem.save(function(err){ console.log("channel document added", err)} );
                         }
                         else {
                             item.dspChanges.push({functionName:logEntry.function,parameterName:logEntry.parameter,value:log});
