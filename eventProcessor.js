@@ -1,8 +1,20 @@
 var net = require('net');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
 var trainmodel = false;
 
 parameterEventMap = {};
 exludedFunctions = ['StripAssign'];
+
+var logSchema = new Schema({
+    channelName: String,
+    functionName: String,
+    parameterName: String,
+    value: Number
+})
+
+var EventLog = mongoose.model('EventLog', logSchema);
 
 function isExcluded(functionName) {
     var bFound = false;
@@ -71,7 +83,14 @@ function handlePatchingAction(patchingActionEvent) {
 // This function should update the mongoDB database
 function updateEventDataBase(eventLogs) {
     if( trainmodel ) {
-        console.log(eventLogs);
+        for(log in eventLogs ) {
+            var logEntry = eventLogs[log];
+            var excl = isExcluded(logEntry.function);
+
+            if( excl == false) {
+                
+            }
+        }
     }
 }
 
@@ -119,6 +138,7 @@ var server = net.createServer( function(socket) {
 });
 
 server.listen(3021,'127.0.0.1');
+mongoose.connect('mongodb://localhost/mixerdata');
 
 if( process.argv.length > 2 )
     trainmodel = true;
