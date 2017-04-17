@@ -1,10 +1,22 @@
+// Declaring the module depedencices
 var net = require('net');
 var mongoose = require('mongoose');
+var Particle = require('particle-api-js');
+
 var Schema = mongoose.Schema;
 
+var particle = new Particle();
+var token;
+var discoveredDevices = [];
+
+// This is to indicate if we need to predict paramteres or traing paramters
+// supplied during starting the server
 var trainmodel = false;
 
-parameterEventMap = {};
+// This varibale will merge the IOT data and the patching point data
+var instrumentTypeMap = {};
+
+var parameterEventMap = {};
 exludedFunctions = ['StripAssign'];
 
 var logSchema = new Schema({
@@ -147,6 +159,47 @@ var server = net.createServer( function(socket) {
         }
     })
 });
+
+particle.login({
+    username: 'debojyoti.majumder@gmail.com',
+    password: 'Safeb00t'
+}).then(
+    // On successful loging get the token
+    function(data) {
+        token = data.body.access_token;
+        console.log("Logged in sucessfully, token:",token);
+
+        var deviceListPromise = particle.listDevices({auth:token});
+        
+        deviceListPromise.then(function(devices) {
+            discoveredDevices = devices.body;
+            
+            for(d in discoveredDevices ) {
+                var device = discoveredDevices[d];
+                
+                particle.getEventStream({ deviceId: device.id, name: 'adpater-activated', auth: token }).then(function(stream) {
+                    stream.on('event', function(data) {
+                        var eventdata = data.data;
+
+                        // Pasring the event data from the cloud
+                        var n = eventdata.indexOf('/');
+                        var instrumentType = eventdata.substring(0,n);
+                        var slot = parseInt(eventdata.substring(n+1));
+
+                        // Updaing the in memory mapping information
+                        instrumentTypeMap[slot] = instrumentType;
+                    });
+                });
+            }
+        },
+        function(err){
+            console.log("Can not retrive list of devices",err);
+        });
+    },
+    function(err) {
+        console.log("Login failed", err);
+    }
+);
 
 server.listen(3021,'127.0.0.1');
 mongoose.connect('mongodb://localhost/mixerdata');
