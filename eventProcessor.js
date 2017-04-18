@@ -9,6 +9,9 @@ var particle = new Particle();
 var token;
 var discoveredDevices = [];
 
+// It is a list of list
+var aprioriInputList = [];
+
 // This is to indicate if we need to predict paramteres or traing paramters
 // supplied during starting the server
 var trainmodel = false;
@@ -147,6 +150,48 @@ function updateEventDataBase(eventLogs) {
     }
 }
 
+function readAndBuildData() {
+    var cursor = EventLog.find({}).cursor();
+
+    cursor.on('data', function(document){
+        var channelName = document.channelName;
+        var dspChanges = document.dspChanges;
+
+        var itemList = [];
+
+        // Go through the DSP changes log
+        for(ch in dspChanges) {
+
+            var changeItem = dspChanges[ch];
+            var fname = dspChanges[ch].functionName;
+            var pname = dspChanges[ch].parameterName;
+
+            if( fname !== undefined & pname !== undefined ) {
+                var inpString = fname + '$' + pname; 
+                
+                var itemFound = false;
+                for( i in itemList ) {
+                    if( itemList[i] === inpString ){
+                        itemFound = true;
+                        break;
+                    }
+                }
+
+                if( itemFound === false )
+                    itemList.push(inpString);
+            }
+        }
+
+        // Adding to apriori input list with the instremnt type
+        itemList.push(document.instrumentType);
+        aprioriInputList.push(itemList);
+    })
+
+    cursor.on('close', function(){
+        console.log(aprioriInputList);
+    })
+}
+
 // Gets called perodicly to check for event and flush out the new events
 function lazzyDBWritter() {
     for( parameter in parameterEventMap ) {
@@ -164,6 +209,11 @@ var server = net.createServer( function(socket) {
 
     var dbWriterJob = setInterval(lazzyDBWritter,5000);
     var titleOpenFound = false;
+
+    // Build the analytics model if training is not enabled
+    if( trainmodel == false ) {
+        readAndBuildData();
+    }
 
     socket.on('data',function(rawData) {
         var jsonString = rawData.toString();
