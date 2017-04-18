@@ -70,8 +70,17 @@ function handleParmeterChange(parametrChangeDescription) {
     else {
         if( timeStamp - parameterEventMap[tableKey].updateStamp > 200 ) {
             // Just avoid the Non DSP functions like strip assignment
-            if( isExcluded(eventData.functionName) === false )
+            if( isExcluded(eventData.functionName) === false ) {
                 parameterEventMap[tableKey].logs.push({function:eventData.functionName, channel: eventData.channelName, parameter: eventData.parameterName, value: eventData.parameterValue});  
+                
+                if( trainmodel === false ) {
+                    var predictionKey = eventData.functionName + '$' + eventData.parameterName;
+                    
+                    // Verbose output
+                    console.log("You can set these paramters to ",eventData.channelName);
+                    console.log(getParameterPrediction(predictionKey));
+                }
+            }
         }
         else {
             var len = parameterEventMap[tableKey].logs.length;
@@ -141,6 +150,7 @@ function handlePatchingAction(patchingActionEvent) {
                 for( ty in instrumentTypeMap ) {
                     if(ty == sourcehwId){
                         inputChannelInfo[targetChannelName] = {slotNumber:sourcehwId,intruType:instrumentTypeMap[ty]};
+                        console.log("You can set these parameters on ", targetChannelName);
                         console.log(getParameterPrediction(instrumentTypeMap[ty]));
                     }
                 }
