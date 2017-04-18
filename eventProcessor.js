@@ -26,7 +26,7 @@ var trainmodel = false;
 
 // This varibale will merge the IOT data and the patching point data
 var instrumentTypeMap = {};
-
+var inputChannelInfo = {};
 var parameterEventMap = {};
 exludedFunctions = ['StripAssign'];
 
@@ -88,15 +88,32 @@ function updateInstremntMapping( targetChannelName, sourcehwId ) {
     var instrumentType = instrumentTypeMap[sourcehwId];
     EventLog.findOne({'channelName':targetChannelName }, function(err, item) {
 
-        if( item != null ) {
-            if( instrumentType === undefined )  
-                instrumentType = "generic";
-            else
-                item.instrumentType = instrumentType;
+            if( item != null ) {
+                if( instrumentType === undefined )  
+                    instrumentType = "generic";
+                else
+                    item.instrumentType = instrumentType;
             
-            item.save(function(err){console.log("Device type updated",err)});
+                item.save(function(err){console.log("Device type updated",err)});
+            }
+        });
+}
+
+// This function is to get the predicted values from input function
+function getParameterPrediction(predInput) {
+    var predictedParamList = [];
+    var itemRules = analyticModel.associationRules;
+
+    for( i in itemRules ) {
+        var rule = itemRules[i];
+
+        if( rule.rhs[0] == predInput ) {
+            predictedParamList = rule.lhs;
+            break;
         }
-    });
+    }
+
+    return predictedParamList;
 }
 
 // Handles paching action which will help us linking physical channel to virtual channels
@@ -117,8 +134,19 @@ function handlePatchingAction(patchingActionEvent) {
             
             if( sourceString.startsWith("Line In") ) {
                 var sourcehwId = parseInt(sourceString.substring(7,10));
-                updateInstremntMapping(targetChannelName, sourcehwId);
-            }
+                if(trainmodel)
+                    updateInstremntMapping(targetChannelName, sourcehwId);
+                
+                inputChannelInfo[targetChannelName] = {slotNumber:sourcehwId,intruType:'generic'};
+                for( ty in instrumentTypeMap ) {
+                    if(ty == sourcehwId){
+                        inputChannelInfo[targetChannelName] = {slotNumber:sourcehwId,intruType:instrumentTypeMap[ty]};
+                        console.log(getParameterPrediction(instrumentTypeMap[ty]));
+                    }
+                }
+
+                
+           }
         }
     }
 }
@@ -215,8 +243,8 @@ function readAndBuildData() {
         aprioriInputList.push(itemList);
     })
 
-    cursor.on('close', function(){
-        console.log(aprioriInputList);
+    cursor.on('close', function() {
+        // Build the model when all the data is fetched
         buildAnalyticModel();
     })
 }
@@ -290,6 +318,7 @@ particle.login({
                     stream.on('event', function(data) {
                         var eventdata = data.data;
 
+                        console.log("Cloud Notification:",eventdata)
                         // Pasring the event data from the cloud
                         var n = eventdata.indexOf('/');
                         var instrumentType = eventdata.substring(0,n);
