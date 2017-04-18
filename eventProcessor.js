@@ -2,15 +2,23 @@
 var net = require('net');
 var mongoose = require('mongoose');
 var Particle = require('particle-api-js');
+var Apriori = require('apriori');
+
+// The analytic model algorithm with minimum confidence 0.8
+var aprioriAlgo = new Apriori.Algorithm(0.15, 0.8, false);
 
 var Schema = mongoose.Schema;
 
 var particle = new Particle();
 var token;
+
 var discoveredDevices = [];
+var discroverRules = {};
 
 // It is a list of list
 var aprioriInputList = [];
+var discoveredINstrementTypes = [];
+var analyticModel;
 
 // This is to indicate if we need to predict paramteres or traing paramters
 // supplied during starting the server
@@ -150,6 +158,25 @@ function updateEventDataBase(eventLogs) {
     }
 }
 
+function buildAnalyticModel() {
+    analyticModel = aprioriAlgo.analyze(aprioriInputList);
+    var itemRules = analyticModel.associationRules;
+
+    var sum = 0;
+    var count = 0;
+    for(i in itemRules ) {
+       var rule = itemRules[i];
+       if( rule.lhs.length > 5 ) {
+           for(p in discoveredINstrementTypes ) {
+               var instType = discoveredINstrementTypes[p];
+               if( rule.rhs[0] === instType ){
+                   console.log(rule);
+               }
+           }
+       }
+    }
+}
+
 function readAndBuildData() {
     var cursor = EventLog.find({}).cursor();
 
@@ -184,11 +211,13 @@ function readAndBuildData() {
 
         // Adding to apriori input list with the instremnt type
         itemList.push(document.instrumentType);
+        discoveredINstrementTypes.push(document.instrumentType);
         aprioriInputList.push(itemList);
     })
 
     cursor.on('close', function(){
         console.log(aprioriInputList);
+        buildAnalyticModel();
     })
 }
 
