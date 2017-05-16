@@ -11,23 +11,32 @@ def is_divisable_by_three(arr):
     else:
         return False
 
+def get_int_value_from_array(array):
+    sum = 0;
+    length = len(array)
+
+    for i in range(length):
+        sum += (10 ** (length - 1 - i)) * array[i]
+
+    return sum
+
 def get_permutations(input):
     input_length = len(input)
     permutation_sets = []
-    permutation_sets.append(input)
+    
+    # First handel the base cases
+    if len(input) == 0:
+        return []
+
+    if len(input) == 1:
+        return [input]
 
     for i in range(input_length):
-        for j in range(input_length):
-            if not i == j:
-                # Create the new item
-                temp_array = input.copy()
-                
-                # Swap the two numbers
-                t = temp_array[i]
-                temp_array[i] = temp_array[j]
-                temp_array[j] = t
+        moving_item = input[i]
+        remaining_items = input[:i] + input[i+1:]
 
-                permutation_sets.append(temp_array)
+        for p in get_permutations(remaining_items):
+            permutation_sets.append([moving_item] + p)
 
     return permutation_sets;
 
@@ -54,10 +63,19 @@ def find_max_sum(problem_queue):
                 problem_queue.put(sub_solution)
         
         # Recursive call to do BFS
-        find_max_sum(problem_queue)
+        return find_max_sum(problem_queue)
     else:
+        max_val = 0
+
         for sol in possible_solutions:
-            print(get_permutations(sol))
+            perm_set = get_permutations(sol)
+                
+            for p in perm_set:
+                value = get_int_value_from_array(p)
+                if value > max_val:
+                    max_val = value
+
+        return max_val
 
 def problem_solver(input_array):
     # Intializing the queue
@@ -65,9 +83,9 @@ def problem_solver(input_array):
     problem_queue.put(input_array)
 
     # Passing the queue to the main method
-    find_max_sum(problem_queue)
+    return find_max_sum(problem_queue)
 
 
 # Test function calls, output shoud be an integer
-problem_solver([3,1,4,1])       # Expected output 4311
-#problem_solver([3,1,4,1,5,9])   # Expected output 94311  
+print(problem_solver([3,1,4,1]))       # Expected output 4311
+print(problem_solver([3,1,4,1,5,9]))   # Expected output 94311  
