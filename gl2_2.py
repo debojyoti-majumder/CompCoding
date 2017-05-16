@@ -72,7 +72,8 @@ def find_max_sum(problem_queue):
                 
             for p in perm_set:
                 value = get_int_value_from_array(p)
-                if value > max_val:
+                
+                if (value%3 == 0) and (value > max_val):
                     max_val = value
 
         return max_val
