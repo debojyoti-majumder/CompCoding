@@ -11,21 +11,40 @@ def is_divisable_by_three(arr):
     else:
         return False
 
+def get_permutations(input):
+    input_length = len(input)
+    permutation_sets = []
+    permutation_sets.append(input)
+
+    for i in range(input_length):
+        for j in range(input_length):
+            if not i == j:
+                # Create the new item
+                temp_array = input.copy()
+                
+                # Swap the two numbers
+                t = temp_array[i]
+                temp_array[i] = temp_array[j]
+                temp_array[j] = t
+
+                permutation_sets.append(temp_array)
+
+    return permutation_sets;
+
 def find_max_sum(problem_queue):
-    solution_found = False
     item = []
     to_be_tested = []
+    possible_solutions = []
 
     while not problem_queue.empty():
         item = problem_queue.get()
 
         if is_divisable_by_three(item):
-            print(item)
-            solution_found = True
+            possible_solutions.append(item)
         else:
             to_be_tested.append(item)
 
-    if solution_found == False :
+    if len(possible_solutions) == 0 :
         for so in to_be_tested:
             # Constructing the subset
             for n in so:
@@ -36,13 +55,19 @@ def find_max_sum(problem_queue):
         
         # Recursive call to do BFS
         find_max_sum(problem_queue)
-
+    else:
+        for sol in possible_solutions:
+            print(get_permutations(sol))
 
 def problem_solver(input_array):
+    # Intializing the queue
     problem_queue = queue.Queue()
     problem_queue.put(input_array)
+
+    # Passing the queue to the main method
     find_max_sum(problem_queue)
 
 
-problem_solver([3,1,4,1])
-problem_solver([3,1,4,1,5,9])
+# Test function calls, output shoud be an integer
+problem_solver([3,1,4,1])       # Expected output 4311
+#problem_solver([3,1,4,1,5,9])   # Expected output 94311  
