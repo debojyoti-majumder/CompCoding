@@ -1,3 +1,4 @@
+import Queue
 
 def get_point_from_int(integer_value):
     row = integer_value / 8
@@ -55,8 +56,10 @@ def get_all_valid_moves(source):
     return valid_moves
 
 # Main method to perform the task
-def find_min_distance(source, destination, turn_count):
+def find_min_distance(destination, turn_count, solution_queue):
     # Handle the base case
+    source = solution_queue.get()
+
     if source == destination :
         return turn_count
     else:
@@ -76,10 +79,16 @@ def find_min_distance(source, destination, turn_count):
         return turn_count
     else:
         for m in moves:
-            move_costs.append(find_min_distance(m,destination,turn_count))
+            solution_queue.put(m)
 
-    return min(move_costs)
+    return 5
 
-print( find_min_distance(19, 36, 0 ) )              # Output should be 1
-print( find_min_distance(0, 1, 0) )                 # Output should be 3
+def answer(source, dest):
+    solution_queue = Queue.Queue()
+    solution_queue.put(source)
+
+    return find_min_distance(36, 0, solution_queue)
+
+print( answer(19, 36 ) )              # Output should be 1
+print( answer(0, 1) )                 # Output should be 3
 #print( find_min_distance(17, 1, 0) )                
