@@ -62,10 +62,13 @@ def find_min_distance(source, destination, turn_count):
 
     # Get all possible valid moves
     moves = get_all_valid_moves(source)
-    print(moves)
+    move_costs = []
+    destination_found = False
 
-    return turn_count
+    
+
+    return min(move_costs)
 
 print( find_min_distance(19, 36, 0 ) )              # Output should be 1
-print( find_min_distance(0, 1, 0) )                # Output should be 3
+#print( find_min_distance(0, 1, 0) )                # Output should be 3
 #print( find_min_distance(17, 1, 0) )                
