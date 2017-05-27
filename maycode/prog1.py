@@ -1,3 +1,4 @@
+# The program finds the least number of moves required by a knight to move from one chess board location to another location
 import Queue
 
 def get_point_from_int(integer_value):
