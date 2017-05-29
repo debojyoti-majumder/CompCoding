@@ -1,7 +1,7 @@
 # Problem url: https://leetcode.com/problems/count-primes/#/description
 
 class Solution(object):
-    def get_nextNumber(self, number_list, start_number):
+    def __get_nextNumber(self, number_list, start_number):
         # Should return the value
         for i in range(start_number, len(number_list)):
             if not number_list[i]:
@@ -10,14 +10,8 @@ class Solution(object):
         # Return -1 to say no more items found
         return -1
 
-    def get_false_count(self, number_list):
-        counter = 0
-        
-        for item in number_list:
-            if not item:
-                counter = counter + 1
-
-        return counter
+    def __get_false_count(self, number_list):
+        return len(number_list) - sum(number_list)
     
     def countPrimes(self, n):
         visited_number_list = []
@@ -38,7 +32,7 @@ class Solution(object):
         start_number = 2
 
         while not no_new_number_found:
-            item = self.get_nextNumber(visited_number_list,start_number)
+            item = self.__get_nextNumber(visited_number_list,start_number)
             multuiplier = 2
             no_new_number_found = True
 
@@ -58,7 +52,7 @@ class Solution(object):
             
             start_number = item + 1
 
-        return self.get_false_count(visited_number_list)
+        return self.__get_false_count(visited_number_list)
 
 s = Solution()
 print(s.countPrimes(10))
