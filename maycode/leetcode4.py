@@ -7,6 +7,19 @@ class ListNode(object):
          self.next = None
 
 class Solution(object):
+    return_list = None
+
+    def __append_item(self, value):
+        if self.return_list == None:
+            self.return_list = ListNode(value)
+            return
+
+        node_iter = self.return_list
+        while not node_iter.next == None:
+            node_iter = node_iter.next
+
+        node_iter.next = ListNode(value)
+
     def __get_length(self,node):
         length = 0
         n = node
@@ -39,6 +52,7 @@ class Solution(object):
         l2_length = self.__get_length(l2)
         top_item = None
         bottom_item = None
+        self.return_list = None
         
         if l1_length > l2_length:
             top_item = l1
@@ -56,9 +70,6 @@ class Solution(object):
         item2 = bottom_item
         carry_number = 0
 
-        return_node = ListNode(0)
-        node_iter = return_node
-
         while not item1 == None:
             new_val = item1.val + item2.val + carry_number
 
@@ -67,19 +78,14 @@ class Solution(object):
                 new_val = new_val - 10
             else:
                 carry_number = 0
-            
-            # This means this is the head
-            if return_node == node_iter: 
-                node_iter.val = new_val
-            else:
-                node_iter.next = ListNode(new_val)
-                node_iter = node_iter.next
-                
+
+            self.__append_item(new_val)
+
+            # Advance the iterator
             item1 = item1.next
             item2 = item2.next
-            
-
-        return return_node
+        
+        return self.return_list
 
 n1 = ListNode(2)
 n2 = ListNode(7)
