@@ -56,19 +56,30 @@ class Solution(object):
         item2 = bottom_item
         carry_number = 0
 
+        return_node = ListNode(0)
+        node_iter = return_node
+
         while not item1 == None:
             new_val = item1.val + item2.val + carry_number
-            
+
             if new_val >= 10:
                 carry_number = 1
                 new_val = new_val - 10
             else:
                 carry_number = 0
             
-            print(new_val)
-
+            # This means this is the head
+            if return_node == node_iter: 
+                node_iter.val = new_val
+            else:
+                node_iter.next = ListNode(new_val)
+                node_iter = node_iter.next
+                
             item1 = item1.next
             item2 = item2.next
+            
+
+        return return_node
 
 n1 = ListNode(2)
 n2 = ListNode(7)
