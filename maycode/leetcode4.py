@@ -53,7 +53,7 @@ class Solution(object):
         top_item = None
         bottom_item = None
         self.return_list = None
-        
+
         if l1_length > l2_length:
             top_item = l1
             self.__pad_list(l2, l1_length - l2_length)
@@ -84,6 +84,9 @@ class Solution(object):
             # Advance the iterator
             item1 = item1.next
             item2 = item2.next
+        
+        if carry_number == 1:
+            self.__append_item(1)
         
         return self.return_list
 
