@@ -6,6 +6,14 @@ class Solution(object):
         :type s: str
         :rtype: int
         """
+        ret_index = -1
+
+        for i in range(len(s)):
+            if s.count(s[i]) == 1:
+                ret_index = i
+                break
+        
+        return ret_index
     
 s = Solution()
 
