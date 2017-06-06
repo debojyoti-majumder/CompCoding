@@ -5,16 +5,24 @@ class Solution(object):
     def isAnargram(self, string_1, string_2):
         """
             returns true if the strings are anargram
-        """
-        char_list = list(string_2)
+        """     
+        char_map = []
 
+        # Intiling the map
+        for i in range(26):
+            char_map.append(0)
+         
         for letter in string_1:
-            try:
-                char_index = char_list.index(letter)
-                char_list.remove(letter)
-            except ValueError:
+            key = ord(letter) - ord('a')
+            char_map[key] += 1    
+        
+        for letter in string_2:
+            key = ord(letter) - ord('a')
+            char_map[key] -= 1
+
+            if char_map[key] < 0:
                 return False
-                
+
         return True
 
     def findAnagrams(self, s, p):
@@ -26,7 +34,7 @@ class Solution(object):
         found_indexes = []
 
         # First should print out all the substrings
-        for i in range(len(s)- len(p) + 1):
+        for i in range(len(s) - len(p) + 1):
             sub_string = s[i:i+len(p)]
 
             # Sanity check
