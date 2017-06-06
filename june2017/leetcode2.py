@@ -7,12 +7,27 @@ class Solution(object):
         :rtype: int
         """
         ret_index = -1
+        char_count_map = {}
 
         for i in range(len(s)):
-            if s.count(s[i]) == 1:
-                ret_index = i
-                break
+            ch = s[i]
+            
+            if ch in char_count_map:
+                char_count_map[ch] += 1
+            else:
+                char_count_map[ch] = 1
         
+        indexes = []
+
+        for item in char_count_map:
+            if char_count_map[item] == 1:
+                indexes.append(s.index(item))
+
+        if len(indexes) > 0:
+            ret_index = min(indexes)
+        else:
+            ret_index = -1
+
         return ret_index
     
 s = Solution()
