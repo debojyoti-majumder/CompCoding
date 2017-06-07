@@ -16,8 +16,7 @@ class Solution(object):
                 
                 # Increment the counter if it is a boomereng
                 if self.is_boomerang(target_item):
-                   boomerang_counter += 1
-
+                    boomerang_counter += 1
             except StopIteration:
                 break
             
@@ -45,7 +44,7 @@ class Solution(object):
         point_2 = points[1]
         point_3 = points[2]
 
-        if self.get_distance(point_1,point_2) == self.get_distance(point_2,point_3):
+        if self.get_distance(point_1,point_2) == self.get_distance(point_1,point_3):
             return True
         else:
             return False
@@ -54,4 +53,5 @@ s = Solution()
 
 #Explanation:
 #The two boomerangs are [[1,0],[0,0],[2,0]] and [[1,0],[2,0],[0,0]]
-print(s.numberOfBoomerangs([[0,0],[1,0],[2,0]])) # Should output 2
+print(s.numberOfBoomerangs([1,2,3]))                # Should output 2
+print(s.numberOfBoomerangs([1,2,3,4,5]))            # Should output 20
