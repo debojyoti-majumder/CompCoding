@@ -1,48 +1,37 @@
 # Problem Url: https://leetcode.com/problems/generate-parentheses/#/description
 
 class Solution(object):
-    def recurse_helper_function(self, num):
-        patterns = []
+    pattern_list = []
 
-        if num == 1:
-            return ['()']
-
-        ret_pattrns = self.recurse_helper_function(num-1)
+    def recurse_helper_function(self, number_of_left, number_of_right, pattern):
+        if number_of_left == number_of_right and number_of_left == 0:
+            str_value = ''.join(pattern)
+            self.pattern_list.append(str_value)
         
-        for pat in ret_pattrns:
-            item = '()' + pat
-            patterns.append(item)
-
-            item = pat + '()'
-            patterns.append(item)
-
-            item = '(' + pat + ')'
-            patterns.append(item)
-
-        return patterns
+        if number_of_left > 0:
+            pattern.append('(')
+            self.recurse_helper_function(number_of_left-1, number_of_right, pattern)
+            del pattern[-1]
         
+        if number_of_right > number_of_left:
+            pattern.append(')')
+            self.recurse_helper_function(number_of_left, number_of_right-1, pattern)
+            del pattern[-1]
+
     def generateParenthesis(self, n):
         """
         :type n: int
         :rtype: List[str]
         """
+        
+        # Intializing the paramter values
+        self.pattern_list[:] = []
 
-        # Getting all the patterns
-        only_n_patterns = []
-        all_patterns = self.recurse_helper_function(n)
-        unique_items = []
-
-        # Only n letter patterns are getting added
-        for p in all_patterns:
-            if len(p) == 2 * n:
-                only_n_patterns.append(p)
-
-        # Removing the duplicate once
-        for p in only_n_patterns:
-            if p not in unique_items:
-                unique_items.append(p)
-
-        return unique_items
+        # Calling the recusive function
+        self.recurse_helper_function(n,n,[])
+        
+        # Returning the values
+        return self.pattern_list
 
 s = Solution()
 
