@@ -9,7 +9,10 @@ using namespace std;
 class Solution {
     public:
         int arrayPairSum(vector<int>& nums) {
-            return 0;
+            size_t len = nums.size() - 1;
+            sort(nums.begin(), nums.end());
+            
+            return nums[len] + nums[len-1];
         }
 };
 
