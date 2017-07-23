@@ -1,4 +1,4 @@
-// elevenTest1.cpp : The purpose of this file is to find new features of new C++ standard
+// elevenTest1.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
@@ -6,6 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
+#include <string>
 
 using namespace std;
 
@@ -58,6 +59,17 @@ int main()
 	// Passing the method to the filtering function
 	auto filterItem = vecProc.filterVector(filterFunction);
 	for (auto item : filterItem)
+		cout << item << endl;
+
+	auto input_strings = vector<string>{ "Debojyoti", "Some", "Small", "Big string again" };
+	MyVectorProcessor<string> my_string_vec(input_strings);
+
+	// Using my Library on string
+	auto stringFilter = [](string data) {
+		return data.length() > 6;
+	};
+	auto filtered_strings = my_string_vec.filterVector(stringFilter);
+	for (auto item : filtered_strings)
 		cout << item << endl;
 
     return 0;
