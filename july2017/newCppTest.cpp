@@ -1,5 +1,5 @@
 // elevenTest1.cpp : Testing out new C++ capabilities
-//
+// Link to follow: https://stackoverflow.com/questions/13592847/c11-observer-pattern-signals-slots-events-change-broadcaster-listener-or
 
 #include "stdafx.h"
 #include <iostream>
