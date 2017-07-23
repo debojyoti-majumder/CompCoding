@@ -1,4 +1,4 @@
-// elevenTest1.cpp : Defines the entry point for the console application.
+// elevenTest1.cpp : Testing out new C++ capabilities
 //
 
 #include "stdafx.h"
@@ -14,19 +14,19 @@ template <typename T>
 class MyVectorProcessor 
 {
 	private:
-		vector<T> _mainVector;
+		std::vector<T> _mainVector;
 
 	public:
 		MyVectorProcessor() = delete;
 
-		MyVectorProcessor(vector<T> arg) {
+		MyVectorProcessor(std::vector<T> arg) {
 			// TODO: Make STL "copy" method
 			for (auto item : arg)
 				_mainVector.push_back(item);
 		}
 		
-		vector<T> filterVector(std::function<bool(T)> filterFunction) {
-			vector<T> returnItem;
+		std::vector<T> filterVector(std::function<bool(T)> filterFunction) {
+			std::vector<T> returnItem;
 
 			for( auto item : _mainVector ) {
 				// Invoking the filter function
@@ -74,4 +74,3 @@ int main()
 
     return 0;
 }
-
