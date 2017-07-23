@@ -1,5 +1,6 @@
 // elevenTest1.cpp : Testing out new C++ capabilities
 // Link to follow: https://stackoverflow.com/questions/13592847/c11-observer-pattern-signals-slots-events-change-broadcaster-listener-or
+// Lambda function: http://en.cppreference.com/w/cpp/language/lambda
 
 #include "stdafx.h"
 #include <iostream>
