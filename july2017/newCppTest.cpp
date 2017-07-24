@@ -2,7 +2,6 @@
 // Link to follow: https://stackoverflow.com/questions/13592847/c11-observer-pattern-signals-slots-events-change-broadcaster-listener-or
 // Lambda function: http://en.cppreference.com/w/cpp/language/lambda
 
-#include "stdafx.h"
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -38,7 +37,18 @@ class MyVectorProcessor
 			// Returning a copy of filtered version
 			return returnItem;
 		}
-};
+
+        // Output streaming function
+        friend ostream& operator<<(ostream& output, const MyVectorProcessor& item) {
+            output << "[ ";
+
+            for(auto item: item._mainVector)
+                output << item << " ";
+
+            output << "]";
+            return output;
+        }
+};  
 
 int main()
 {
@@ -58,9 +68,8 @@ int main()
 	};
 
 	// Passing the method to the filtering function
-	auto filterItem = vecProc.filterVector(filterFunction);
-	for (auto item : filterItem)
-		cout << item << endl;
+	MyVectorProcessor<int> nums(vecProc.filterVector(filterFunction));
+	cout << nums << endl;
 
 	auto input_strings = vector<string>{ "Debojyoti", "Some", "Small", "Big string again" };
 	MyVectorProcessor<string> my_string_vec(input_strings);
@@ -69,9 +78,8 @@ int main()
 	auto stringFilter = [](string data) {
 		return data.length() > 6;
 	};
-	auto filtered_strings = my_string_vec.filterVector(stringFilter);
-	for (auto item : filtered_strings)
-		cout << item << endl;
 
-    return 0;
+	MyVectorProcessor<string> filtered_items(my_string_vec.filterVector(stringFilter));
+    	cout << filtered_items << endl;
+    	return 0;
 }
