@@ -10,9 +10,33 @@ class Solution {
 	public:
 		vector<int> twoSum(vector<int>& numbers, int target) {
 			vector<int> indexes(2);
-			
-			if (numbers.size() == 0)
+			size_t sz = numbers.size();
+			size_t start_point = numbers.size();
+
+			if (sz == 0)
 				return indexes;
+
+			for (size_t i = sz; i > 0; i--) {
+				if (numbers[i] < target) {
+					start_point = i;
+					break;
+				}
+			}
+
+			while (start_point != 0) {
+				// Looking for possible pairs
+				for (size_t m = start_point - 1; m >= 0; m--) {
+					// Checking for the sum and updating the index
+					if (numbers[m] + numbers[start_point] == target) {
+						indexes[0] = m + 1;
+						indexes[1] = start_point;
+						return indexes;
+					}
+				}
+
+				// Going for the next big item
+				start_point--;
+			}
 
 			return indexes;
 		}
