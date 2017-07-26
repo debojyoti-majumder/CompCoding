@@ -10,31 +10,17 @@ using namespace std;
 class Solution {
 	public:
 		vector<int> twoSum(vector<int>& numbers, int target) {
-			vector<int> indexes(2);
-			size_t sz = numbers.size();
-			size_t start_point = sz - 1;
+			auto high_index = numbers.size() - 1;
+			auto low_index = 0;
 
-			if (sz == 0)
-				return indexes;
-
-			while (start_point != 0) {
-				int reminder = target - numbers[start_point];
-				auto item = find(numbers.begin(), numbers.end(), reminder);
-
-				// If the item found then the sum is found
-				if (item != numbers.end()) {
-					// Setting the indexes
-					indexes[0] = item - numbers.begin() + 1;
-					indexes[1] = start_point + 1;
-
-					return indexes;
-				}
-
-				// Going for the next big item
-				start_point--;
+			while (numbers[high_index] + numbers[low_index] != target) {
+				if (numbers[high_index] + numbers[low_index] > target)
+					high_index--;
+				else
+					low_index++;
 			}
 
-			return indexes;
+			return vector<int>{low_index + 1, (int)(high_index + 1)};
 		}
 };
 
