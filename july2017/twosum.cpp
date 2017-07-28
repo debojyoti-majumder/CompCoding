@@ -24,10 +24,27 @@ class Solution {
 			return vector<int>{low_index + 1, (int)(high_index + 1)};
 		}
 
-		// Yet to be implemented
 		vector<int> twoSum(vector<int>& nums, int target) {
+			vector<int> original(nums);
+
+			// Getting the result from the sorted item
 			sort(nums.begin(), nums.end());
-			return twoSumSorted(nums, target);
+			auto indexes = twoSumSorted(nums, target);
+
+			auto value_1 = nums[indexes[0] - 1];
+			auto value_2 = nums[indexes[1] - 1];
+
+			vector<int> ret_values(2);
+
+			for (size_t index = 0; index < original.size(); index++) {
+				if (original[index] == value_1)
+					ret_values[0] = index + 1;
+
+				if (original[index] == value_2)
+					ret_values[1] = index + 1;
+			}
+
+			return ret_values;
 		}
 };
 
