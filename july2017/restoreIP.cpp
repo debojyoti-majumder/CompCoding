@@ -17,7 +17,7 @@ class Solution {
 			int substr_index = len > 3 ? 3 : len;
 
 			// Handling the invalid cases
-			if (len > 3 * ipblocks)
+			if (len > 3 * ipblocks && len < ipblocks)
 				return resotred_ips;
 
 			// This is the base case
@@ -32,7 +32,7 @@ class Solution {
 			vector<string> options;
 			string temp("");
 
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < substr_index; i++) {
 				temp += s[i];
 				int v = atoi(temp.c_str());
 
@@ -46,7 +46,7 @@ class Solution {
 				auto res = restoreIpAddresses(sub_str, ipblocks - 1);
 				
 				for (auto m : res)
-					resotred_ips.push_back(option + "." + m);
+					if (m.length() > 0) resotred_ips.push_back(option + "." + m);
 			}
 
 			return resotred_ips;
@@ -56,9 +56,14 @@ class Solution {
 int main()
 {
 	Solution s;
-	auto ips = s.restoreIpAddresses("25525511135");
 
 	// Should show ["255.255.11.135", "255.255.111.35"]
+	auto ips = s.restoreIpAddresses("25525511135");
+	for (auto ip : ips)
+		cout << ip << endl;
+
+	// Should show ["0.0.0.0"]
+	ips = s.restoreIpAddresses("0000");
 	for (auto ip : ips)
 		cout << ip << endl;
 
