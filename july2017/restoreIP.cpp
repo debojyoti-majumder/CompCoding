@@ -11,7 +11,7 @@ using namespace std;
 
 class Solution {
 	public:
-		vector<string> restoreIpAddresses(string s,int ipblocks) {
+		vector<string> restoreIpAddresses(string s,int ipblocks = 4) {
 			vector<string> resotred_ips;
 			int len = s.length();
 			int substr_index = len > 3 ? 3 : len;
@@ -46,7 +46,7 @@ class Solution {
 				auto res = restoreIpAddresses(sub_str, ipblocks - 1);
 				
 				for (auto m : res)
-					resotred_ips.push_back(m);
+					resotred_ips.push_back(option + "." + m);
 			}
 
 			return resotred_ips;
@@ -56,7 +56,7 @@ class Solution {
 int main()
 {
 	Solution s;
-	auto ips = s.restoreIpAddresses("25525511135",4);
+	auto ips = s.restoreIpAddresses("25525511135");
 
 	// Should show ["255.255.11.135", "255.255.111.35"]
 	for (auto ip : ips)
