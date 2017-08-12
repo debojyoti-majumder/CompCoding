@@ -9,6 +9,11 @@ typedef struct _TreeNode {
     struct _TreeNode* right;
 
     _TreeNode(int v) : value(v), left(nullptr) , right(nullptr) {}
+
+    // Just for debugging purpose
+    ~_TreeNode() {
+        std::cout << "The node " << value << " freed." << std::endl;
+    }
 }TreeNode;
 
 // Accepts a lis of integers and builds the tree
@@ -58,12 +63,27 @@ TreeNode* buildTreeNodeFromArray(std::vector<int> node_list) {
 }
 
 // Will deallocate memory 
-void destroyTree(TreeNode* root) {
+void destroyTree(TreeNode* node) {
+    if( node != nullptr ) {
+        // Saving the address
+        auto left = node->left;
+        auto right = node->right;
 
+        // Freing the up memeory
+        delete node;
+
+        // Recusring the destroy
+        destroyTree(left);
+        destroyTree(right);
+    }
 }
 
 void outputPreorder(TreeNode* root) {
-
+    if( root != nullptr ) {
+        std::cout << root->value << " ";
+        outputPreorder(root->left);
+        outputPreorder(root->right);
+    }
 }
 
 // Test program
@@ -72,6 +92,9 @@ int main() {
     
     // Building the tree
     auto root = buildTreeNodeFromArray(ndArray);
+
+    // Displaying the items
+    outputPreorder(root);
 
     // Destroying the tree
     destroyTree(root);
