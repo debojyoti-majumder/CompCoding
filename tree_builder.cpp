@@ -16,87 +16,96 @@ typedef struct _TreeNode {
     }
 }TreeNode;
 
-// Accepts a lis of integers and builds the tree
-TreeNode* buildTreeNodeFromArray(std::vector<int> node_list) {
-    TreeNode *node = nullptr;
-    auto list_size = node_list.size();
-    std::queue<TreeNode*> node_queue;
+class MyTreeNode {
+    private:
+        TreeNode* tree_root;
+    protected:
+        void outputPreorder(TreeNode* root) {
+            if( root != nullptr ) {
+                std::cout << root->value << " ";
+                outputPreorder(root->left);
+                outputPreorder(root->right);
+            }
+        }
+        
+        // Will deallocate memory 
+        void destroyTree(TreeNode* node) {
+            if( node != nullptr ) {
+                // Saving the address
+                auto left = node->left;
+                auto right = node->right;
 
-    if( list_size == 0 )
-        return nullptr;
+                // Freing the up memeory
+                delete node;
+
+                // Recusring the destroy
+                destroyTree(left);
+                destroyTree(right);
+            }
+        }
+
+    public:
+        MyTreeNode() = delete;
+        MyTreeNode(std::vector<int> tree_array) : tree_root(nullptr) {
+            auto list_size = tree_array.size();
+            std::queue<TreeNode*> node_queue;
+
+            if( list_size == 0 )
+                return;
     
-    // Intialize the root
-    node = new TreeNode(node_list[0]);
-    node_queue.push(node);
+            // Intialize the root and add to the queue
+            tree_root = new TreeNode(tree_array[0]);
+            node_queue.push(tree_root);
+            
+            // Going through each node to build the tree
+            for(size_t i=0; i<list_size; i++) {
+                // Getting the index of the child items
+                size_t left_child = 2*i + 1;
+                size_t right_child = 2*i + 2;
 
-    for(size_t i=0; i<list_size; i++) {
-        // Getting the index of the child items
-        size_t left_child = 2*i + 1;
-        size_t right_child = 2*i + 2;
+                // Something must have gone wrong, can't go ahead
+                if( node_queue.empty() )
+                    break;
 
-        // Something must have gone wrong, can't go head
-        if( node_queue.empty() )
-            break;
+                // Getting the current node from the queue
+                auto current_node = node_queue.front();
+                node_queue.pop();
 
-        // Getting the current node from the queue
-        auto current_node = node_queue.front();
-        node_queue.pop();
+                if( current_node == nullptr )
+                    continue;
 
-        if( current_node == nullptr )
-            continue;
+                // Adding the childs
+                if( left_child < list_size ) {
+                    auto new_node = new TreeNode(tree_array[left_child]);
+                    node_queue.push(new_node);
+                    current_node->left = new_node;
+                }
 
-        // Adding the childs
-        if( left_child < list_size ) {
-            auto new_node = new TreeNode(node_list[left_child]);
-            node_queue.push(new_node);
-            current_node->left = new_node;
+                if( right_child < list_size ) {
+                    auto new_node = new TreeNode(tree_array[right_child]);
+                    node_queue.push(new_node);
+                    current_node->right = new_node;
+                }
+            }
+        } 
+
+        void print() {
+            outputPreorder(tree_root);
+            std::cout << std::endl;
         }
 
-        if( right_child < list_size ) {
-            auto new_node = new TreeNode(node_list[right_child]);
-            node_queue.push(new_node);
-            current_node->right = new_node;
+        ~MyTreeNode() {
+            destroyTree(tree_root);
         }
-    }
-
-    return node;
-}
-
-// Will deallocate memory 
-void destroyTree(TreeNode* node) {
-    if( node != nullptr ) {
-        // Saving the address
-        auto left = node->left;
-        auto right = node->right;
-
-        // Freing the up memeory
-        delete node;
-
-        // Recusring the destroy
-        destroyTree(left);
-        destroyTree(right);
-    }
-}
-
-void outputPreorder(TreeNode* root) {
-    if( root != nullptr ) {
-        std::cout << root->value << " ";
-        outputPreorder(root->left);
-        outputPreorder(root->right);
-    }
-}
+};
 
 // Test program
 int main() {
-    std::vector<int> ndArray{2,3,4,5,6,7,9};
-    
     // Building the tree
-    auto root = buildTreeNodeFromArray(ndArray);
+    MyTreeNode main_tree(std::vector<int>{9,6,6,3,5,6,9});
 
     // Displaying the items
-    outputPreorder(root);
+    main_tree.print();
 
-    // Destroying the tree
-    destroyTree(root);
     return 0;
 }
