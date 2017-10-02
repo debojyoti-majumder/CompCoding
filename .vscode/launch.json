@@ -1,22 +1,32 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "C++ Launch (Windows)",
-            "type": "cppvsdbg",
-            "request": "launch",
-            "program": "${workspaceRoot}/build/Pscal1/Debug/PscalTri.exe",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceRoot}",
-            "environment": []
-        },
-        {
-            "name": "C++ Attach (Windows)",
-            "type": "cppvsdbg",
+        "version": "0.2.0",
+        "configurations": [
+        { 
+            "name": "(gdb) Attach",
+            "type": "cppdbg",
             "request": "attach",
-            "program": "${workspaceRoot}/build/romanNUmber/Debug/romanNUmber.exe",
-            "processId": "${command.pickProcess}"
-        }
-    ]
-}
+            "program": "${workspaceRoot}/a.out",
+            "processId": "${command:pickProcess}",
+            "MIMode": "gdb"
+        },
+            {
+                "name": "(gdb) Launch",
+                "type": "cppdbg",
+                "request": "launch",
+                "program": "${workspaceRoot}/a.out",
+                "args": [],
+                "stopAtEntry": true,
+                "cwd": "${workspaceRoot}",
+                "environment": [],
+                "externalConsole": true,
+                "MIMode": "gdb",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    }
+                ]
+            }
+        ]
+    }
