@@ -1,6 +1,3 @@
-// MoreSolu.cpp : Defines the entry point for the console application.
-// Problem url: https://leetcode.com/problems/minimum-height-trees/description/
-
 #include <iostream>
 #include <vector>
 
@@ -30,8 +27,10 @@ public:
         nd->_children.push_back(this);
 
         // Incremnting the depth of the children
-        for( auto c:_children ) 
-            c->incDepth(this);
+        for( auto c:_children ) {
+            if( nd->_depth > c->_depth )
+                c->incDepth(this);
+        }
 
         _children.push_back(nd);
     }
@@ -109,21 +108,21 @@ public:
 
 int main(int, char**)
 {
-	// Solution s;
+	Solution s;
 
-	// // Should output 1
-	// auto res_1 = s.findMinHeightTrees(4, vector<pair<int, int>>{ { 1, 0 }, { 1, 2 }, { 1, 3 } });
-	// for (auto m : res_1)
-	// 	cout << m << " ";
-	// cout << endl;
+	// Should output 1
+	auto res_1 = s.findMinHeightTrees(4, vector<pair<int, int>>{ { 1, 0 }, { 1, 2 }, { 1, 3 } });
+	for (auto m : res_1)
+		cout << m << " ";
+	cout << endl;
 
-	// Solution s2;
+	Solution s2;
 
-	// // Should output 3,4
-	// auto res_2 = s2.findMinHeightTrees(6, vector<pair<int, int>>{ { 0, 3 }, { 1, 3 }, { 2, 3 }, { 4, 3 }, { 5, 4 } });
-	// for (auto m : res_2)
-	// 	cout << m << " ";
-	// cout << endl;
+	// Should output 3,4
+	auto res_2 = s2.findMinHeightTrees(6, vector<pair<int, int>>{ { 0, 3 }, { 1, 3 }, { 2, 3 }, { 4, 3 }, { 5, 4 } });
+	for (auto m : res_2)
+		cout << m << " ";
+	cout << endl;
 
 	Solution s3;
 
@@ -133,5 +132,3 @@ int main(int, char**)
 		cout << m << " ";
 	cout << endl;    
 }
-
-
