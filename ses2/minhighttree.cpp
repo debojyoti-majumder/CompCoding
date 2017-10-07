@@ -1,109 +1,137 @@
 // MoreSolu.cpp : Defines the entry point for the console application.
 // Problem url: https://leetcode.com/problems/minimum-height-trees/description/
 
-#include "stdafx.h"
+#include <iostream>
+#include <vector>
+
+using namespace std;
 
 class TreeNode {
 private:
-	int _nodeid;
+    vector<TreeNode*>   _children;
+    unsigned int        _depth;
+    int                 _id;
+
+    void incDepth(TreeNode* caller) {
+        _depth = _depth + 1;
+        for( auto child: _children ) {
+            if( child != caller )
+                child->incDepth(this);
+        }
+    }
 
 public:
-	TreeNode() {}
-	TreeNode(int id) : _nodeid(id), _depth(0), _neibours() { }
-	int getId() const { return _nodeid; }
-	vector<int> _neibours;
-	int _depth;
+    TreeNode(int i) : _id(i) , _depth(0) {}
+    
+    // Should increament the depth of the children
+    void addChild(TreeNode* nd) {
+        // Updating the new node
+        nd->_depth = _depth + 1;
+        nd->_children.push_back(this);
+
+        // Incremnting the depth of the children
+        for( auto c:_children ) 
+            c->incDepth(this);
+
+        _children.push_back(nd);
+    }
+
+    void initChild(TreeNode* nd) {
+        _children.push_back(nd);
+        _depth = 1;
+    }
+
+    auto getDepth() const { return _depth; }
+    auto getId() const { return _id; }
+    auto childCount() const { return _children.size(); }
 };
 
 class Solution {
 private:
-	vector<TreeNode> _nodeList;
+    vector<TreeNode*> _nodes;
 
-	int dfs(int node_id, int p, int depth) {
-		unsigned int m = 20000;
-		vector<int> values;
-
-		for (auto m : _nodeList[node_id]._neibours) {
-			if (p != m) {
-				values.push_back(dfs(m, node_id,depth+1));
-			}
-		}
-
-		if (values.size() == 0)
-			return depth;
-
-		m = values[0];
-		for (auto i = values.size()-1; i >= 1; i--) {
-			if (m < values[i])
-				m = values[i];
-		}
-
-		return m;
-	}
 public:
 	vector<int> findMinHeightTrees(int n, vector<pair<int, int>>& edges) {
-		for (auto i = 0; i < n; i++) {
-			TreeNode n(i);
-			_nodeList.push_back(n);
-		}
+        for(auto i=0; i<n; i++) 
+            _nodes.push_back(new TreeNode(i));
 
-		for (auto edge : edges) {
-			// Make the connection
-			_nodeList[edge.first]._neibours.push_back(edge.second);
-			_nodeList[edge.second]._neibours.push_back(edge.first);
-		}
-		
-		vector<int> v;
-		vector<int> ret;
+        // While adding the edge the depths needs to be calculated
+        for(auto e : edges) {
+            auto nd_1 = _nodes[e.first];
+            auto nd_2 = _nodes[e.second];
+            
+            auto ch_1 = nd_1->childCount();
+            auto ch_2 = nd_2->childCount();
+            
+            TreeNode *old_node = nullptr;
+            TreeNode *new_node = nullptr;
 
-		for (int i = 0; i < n; i++)
-			v.push_back(dfs(i, -1, 0));
-		
-		int m = v[0];
-		for (auto l : v) {
-			if (l < m)
-				m = l;
-		}
+            // Base case
+            if( ch_1 == ch_2 && ch_1 == 0 ) {
+                nd_1->initChild(nd_2);
+                nd_2->initChild(nd_1);
 
-		for (int i = 0; i < n; i++) {
-			if (m == v[i])
-				ret.push_back(i);
-		}
+                // Edge already created
+                continue;
+            }
+            else if( ch_2 == 0 ) {
+                old_node = nd_1;
+                new_node = nd_2;
+            }
+            else {
+                old_node = nd_2;
+                new_node = nd_1;
+            }
 
-		return ret;
-	}
+            // Adding the edge with the tree
+            old_node->addChild(new_node);
+        }
+        
+        auto min_depth = _nodes[0]->getDepth();
+        auto ret_value = vector<int>();
+
+        // Find out the minimum
+        for(auto i=0; i<n; i++) {
+            auto d = _nodes[i]->getDepth();
+            if( d <= min_depth )
+                min_depth = d;
+        }
+
+        // Populate the minimum value
+        for( auto p : _nodes ) {
+            if( min_depth == p->getDepth() ) 
+                ret_value.push_back(p->getId());
+        }   
+
+        return ret_value;
+    }
 };
 
+int main(int, char**)
+{
+	// Solution s;
 
-void testMindepth() {
+	// // Should output 1
+	// auto res_1 = s.findMinHeightTrees(4, vector<pair<int, int>>{ { 1, 0 }, { 1, 2 }, { 1, 3 } });
+	// for (auto m : res_1)
+	// 	cout << m << " ";
+	// cout << endl;
 
-	//Solution s;
+	// Solution s2;
 
-	//// Should output 1
-	//auto res_1 = s.findMinHeightTrees(4, vector<pair<int, int>>{ { 1, 0 }, { 1, 2 }, { 1, 3 } });
-	//for (auto m : res_1)
-	//	cout << m << "";
-	//cout << endl;
-
-	//Solution s2;
-
-	//// Should output 3,4
-	//auto res_2 = s2.findMinHeightTrees(6, vector<pair<int, int>>{ { 0, 3 }, { 1, 3 }, { 2, 3 }, { 4, 3 }, { 5, 4 } });
-	//for (auto m : res_2)
-	//	cout << m << "";
-	//cout << endl;
+	// // Should output 3,4
+	// auto res_2 = s2.findMinHeightTrees(6, vector<pair<int, int>>{ { 0, 3 }, { 1, 3 }, { 2, 3 }, { 4, 3 }, { 5, 4 } });
+	// for (auto m : res_2)
+	// 	cout << m << " ";
+	// cout << endl;
 
 	Solution s3;
 
 	// Should output 3
 	auto res_3 = s3.findMinHeightTrees(6, vector<pair<int, int>>{{0, 1}, { 0, 2}, { 0, 3}, { 3, 4}, { 4, 5}});
 	for (auto m : res_3)
-		cout << m << "";
-	cout << endl;
+		cout << m << " ";
+	cout << endl;    
 }
 
-int main() {
-	testMindepth();
-    return 0;
-}
 
