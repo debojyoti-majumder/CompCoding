@@ -38,36 +38,70 @@ private:
         return valid_neighbors;
     }
     
-    bool checkForRule1(struct Position p) {
-        auto cells = getNeighbors(p);
-        auto live_count = 0;
+    unsigned int getLiveCount(vector<struct Position> cells) {
+        auto count = 0;
         
         for( auto cell : cells ) {
             if( _board[cell.x][cell.y] == 1 )
-                live_count++;
+                count++;
         }
         
-        if( live_count < 2 ) {
-            _tempboard[p.x][p.y] = 0;
-            return true;
+        return count; 
+    }
+    
+    bool checkForRule1(struct Position p) {
+        if( _board[p.x][p.y] == 1 ) {
+            auto live_count = getLiveCount(getNeighbors(p));
+        
+            if( live_count < 2 ) {
+                _tempboard[p.x][p.y] = 0;
+                return true;
+            }
+            else {
+                _tempboard[p.x][p.y] = 1;
+                return false;
+            }
         }
-        else {
-            _tempboard[p.x][p.y] = 1;
-            return false;
-        }
+        
+        return false;
     }
     
     bool checkForRule2(struct Position p) {
-        auto cells = getNeighbors(p);
+        if( _board[p.x][p.y] == 1 ) {
+            auto live_count = getLiveCount(getNeighbors(p));
+            
+            if( live_count == 2 || live_count == 3 ) {
+                _tempboard[p.x][p.y] = 1;
+                return true;
+            }
+        }
+        
+        _tempboard[p.x][p.y] = 0;
         return false;
     }
     
     bool checkForRule3(struct Position p) {
-        auto cells = getNeighbors(p);
+        if( _board[p.x][p.y] == 1 ) {
+            auto live_count = getLiveCount(getNeighbors(p));
+            if( live_count > 3 ) {
+                _tempboard[p.x][p.y] = 0;
+                return true;
+            }
+        }
+        
+        _tempboard[p.x][p.y] = 0;
         return false;
     }
+    
     bool checkForRule4(struct Position p) {
-        auto cells = getNeighbors(p);
+        if( _board[p.x][p.y] == 0 ) {
+            auto live_count = getLiveCount(getNeighbors(p));
+            if( live_count == 3 ) {
+                _board[p.x][p.y] == 1;
+                return true;
+            }   
+        }
+        
         return false;
     }
     
