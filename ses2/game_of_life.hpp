@@ -13,7 +13,6 @@ struct Position {
 class Solution {
 private:
     vector<vector<int>> _board;
-    vector<vector<int>> _tempboard;
     
     vector<struct Position> getNeighbors (const struct Position& p) const {
         // Covering some base cases
@@ -35,19 +34,22 @@ private:
         neighbors.push_back({p.x,p.y+1});
         neighbors.push_back({p.x+1,p.y+1});
         
+        auto y_bound = _board.size();
+        auto x_bound = _board[0].size();
+
         for( auto n : neighbors ) {
-            if( n.x >= 0 && n.x < _board[0].size() && n.y >= 0 && n.y < _board.size() )
-                valid_neighbors.push_back({n.x,n.y});
+            if( n.y >=0 && n.y<y_bound && n.x >= 0 && n.x < x_bound)
+                valid_neighbors.push_back(n);
         }
         
         return valid_neighbors;
     }
     
-    unsigned int getLiveCount(vector<struct Position> cells) {
+    unsigned int getLiveCount(vector<vector<int>>& b, const vector<struct Position>& cells) {
         auto count = 0;
         
         for( auto cell : cells ) {
-            if( _board[cell.y][cell.x] == 1 )
+            if( b[cell.y][cell.x] == 1 )
                 count++;
         }
         
@@ -60,7 +62,8 @@ public:
         
         for(auto i=0; i<board.size(); i++) {
             for(auto j=0; j<board[i].size(); j++) {
-                auto live_count = getLiveCount(getNeighbors({i,j}));
+                auto ne = getNeighbors({j,i});
+                auto live_count = getLiveCount(board, ne);
 
                 if( board[i][j] == 1 ) {
                     if( live_count < 2 || live_count > 3 ) {
@@ -78,24 +81,30 @@ public:
     }
 };
 
+void print2dVec(vector<vector<int>> test2) {
+    for(auto r : test2 ) {
+        cout << "[ ";
+
+        for(auto p: r) {
+            cout << p << " ";
+        }
+        cout << "],";
+    }
+
+    cout << endl;
+}
+
 int main() {
     vector<vector<int>> test1;
     test1.push_back({0,0});
 
     Solution s;
     s.gameOfLife(test1);
+    print2dVec(test1);
 
     vector<vector<int>> test2{{0,0,1,1}, {1,1,0,0} ,{1,0,0,0} ,{0,0,0,0}};
     s.gameOfLife(test2); // Expected: [[0,1,1,0],[1,1,1,0],[1,1,0,0],[0,0,0,0]]
-
-    for(auto r : test2 ) {
-        cout << "[";
-
-        for(auto p: r) {
-            cout << p << ",";
-        }
-        cout << "],";
-    }
+    print2dVec(test2);
 
     cout << endl;
 }
