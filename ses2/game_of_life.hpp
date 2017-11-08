@@ -1,3 +1,10 @@
+// Leetcode url: https://leetcode.com/problems/game-of-life/description/
+
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
 struct Position {
     int x;
     int y;
@@ -52,11 +59,43 @@ public:
         _board = board;
         
         for(auto i=0; i<board.size(); i++) {
-            for(auto j=0; j<board[i].size(); i++) {
+            for(auto j=0; j<board[i].size(); j++) {
                 auto live_count = getLiveCount(getNeighbors({i,j}));
+
+                if( board[i][j] == 1 ) {
+                    if( live_count < 2 || live_count > 3 ) {
+                        _board[i][j] = 0;
+                    }
+                }
+                else {
+                    // Dead cells become alive if 3 life is there
+                    _board[i][j] = live_count == 3 ? 1 : 0;
+                }
             }
         }
 
         board = _board;
     }
 };
+
+int main() {
+    vector<vector<int>> test1;
+    test1.push_back({0,0});
+
+    Solution s;
+    s.gameOfLife(test1);
+
+    vector<vector<int>> test2{{0,0,1,1}, {1,1,0,0} ,{1,0,0,0} ,{0,0,0,0}};
+    s.gameOfLife(test2); // Expected: [[0,1,1,0],[1,1,1,0],[1,1,0,0],[0,0,0,0]]
+
+    for(auto r : test2 ) {
+        cout << "[";
+
+        for(auto p: r) {
+            cout << p << ",";
+        }
+        cout << "],";
+    }
+
+    cout << endl;
+}
