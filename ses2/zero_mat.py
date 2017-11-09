@@ -28,8 +28,27 @@ class Solution:
         
         # If there rows with all ones apply column rule
         if len(allOnesRows):
+            # All one row index
             idx = allOnesRows[0];
-            
+
+            for i in range(0,len(matrix[idx])):
+                zero_found = False
+                
+                # Searching for the zero in the column
+                for k in range(0,len(matrix)):
+                    if matrix[k][i] == 0:
+                        zero_found = True
+                        break
+                
+                if zero_found:
+                    for k in range(0,len(matrix)):
+                        matrix[k][i] = 0
+
+            target_val = matrix[idx]
+
+            for i in allOnesRows:
+                matrix[i] = target_val                
+        
         # Set the zero rows
         for r in zeroRows:
             tar_row = matrix[r]
