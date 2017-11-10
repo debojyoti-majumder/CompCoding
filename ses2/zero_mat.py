@@ -42,12 +42,7 @@ class Solution:
                 
                 if zero_found:
                     for k in range(0,len(matrix)):
-                        matrix[k][i] = 0
-
-            target_val = matrix[idx]
-
-            for i in allOnesRows:
-                matrix[i] = target_val                
+                        matrix[k][i] = 0              
         
         # Set the zero rows
         for r in zeroRows:
@@ -60,10 +55,16 @@ class Solution:
 def main():
     sol1 = Solution()
     test1 = [[1,1,1,1],[0,1,1,1],[1,0,1,1],[1,1,1,1]]
-
-    sol1.setZeroes(test1) # Expected output: [[0,0,0,0],[0,0,0,0],[0,0,1,1],[0,0,1,1]]
+    test2 = [[-1,2,3]]
+    test3 = [[-1,2,3],[0,1,1],[0,2,2]]
+    
+    sol1.setZeroes(test1)   # Expected output: [[0,0,0,0],[0,0,0,0],[0,0,1,1],[0,0,1,1]]
+    sol1.setZeroes(test2)   # Expected output: [[-1,2,3]]
+    sol1.setZeroes(test3)
 
     print test1
+    print test2
+    print test3
 
 if __name__ == "__main__":
     main()
