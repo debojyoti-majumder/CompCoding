@@ -17,7 +17,7 @@ class Solution(object):
                 count = count + 1
             
             num_box.append(num_row);
-                
+            
         return num_box;
 
     def isValidSudoku(self, board):
@@ -26,9 +26,27 @@ class Solution(object):
         :rtype: bool
         """
         for i in range(0,len(board)):
-            box = board[i]
-            print(self.getBoxFromBoard(box))
+            row_cells = [i]
+            col_cells = [i]
 
+            m = i % 3
+
+            if m == 0 :
+                row_cells.append(i+1)
+                row_cells.append(i+2)
+            elif m == 1:
+                row_cells.append(i-1)
+                row_cells.append(i+1)
+            else:
+                row_cells.append(i-2)
+                row_cells.append(i-1)
+
+            box_1 = self.getBoxFromBoard(board[row_cells[0]])
+            box_2 = self.getBoxFromBoard(board[row_cells[1]])
+            box_3 = self.getBoxFromBoard(board[row_cells[2]])
+        
+            print(box_1,box_2,box_3)
+            
         return True
 
 
