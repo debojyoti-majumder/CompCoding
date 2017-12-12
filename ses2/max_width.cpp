@@ -9,6 +9,7 @@
  */
 class Solution {
 private:
+	map<int, int> _depthMap;
 	bool isLeafNode(TreeNode* nd) {
 		if (nd == nullptr)
 			return true;
@@ -19,21 +20,37 @@ private:
 			return false;
 	}
 
+	void incrementMap(int d) {
+		auto it = _depthMap.find(d);
+		if (it == _depthMap.end())
+			_depthMap.insert(make_pair(d, 1));
+		else
+			it->second += 1;
+	}
+
+	void treeIterator(TreeNode* n, int d) {
+		incrementMap(d);
+
+		if (n == nullptr) 
+			return;
+
+		if (isLeafNode(n) == false ){
+			treeIterator(n->left, d + 1);
+			treeIterator(n->right, d + 1);
+		}
+	}
+
 public:
 	int widthOfBinaryTree(TreeNode* root) {
-		if (root == nullptr) {
-			return 0;
+		int max = 0;
+
+		treeIterator(root, 0);
+
+		for (auto it : _depthMap) {
+			if (it.second > max)
+				max = it.second;
 		}
 
-		if (isLeafNode(root))
-			return 1;
-
-		auto l_width = widthOfBinaryTree(root->left);
-		auto r_width = widthOfBinaryTree(root->right);
-
-		if (l_width != r_width)
-			return max({ l_width,r_width });
-		else
-			return l_width + r_width;
+		return max;
 	}
 };
