@@ -22,6 +22,13 @@ struct TreeNode {
 class Solution {
 private:
 	map<int, vector<int>> _depToPosVector;
+	bool isLeafNode(TreeNode* nd) const {
+		if (nd->left == nullptr && nd->right == nullptr)
+			return true;
+		else
+			return false;
+	}
+
 	void updateMapInfo(int d, int pos) {
 		auto it = _depToPosVector.find(d);
 
@@ -33,8 +40,9 @@ private:
 	}
 
 	void treeTraversor(TreeNode* nd, int depth, int pos) {
-		if( nd != nullptr ) {
-			updateMapInfo(depth, pos);
+		updateMapInfo(depth, pos);
+
+		if( nd != nullptr && !isLeafNode(nd) ) {
 			treeTraversor(nd->left, depth + 1, pos - 1);
 			treeTraversor(nd->right, depth + 1, pos + 1);
 		}
@@ -75,7 +83,7 @@ int main()
 	//tree1->right->right = new TreeNode(7);
 
 	// Should output 2 
-	//cout << s.widthOfBinaryTree(tree1) << endl;
+	cout << s.widthOfBinaryTree(tree1) << endl;
 
 	TreeNode* tree2 = new TreeNode(10);
 	tree2->left = new TreeNode(20);
@@ -90,3 +98,4 @@ int main()
 	cout << s.widthOfBinaryTree(tree2) << endl;
 	return 0;
 }
+
