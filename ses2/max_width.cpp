@@ -1,56 +1,40 @@
-/** https://leetcode.com/problems/maximum-width-of-binary-tree/description/
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
 class Solution {
 private:
-	map<int, int> _depthMap;
-	bool isLeafNode(TreeNode* nd) {
-		if (nd == nullptr)
-			return true;
+	map<int, vector<int>> _depToPosVector;
+	void updateMapInfo(int d, int pos) {
+		auto it = _depToPosVector.find(d);
 
-		if (nd->left == nullptr && nd->right == nullptr)
-			return true;
+		if (it == _depToPosVector.end()) {
+			_depToPosVector.insert(make_pair(d, vector<int>({ pos })));
+		}
 		else
-			return false;
+			it->second.push_back(pos);
 	}
 
-	void incrementMap(int d) {
-		auto it = _depthMap.find(d);
-		if (it == _depthMap.end())
-			_depthMap.insert(make_pair(d, 1));
-		else
-			it->second += 1;
-	}
-
-	void treeIterator(TreeNode* n, int d) {
-		incrementMap(d);
-
-		if (n == nullptr) 
-			return;
-
-		if (isLeafNode(n) == false ){
-			treeIterator(n->left, d + 1);
-			treeIterator(n->right, d + 1);
+	void treeTraversor(TreeNode* nd, int depth, int pos) {
+		if( nd != nullptr ) {
+			updateMapInfo(depth, pos);
+			treeTraversor(nd->left, depth + 1, pos - 1);
+			treeTraversor(nd->right, depth + 1, pos + 1);
 		}
 	}
 
 public:
 	int widthOfBinaryTree(TreeNode* root) {
-		int max = 0;
+		// This method should build depth map
+		treeTraversor(root, 0, 0);
+		vector<int> depthValues;
 
-		treeIterator(root, 0);
+		for (auto it = _depToPosVector.begin(); it != _depToPosVector.end(); it++) {
+			auto v = it->second;
 
-		for (auto it : _depthMap) {
-			if (it.second > max)
-				max = it.second;
+			auto max_it = max_element(v.begin(), v.end());
+			auto min_it = min_element(v.begin(), v.end());
+
+			depthValues.push_back(*max_it - *min_it);
 		}
 
-		return max;
+		auto ret_it =  max_element(depthValues.begin(), depthValues.end());
+		return *ret_it;
 	}
 };
