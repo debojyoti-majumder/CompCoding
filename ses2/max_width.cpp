@@ -40,11 +40,10 @@ private:
 	}
 
 	void treeTraversor(TreeNode* nd, int depth, int pos) {
-		updateMapInfo(depth, pos);
-
-		if( nd != nullptr && !isLeafNode(nd) ) {
-			treeTraversor(nd->left, depth + 1, pos - 1);
-			treeTraversor(nd->right, depth + 1, pos + 1);
+		if (nd != nullptr) {
+			updateMapInfo(depth, pos);
+			treeTraversor(nd->left, depth + 1, 2 * pos);
+			treeTraversor(nd->right, depth + 1, 2 * pos + 1);
 		}
 	}
 
@@ -60,10 +59,10 @@ public:
 			auto max_it = max_element(v.begin(), v.end());
 			auto min_it = min_element(v.begin(), v.end());
 
-			depthValues.push_back(*max_it - *min_it);
+			depthValues.push_back((*max_it - *min_it) + 1);
 		}
 
-		auto ret_it =  max_element(depthValues.begin(), depthValues.end());
+		auto ret_it = max_element(depthValues.begin(), depthValues.end());
 		return *ret_it;
 	}
 };
