@@ -65,3 +65,7 @@ public:
         return ret_val;
     }
 };
+
+int main() {
+    return 0;
+}
