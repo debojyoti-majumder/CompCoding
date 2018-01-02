@@ -19,3 +19,4 @@ TargetDirectories.txt
 cmake.check_cache
 
 /build
+ses2/a.out
