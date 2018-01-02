@@ -1,6 +1,8 @@
 // Problem Url: https://leetcode.com/problems/contains-duplicate/description/
+
 #include <iostream>
 #include <vector>
+#include <set>
 
 using namespace std;
 
@@ -8,7 +10,19 @@ class Solution {
 
 public:
     bool containsDuplicate(vector<int>& nums) {
-		return false;
+		set<int> unique_numbers;
+		bool ret_value = true;
+
+		for(auto item : nums ) {
+			auto ret = unique_numbers.insert(item);
+			
+			if( ret.second == false ) {
+				ret_value = false;
+				break;
+			}
+		}
+
+		return ret_value;
     }
 };
 
