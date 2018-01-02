@@ -11,13 +11,13 @@ class Solution {
 public:
     bool containsDuplicate(vector<int>& nums) {
 		set<int> unique_numbers;
-		bool ret_value = true;
+		bool ret_value = false;
 
 		for(auto item : nums ) {
 			auto ret = unique_numbers.insert(item);
 			
 			if( ret.second == false ) {
-				ret_value = false;
+				ret_value = true;
 				break;
 			}
 		}
