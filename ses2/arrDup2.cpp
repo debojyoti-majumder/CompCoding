@@ -2,13 +2,37 @@
 
 #include <iostream>
 #include <vector>
+#include <set>
 
 using namespace std;
+
+class ArrayItem {
+    private:
+        int     _num;
+        size_t  _pos;
+        ArrayItem() {}
+
+    public:
+        ArrayItem(int n, size_t p) : _num(n) , _pos(p) {}
+};
 
 class Solution {
 public:
     bool containsNearbyDuplicate(vector<int>& nums, int k) {
-        return true;      
+        auto arr_size = nums.size();
+        set<ArrayItem>  number_set;
+        bool ret_value = false;
+
+        for(auto i=0; i<arr_size; i++) {
+            ArrayItem item(nums[i], i);    
+            auto ret = number_set.insert(item);
+            
+            if( ret.second == false ) {
+                // TODO: This is the case to handle
+            }
+        }
+
+        return ret_value;      
     }
 };
 
