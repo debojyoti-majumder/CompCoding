@@ -1,16 +1,23 @@
 // Problem Url: https://leetcode.com/problems/invert-binary-tree/description/
 // This code should invert a binary tree
+#include <iostream>
+
+using namespace std;
 
 struct TreeNode {
      int val;
      TreeNode *left;
      TreeNode *right;
      TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-
-	 void displayInOrder() {
-
-	 }
 };
+
+void display_inorder(TreeNode* nd) {
+	if( nd != nullptr ) {
+		display_inorder(nd->left);
+		cout << nd->val << " ";
+		display_inorder(nd->right);
+	}
+}
 
 class Solution {
 private:
@@ -52,8 +59,16 @@ int main() {
 	root->left = leftSubTree;
 	root->right = rightSubTree;
 
+	// Original tree
+	display_inorder(root);
+	cout << endl;
+
 	Solution s;
-	s.invertTree(root);
-	
+	root = s.invertTree(root);
+
+	// Modified tree
+	display_inorder(root);
+	cout << endl;
+
 	return 0;
 }
