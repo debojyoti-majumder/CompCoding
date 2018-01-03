@@ -17,6 +17,8 @@ class ArrayItem {
         bool operator < (const ArrayItem& obj) const {
             return _num < obj._num;
         }
+
+        size_t getPos() const { return _pos; }
 };
 
 class Solution {
@@ -31,7 +33,11 @@ public:
             auto ret = number_set.insert(item);
             
             if( ret.second == false ) {
-                cout << "Do something on this" << endl;
+                auto p = ret.first->getPos();
+                auto diff = abs((int)p - (int)i);
+
+                if( diff <= k )
+                    ret_value = true;
             }
         }
 
