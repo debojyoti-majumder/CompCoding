@@ -23,6 +23,11 @@ class Solution {
 private:
 	void invertRecurser(TreeNode* nd) {
 		if( isLeaf(nd) == false ) {
+			// Swaping the left and right
+			auto temp = nd->left;
+			nd->left = nd->right;
+			nd->right = temp;
+
 			invertRecurser(nd->left);
 			invertRecurser(nd->right);
 		}
