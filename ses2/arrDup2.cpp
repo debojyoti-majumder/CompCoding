@@ -14,6 +14,9 @@ class ArrayItem {
 
     public:
         ArrayItem(int n, size_t p) : _num(n) , _pos(p) {}
+        bool operator < (const ArrayItem& obj) const {
+            return _num < obj._num;
+        }
 };
 
 class Solution {
@@ -28,7 +31,7 @@ public:
             auto ret = number_set.insert(item);
             
             if( ret.second == false ) {
-                // TODO: This is the case to handle
+                cout << "Do something on this" << endl;
             }
         }
 
