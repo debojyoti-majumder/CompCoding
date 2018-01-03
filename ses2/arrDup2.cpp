@@ -36,8 +36,14 @@ public:
                 auto p = ret.first->getPos();
                 auto diff = abs((int)p - (int)i);
 
-                if( diff <= k )
+                if( diff <= k ) {
                     ret_value = true;
+                    break;
+                }
+                else {
+                    number_set.erase(ret.first);
+                    number_set.insert(item);
+                }
             }
         }
 
@@ -48,12 +54,15 @@ public:
 int main() {
     Solution s;
     vector<int> v{10,20,30,40,10,20};
-
+    vector<int> v2{1,0,1,1};
     // Test case 1: Should return true
     cout << s.containsNearbyDuplicate(v,5) << endl;
     
     // Test case 2: Should return false
     cout << s.containsNearbyDuplicate(v,2) << endl;
 
+    // Test case 3: Should retrun true
+    cout << s.containsNearbyDuplicate(v2, 1) << endl;
+    
     return 0;
 }
