@@ -8,18 +8,16 @@ using namespace std;
 class Solution {
 private:
     vector<string>  _indexedStrings;        
-
+    
 public:
     Solution() {
         _indexedStrings.push_back("I");
-        _indexedStrings.push_back("II");
-        _indexedStrings.push_back("III");
-        _indexedStrings.push_back("VI");
         _indexedStrings.push_back("V");
-        _indexedStrings.push_back("VI");
-        _indexedStrings.push_back("VII");
-        _indexedStrings.push_back("VIII");
-        _indexedStrings.push_back("IX");
+        _indexedStrings.push_back("X");
+        _indexedStrings.push_back("L");
+        _indexedStrings.push_back("C");
+        _indexedStrings.push_back("D");
+        _indexedStrings.push_back("M");
     }
 
     string intToRoman(int num) {
@@ -27,14 +25,6 @@ public:
         auto inputNumber = num;
 
         while( inputNumber > 0 ) {
-            if( inputNumber > 10 ) {
-                romanString += "X";
-                inputNumber -= 10;
-            }
-            else {
-                romanString += _indexedStrings[ inputNumber - 1];
-                inputNumber = 0;
-            }
         }   
 
         return romanString;
