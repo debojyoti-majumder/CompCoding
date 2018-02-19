@@ -6,7 +6,7 @@
 		{
 			"label": "build",
 			"type": "shell",
-			"command": "g++ ${file} --std=c++17",
+			"command": "g++ -g ${file} --std=c++17",
 			"problemMatcher": "$gcc"
 		}
 	]
