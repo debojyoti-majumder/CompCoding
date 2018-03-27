@@ -1,0 +1,39 @@
+#pragma once
+// Problem Url: https://leetcode.com/problems/fizz-buzz/description/
+
+#include <vector>
+#include <string>
+#include <iostream>
+#include <sstream>
+
+using namespace std;
+
+class Solution {
+public:
+	vector<string> fizzBuzz(int n) {
+		vector<string> ret_value;
+
+		for (auto i = 1; i <= n; i++) {
+			stringstream num;
+			auto assigned = false;
+
+			if (i % 3 == 0) {
+				assigned = true;
+				num << "Fizz";
+			}
+
+			if (i % 5 == 0) {
+				assigned = true;
+				num << "Buzz";
+			}
+
+			if (!assigned)
+				num << i;
+
+			// Adding it to the return value
+			ret_value.push_back(num.str());
+		}
+
+		return ret_value;
+	}
+};
