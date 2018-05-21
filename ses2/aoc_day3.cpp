@@ -1,6 +1,9 @@
+// Problem URL: http://adventofcode.com/2017/day/3
+
 #include "stdafx.h"
 #include <iostream>
 #include <vector>
+#include <iomanip>
 
 using namespace std;
 
@@ -101,6 +104,33 @@ private:
 		_cellsLeft--;
 	}
 
+	void print() {
+		for (const auto& row : _matrix) {
+			for (const auto& itm : row) {
+				cout << setfill('0') << setw(2) << itm << " ";
+			}
+
+			cout << endl;
+		}
+	}
+
+	int getRoundedSize(int sz) {
+		if (sz % 2 == 0) {
+			return (sz / 2) - 1;
+		}
+		else
+			return (sz / 2);
+	}
+
+	int getDiff(int x, int y) {
+		auto p = x - y;
+		if (p < 0)
+			p = p * -1;
+
+
+		return p;
+	}
+
 public:
 	SprialHelper() : _x(0), _y(0), _direction(1) {
 		vector<int> m(1);
@@ -111,17 +141,20 @@ public:
 
 	int getDistance(int num) {
 		// Generating the matrix
-		for (auto i = 2; i < num; i++) {
+		for (auto i = 2; i <= num; i++) {
 			putItem(i);
 		}
 
-		return 0;
+		return getDiff(_x,getRoundedSize(_matrix[0].size())) + getDiff(_y, getRoundedSize(_matrix.size()));
 	}
 };
 
 int main() {
-	SprialHelper h;
-	cout << h.getDistance(23) << endl;
+	SprialHelper h1,h2,h3,h4;
 
+	cout << h2.getDistance(12) << endl;
+	cout << h1.getDistance(23) << endl;
+	cout << h3.getDistance(1024) << endl;
+	cout << h4.getDistance(277678) << endl;
 	return 0;
 }
