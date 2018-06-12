@@ -1,49 +1,122 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode(int x) : val(x), next(NULL) {}
- * };
- */
+// Progs.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <iostream>
+
+using namespace std;
+
+struct ListNode {
+     int val;
+     ListNode *next;
+     ListNode(int x) : val(x), next(NULL) {}
+};
+
 class Solution {
 private:
-    void deleteInRange(ListNode* left, ListNode* right) {
-        if( left != nullptr && right != nullptr ) {
-            cout << left->val << " " << right->val << endl;
-        }
-        
-        return;
-    }
+	ListNode* _head;
+
+	void deleteInRange(ListNode* left, ListNode* right) {	
+		if (left == nullptr || right == nullptr)
+			return;
+
+		auto it = _head;
+		bool bStartDeleting = false;
+
+		if (left == _head) {
+			_head = right->next;
+			return;
+		}
+
+		while (it != right->next) {
+			if (it->next == left) {
+				it->next = right->next;
+				bStartDeleting = true;
+			}
+			else if (bStartDeleting) {
+				auto tmp = it;
+				it = it->next;
+				delete tmp;
+				continue;
+			}
+			
+			it = it->next;
+		}
+		return;
+	}
+
 public:
-    ListNode* deleteDuplicates(ListNode* head) {
-        if( head == nullptr ) return nullptr;
-        
-        auto iterator = head->next;
-        auto prevNode = head;
-        
-        ListNode* start = nullptr;
-        ListNode* end = nullptr;
-        
-        while( iterator ) {
-            if( prevNode->val == iterator->val ) {   
-                if( start == nullptr ) 
-                    start = prevNode;
-                else
-                    end = iterator;
-            }
-            else {
-                if( start == head ) head = end->next;
-                deleteInRange(start, end);
-                
-                start = nullptr;
-                end = nullptr;
-            }
-            
-            prevNode = iterator;
-            iterator = iterator->next;
-        }
-        
-        return head;
-    }
+	ListNode* deleteDuplicates(ListNode* head) {
+		if (head == nullptr) return nullptr;
+
+		_head = head;
+		auto iterator = head->next;
+		auto prevNode = head;
+
+		ListNode* start = nullptr;
+		ListNode* end = nullptr;
+
+		while (iterator) {
+			if (prevNode->val == iterator->val) {
+				if (start == nullptr) start = prevNode;
+				end = iterator;
+			}
+			else {
+				deleteInRange(start, end);
+			
+				start = nullptr;
+				end = nullptr;
+			}
+
+			prevNode = iterator;
+			iterator = iterator->next;
+		}
+
+		return _head;
+	}
 };
+
+int main()
+{
+	auto node0 = new ListNode(1);
+	auto node1 = new ListNode(2);
+	auto node2 = new ListNode(3);
+	auto node3 = new ListNode(3);
+	auto node4 = new ListNode(4);
+	auto node5 = new ListNode(4);
+	auto node6 = new ListNode(5);
+	node0->next = node1;
+	node1->next = node2;
+	node2->next = node3;
+	node3->next = node4;
+	node4->next = node5;
+	node5->next = node6;
+
+
+	auto nd0 = new ListNode(1);
+	auto nd1 = new ListNode(1);
+	auto nd2 = new ListNode(2);
+	auto nd3 = new ListNode(3);
+	nd0->next = nd1;
+	nd1->next = nd2;
+	nd2->next = nd3;
+
+	Solution s;
+
+	auto ret = s.deleteDuplicates(node0);
+	auto it = ret;
+	while (it) {
+		cout << it->val << " ";
+		it = it->next;
+	}
+	cout << endl;
+
+	ret = s.deleteDuplicates(nd0);
+	it = ret;
+	while (it) {
+		cout << it->val << " ";
+		it = it->next;
+	}
+
+	return 0;
+}
