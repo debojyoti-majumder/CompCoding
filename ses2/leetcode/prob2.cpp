@@ -1,5 +1,4 @@
-// Progs.cpp : Defines the entry point for the console application.
-//
+// Problem URL: https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/description/
 
 #include "stdafx.h"
 #include <iostream>
@@ -72,6 +71,7 @@ public:
 			iterator = iterator->next;
 		}
 
+		deleteInRange(start, end);
 		return _head;
 	}
 };
@@ -117,6 +117,17 @@ int main()
 		cout << it->val << " ";
 		it = it->next;
 	}
+	cout << endl;
 
+	auto n1 = new ListNode(1);
+	auto n2 = new ListNode(1);
+	n1->next = n2;
+	ret = s.deleteDuplicates(n1);
+	it = ret;
+	while (it) {
+		cout << it->val << " ";
+		it = it->next;
+	}
+	cout << endl;
 	return 0;
 }
