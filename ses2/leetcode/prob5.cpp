@@ -26,22 +26,14 @@ public:
 			lastNode = lastNode->next;
 			listSize++;
 		}
-
-		// For odd size lists
-		if( listSize % 2 )
-			stopNode = lastNode;
-		else {
-			for (size_t i = 0; i < listSize - 1; i++) {
-				stopNode = stopNode->next;
-			}
-		}
-
-		while ( it && it != stopNode) {
+		auto p = listSize % 2 ? listSize / 2 + 1 : listSize / 2;
+		for(size_t i=0; i<p; i++){
 			auto oddNode = it;
 			auto evenNode = it->next;
 			
 			if( oddNode && evenNode ) {
-				oddNode->next = evenNode->next;
+				if( evenNode->next != nullptr )
+					oddNode->next = evenNode->next;
 			
 				// Adding the even node at last
 				lastNode->next = evenNode;
@@ -79,6 +71,16 @@ int main() {
 		cout << n->val << endl;
 		n = n->next;
 	}
+
+	auto n1 = new ListNode(1);
+	auto n2 = new ListNode(2);
+	n1->next = n2;
+	n = s.oddEvenList(n1);
+	while (n) {
+		cout << n->val << endl;
+		n = n->next;
+	}
+
 	return 0;
 }
 
