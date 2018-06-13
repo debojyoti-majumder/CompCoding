@@ -8,7 +8,7 @@ using namespace std;
 
 class Solution {
 public:
-	int integerReplacement(int n, int stepCount = 0) {
+	int integerReplacement(unsigned int n, int stepCount = 0) {
 		if (n == 1)    return stepCount;
 
 		if (n % 2 == 0) {
