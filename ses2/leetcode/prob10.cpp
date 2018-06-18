@@ -12,12 +12,25 @@ class Solution {
 private:
 	string _end;
 	vector<string> _bank;
+	vector<char> _validChars;
 
-	vector<char> getPossibleMoves(string data, int pos) {
-		vector<char> validMutations;
+	Solution() {
+		_validChars.push_back('A');
+		_validChars.push_back('C');
+		_validChars.push_back('G');
+		_validChars.push_back('T');
+	}
 
-		for (auto rule : _bank) {
+	vector<string> getPossibleMoves(string data, int pos) {
+		vector<string> validMutations;
 
+		for (auto mods : _validChars) {
+			auto m = data;
+			m[pos] = mods;
+
+			auto it = find(_bank.begin(), _bank.end(), m);
+			if (it != _bank.end())
+				validMutations.push_back(m);
 		}
 
 		return validMutations;
@@ -32,10 +45,7 @@ private:
 			vector<int> possibleOutcomes;
 
 			for (auto poss : possiblities) {
-				auto modString = start;
-				modString[pos] = poss;
-
-				possibleOutcomes.push_back(recurseHelper(modString, end, ++pos));
+				possibleOutcomes.push_back(recurseHelper(poss, ++pos));
 			}
 
 			auto it = min_element(possibleOutcomes.begin(), possibleOutcomes.end());
@@ -44,7 +54,7 @@ private:
 			return v + 1;
 		}
 		else {
-			return recurseHelper(start,pos++);
+			return recurseHelper(start,++pos);
 		}
 	}
 
