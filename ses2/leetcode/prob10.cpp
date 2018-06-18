@@ -1,26 +1,50 @@
 // Problem URL: https://leetcode.com/problems/minimum-genetic-mutation/description/
 
+#include "stdafx.h"
 #include <vector>
-#include <string>
 #include <iostream>
+#include <string>
+#include <algorithm>
 
 using namespace std;
 
 class Solution {
 private:
-	string _start;
 	string _end;
 	vector<string> _bank;
 
-	int recurseHelper(int pos=0) {
-		if (pos == _start.size())
+	vector<char> getPossibleMoves(string data, int pos) {
+		vector<char> validMutations;
+
+		for (auto rule : _bank) {
+
+		}
+
+		return validMutations;
+	}
+
+	int recurseHelper(const string start, int pos=0 ) {
+		if (pos == start.size())
 			return 0;
 
-		if (_start[pos] != _end[pos]) {	
-			return 1;
+		if (start[pos] != _end[pos]) {	
+			auto possiblities = getPossibleMoves(start, pos);
+			vector<int> possibleOutcomes;
+
+			for (auto poss : possiblities) {
+				auto modString = start;
+				modString[pos] = poss;
+
+				possibleOutcomes.push_back(recurseHelper(modString, end, ++pos));
+			}
+
+			auto it = min_element(possibleOutcomes.begin(), possibleOutcomes.end());
+			auto v = it == possibleOutcomes.end() ? 0 : *it;
+
+			return v + 1;
 		}
 		else {
-			return recurseHelper(pos++);
+			return recurseHelper(start,pos++);
 		}
 	}
 
@@ -29,12 +53,11 @@ public:
 					const string end, 
 					const vector<string>& bank) {
 		// Initilize memebers
-		_start = start;
 		_end = end;
 		_bank = bank;
 
 		// Calling the helper function
-		return recurseHelper();
+		return recurseHelper(start);
 	}
 };
 
@@ -55,3 +78,4 @@ int main() {
 
 	return 0;
 }
+
