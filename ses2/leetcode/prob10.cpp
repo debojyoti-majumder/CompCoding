@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <set>
 
 using namespace std;
 
@@ -14,8 +15,8 @@ private:
 	vector<string> _bank;
 	vector<char> _validChars;
 
-	vector<string> getPossibleMoves(string data, int pos) {
-		vector<string> validMutations;
+	set<string> getPossibleMoves(string data, int pos) {
+		set<string> validMutations;
 
 		for (auto mods : _validChars) {
 			if (mods == data[pos])
@@ -26,7 +27,7 @@ private:
 				if (ch == mods) {
 					auto val = data;
 					val[pos] = ch;
-					validMutations.push_back(val);
+					validMutations.insert(val);
 				}
 			}
 		}
