@@ -14,30 +14,31 @@ private:
 	vector<string> _bank;
 	vector<char> _validChars;
 
-	Solution() {
-		_validChars.push_back('A');
-		_validChars.push_back('C');
-		_validChars.push_back('G');
-		_validChars.push_back('T');
-	}
-
 	vector<string> getPossibleMoves(string data, int pos) {
 		vector<string> validMutations;
 
 		for (auto mods : _validChars) {
 			auto m = data;
 			m[pos] = mods;
+			
+			if (data[pos] == mods)
+				continue;
 
-			auto it = find(_bank.begin(), _bank.end(), m);
-			if (it != _bank.end())
-				validMutations.push_back(m);
+			
+			for (auto rule : _bank) {
+				auto validItem = rule.substr(0, pos + 1);
+				auto candidateItem = m.substr(0, pos + 1);
+
+				if (validItem.compare(candidateItem.c_str()) == 0)
+					validMutations.push_back(m);
+			}
 		}
 
 		return validMutations;
 	}
 
 	int recurseHelper(const string start, int pos=0 ) {
-		if (pos == start.size())
+		if (pos - 1 == start.size())
 			return 0;
 
 		if (start[pos] != _end[pos]) {	
@@ -50,7 +51,6 @@ private:
 
 			auto it = min_element(possibleOutcomes.begin(), possibleOutcomes.end());
 			auto v = it == possibleOutcomes.end() ? 0 : *it;
-
 			return v + 1;
 		}
 		else {
@@ -59,6 +59,13 @@ private:
 	}
 
 public:
+	Solution() {
+		_validChars.push_back('A');
+		_validChars.push_back('C');
+		_validChars.push_back('G');
+		_validChars.push_back('T');
+	}
+
 	int minMutation(const string start, 
 					const string end, 
 					const vector<string>& bank) {
@@ -76,15 +83,15 @@ int main() {
 	
 	// Test case 1: Output 1
 	vector<string> validNorms1{ "AACCGGTA" };
-	s.minMutation("AACCGGTT", "AACCGGTA", validNorms1);
+	cout << s.minMutation("AACCGGTT", "AACCGGTA", validNorms1) << endl;
 
 	// Test case 2: Output 2
 	vector<string> validNorms2{ "AACCGGTA", "AACCGCTA", "AAACGGTA" };
-	s.minMutation("AACCGGTT", "AAACGGTA", validNorms2);
+	cout << s.minMutation("AACCGGTT", "AAACGGTA", validNorms2) << endl;
 
 	// Test case 3: Output 3
 	vector<string> validNorms3{ "AAAACCCC", "AAACCCCC", "AACCCCCC" };
-	s.minMutation("AAAAACCC", "AACCCCCC", validNorms3);
+	cout << s.minMutation("AAAAACCC", "AACCCCCC", validNorms3) << endl;
 
 	return 0;
 }
