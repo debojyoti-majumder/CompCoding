@@ -18,19 +18,16 @@ private:
 		vector<string> validMutations;
 
 		for (auto mods : _validChars) {
-			auto m = data;
-			m[pos] = mods;
-			
-			if (data[pos] == mods)
+			if (mods == data[pos])
 				continue;
 
-			
 			for (auto rule : _bank) {
-				auto validItem = rule.substr(0, pos + 1);
-				auto candidateItem = m.substr(0, pos + 1);
-
-				if (validItem.compare(candidateItem.c_str()) == 0)
-					validMutations.push_back(m);
+				auto ch = rule[pos];
+				if (ch == mods) {
+					auto val = data;
+					val[pos] = ch;
+					validMutations.push_back(val);
+				}
 			}
 		}
 
