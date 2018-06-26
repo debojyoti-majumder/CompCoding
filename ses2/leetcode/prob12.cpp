@@ -1,29 +1,29 @@
 // Problem URL: https://leetcode.com/problems/verify-preorder-serialization-of-a-binary-tree/description/
+
 #include "stdafx.h"
 #include <vector>
 #include <iostream>
 #include <string>
 #include <algorithm>
 #include <set>
+#include <string>
+#include <sstream>
 
 using namespace std;
 
 class Solution {
 private:
 	vector<string> getTreeVector(const string& inputString) {
-		int length = inputString.length();
-		char* input = new char[length];
-		strcpy_s(input, length, inputString.c_str());
-		const char* deli = ",";
-		char* tok = nullptr;
-		vector<string> treeArray;
+		vector <string> tokens;
 
-		do {
-			tok = strtok(input, deli);
-			treeArray.push_back(tok);
-		} while (tok != nullptr);
+		stringstream check1(inputString);
+		string intermediate;
 
-		return treeArray;
+		while (getline(check1, intermediate, ',')){
+			tokens.push_back(intermediate);
+		}
+
+		return tokens;
 	}
 
 public:
