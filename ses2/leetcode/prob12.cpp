@@ -31,8 +31,40 @@ public:
 		bool isValid = false;
 		auto preOrderVector(getTreeVector(preorder));
 		size_t sz = preOrderVector.size();
+		
+		typedef struct _TreeNode {
+			string symbol;
+			bool hasLeft;
+			bool hasRight;
 
-		return isValid;
+			_TreeNode(string s) : symbol(s), hasLeft(false), hasRight(false) {}
+		}TreeNode;
+
+		vector<TreeNode> validationVector;
+
+		for (auto symbol : preOrderVector) {
+			TreeNode nd(symbol);
+
+			if (!validationVector.empty()) {
+				TreeNode& item = validationVector.back();
+				
+				if (item.hasLeft == false)
+					item.hasLeft = true;
+				else {
+					item.hasRight = true;
+					validationVector.pop_back();
+				}
+
+				if (symbol.compare("#") != 0) {
+					validationVector.push_back(nd);
+				}
+			}
+			else {
+				validationVector.push_back(nd);
+			}
+		}
+
+		return validationVector.size() == 0 ? true : false;
 	}
 };
 
@@ -40,12 +72,12 @@ int main() {
 	Solution s;
 	
 	// Should out put true
-	cout << s.isValidSerialization("9,3,4,#,#,1,#,#,2,#,6,#,#") << endl;
+	cout << "Test case 1:" << s.isValidSerialization("9,3,4,#,#,1,#,#,2,#,6,#,#") << endl;
 	
 	// Should output false
-	cout << s.isValidSerialization("1, #") << endl;
+	cout << "Test case 2:" << s.isValidSerialization("1, #") << endl;
 
 	// Should output false
-	cout << s.isValidSerialization("9,#,#,1") << endl;
+	cout << "Test case 3:" << s.isValidSerialization("9,#,#,1") << endl;
 	return 0;
 }
