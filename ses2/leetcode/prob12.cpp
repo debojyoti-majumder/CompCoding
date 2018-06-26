@@ -28,7 +28,7 @@ private:
 
 public:
 	bool isValidSerialization(string preorder) {
-		bool isValid = false;
+		bool isValid = false, initDone = false;
 		auto preOrderVector(getTreeVector(preorder));
 		size_t sz = preOrderVector.size();
 
@@ -61,6 +61,12 @@ public:
 			}
 			else {
 				if (symbol.compare("#") != 0) {
+					if (initDone == false) {
+						initDone = true;
+					}
+					else
+						return false;
+
 					validationVector.push_back(nd);
 				}
 				else {
@@ -75,6 +81,7 @@ public:
 		return validationVector.size() == 0 ? true : false;
 	}
 };
+
 int main() {
 	Solution s;
 	
@@ -88,7 +95,7 @@ int main() {
 	cout << "Test case 3:" << s.isValidSerialization("9,#,#,1") << endl;
 
 	// "1,#,#,#,#" Output false
-	cout << "Test case 4:" << s.isValidSerialization("1,#,#,#,#");
+	cout << "Test case 4:" << s.isValidSerialization("1,#,#,#,#") << endl;
 
 	// "9,3,4,#,#,1,#,#,#,2,#,6,#,#" output false
 	cout << "Final Test case:" << s.isValidSerialization("9,3,4,#,#,1,#,#,#,2,#,6,#,#") << endl;
