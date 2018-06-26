@@ -19,7 +19,7 @@ private:
 		stringstream check1(inputString);
 		string intermediate;
 
-		while (getline(check1, intermediate, ',')){
+		while (getline(check1, intermediate, ',')) {
 			tokens.push_back(intermediate);
 		}
 
@@ -31,7 +31,7 @@ public:
 		bool isValid = false;
 		auto preOrderVector(getTreeVector(preorder));
 		size_t sz = preOrderVector.size();
-		
+
 		typedef struct _TreeNode {
 			string symbol;
 			bool hasLeft;
@@ -47,7 +47,7 @@ public:
 
 			if (!validationVector.empty()) {
 				TreeNode& item = validationVector.back();
-				
+
 				if (item.hasLeft == false)
 					item.hasLeft = true;
 				else {
@@ -60,14 +60,21 @@ public:
 				}
 			}
 			else {
-				validationVector.push_back(nd);
+				if (symbol.compare("#") != 0) {
+					validationVector.push_back(nd);
+				}
+				else {
+					if (preOrderVector.size() == 1)
+						return true;
+					else
+						return false;
+				}
 			}
 		}
 
 		return validationVector.size() == 0 ? true : false;
 	}
 };
-
 int main() {
 	Solution s;
 	
@@ -79,5 +86,11 @@ int main() {
 
 	// Should output false
 	cout << "Test case 3:" << s.isValidSerialization("9,#,#,1") << endl;
+
+	// "1,#,#,#,#" Output false
+	cout << "Test case 4:" << s.isValidSerialization("1,#,#,#,#");
+
+	// "9,3,4,#,#,1,#,#,#,2,#,6,#,#" output false
+	cout << "Final Test case:" << s.isValidSerialization("9,3,4,#,#,1,#,#,#,2,#,6,#,#") << endl;
 	return 0;
 }
