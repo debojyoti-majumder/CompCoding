@@ -15,6 +15,19 @@ using namespace std;
 class Solution {
 private:
 	map<int, int> _cache;
+	int getMultiple(int num,int x) {
+		if (x == 1) {
+			return num;
+		}
+
+		for (int i = 2; i < x; i++) {
+			if (x * i == num) {
+				return i;
+			}
+		}
+
+		return 0;
+	}
 
 public:
 	int numSquares(int n) {
@@ -23,6 +36,7 @@ public:
 		if (sq * sq == n)
 			return 1;
 
+		// Memorization
 		auto cacheLookup = _cache.find(n);
 		if (cacheLookup != _cache.end()) {
 			return cacheLookup->second;
@@ -31,7 +45,13 @@ public:
 		vector<int> distanceValues;
 		for (int count = 1; count * count < n; count++) {
 			int x = count * count;
-			int v = 1 + numSquares(n - x);
+			int v = 0;
+			int mul = getMultiple(n, x);
+			
+			if (mul == 0)
+				v = 1 + numSquares(n - x);
+			else
+				v = mul;
 
 			distanceValues.push_back(v);
 		}
@@ -55,11 +75,14 @@ int main() {
 	// 13 = 4 + 9
 	cout << "Test case 2:" << s.numSquares(13) << endl;
 	
-	// Time limit 55
+	// Fixed 55
 	cout << "Test case 3:" << s.numSquares(55) << endl;
 
-	// Time limit with 6554
+	// Fixed TLE 6554
 	cout << "Test case 4:" << s.numSquares(6554) << endl;
+
+	// TLE with 7691
+	cout << "Test case 5:" << s.numSquares(7691) << endl;
 
 	return 0;
 }
