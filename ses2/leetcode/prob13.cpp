@@ -14,55 +14,45 @@ using namespace std;
 
 class Solution {
 private:
-	map<int, int> _cache;
-	int getMultiple(int num,int x) {
-		if (x == 1) {
-			return num;
-		}
+	bool isPerfectSqrt(int num) {
+		int p = (int) sqrt(num);
+		if (p * p == num)
+			return true;
+		else
+			return false;
+	}
+public:
+	int numSquares(int number) {
+		vector<int> addedNumbers(number, 0);
+		if (number < 4)
+			return number;
 
-		for (int i = 2; i < x; i++) {
-			if (x * i == num) {
-				return i;
+		addedNumbers[0] = 1;
+		addedNumbers[1] = 2;
+		addedNumbers[2] = 3;
+		addedNumbers[3] = 1;
+		int ps = 4;
+		for (size_t i = 4; i < addedNumbers.size(); i++) {
+			int v = i + 1;
+			
+			if (isPerfectSqrt(v)) {
+				addedNumbers[v - 1] = 1;
+				ps = v;
+			}
+			else {
+				vector<int> values;
+				for (int i = 1; i <= min(v/2,700); i++) {
+					int x = i;
+					int y = v - i;
+
+					values.push_back(addedNumbers[x - 1] + addedNumbers[y - 1]);
+				}
+
+				addedNumbers[i] = *min_element(values.begin(), values.end());
 			}
 		}
 
-		return 0;
-	}
-
-public:
-	int numSquares(int n) {
-		// Handling base case
-		int sq = (int)sqrt(n);
-		if (sq * sq == n)
-			return 1;
-
-		// Memorization
-		auto cacheLookup = _cache.find(n);
-		if (cacheLookup != _cache.end()) {
-			return cacheLookup->second;
-		}
-
-		vector<int> distanceValues;
-		for (int count = 1; count * count < n; count++) {
-			int x = count * count;
-			int v = 0;
-			int mul = getMultiple(n, x);
-			
-			if (mul == 0)
-				v = 1 + numSquares(n - x);
-			else
-				v = mul;
-
-			distanceValues.push_back(v);
-		}
-
-		if( distanceValues.empty() )
-			return 0;
-		else {
-			auto it = min_element(distanceValues.begin(), distanceValues.end());
-			_cache.insert(make_pair(n, *it));
-			return *it;
-		}
+		return addedNumbers[number - 1];
 	}
 };
 
@@ -75,13 +65,13 @@ int main() {
 	// 13 = 4 + 9
 	cout << "Test case 2:" << s.numSquares(13) << endl;
 	
-	// Fixed 55
+	// Fixed 55 Should output 4
 	cout << "Test case 3:" << s.numSquares(55) << endl;
 
-	// Fixed TLE 6554
+	// Fixed TLE 6554 Output 2
 	cout << "Test case 4:" << s.numSquares(6554) << endl;
 
-	// TLE with 7691
+	// TLE with 7691 Output 3
 	cout << "Test case 5:" << s.numSquares(7691) << endl;
 
 	return 0;
