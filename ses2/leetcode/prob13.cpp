@@ -1,4 +1,4 @@
-// Problem URL: https://leetcode.com/problems/perfect-squares/description/
+// Problem URL: https://leetcode.com/problems/subsets-ii/description/
 
 #include "stdafx.h"
 #include <vector>
@@ -9,70 +9,68 @@
 #include <string>
 #include <sstream>
 #include <map>
+#include <bitset>
 
 using namespace std;
-
 class Solution {
-private:
-	bool isPerfectSqrt(int num) {
-		int p = (int) sqrt(num);
-		if (p * p == num)
-			return true;
-		else
-			return false;
-	}
 public:
-	int numSquares(int number) {
-		vector<int> addedNumbers(number, 0);
-		if (number < 4)
-			return number;
+	vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+		set<vector<int>> returnedSet;
+		size_t sz = nums.size();
+		size_t numberOfItems = (size_t) pow(2, sz);
+				
+		for (size_t i = 0; i <= numberOfItems; i++) {
+			bitset<32> binaryRep(i);
+			vector<int> item;
 
-		addedNumbers[0] = 1;
-		addedNumbers[1] = 2;
-		addedNumbers[2] = 3;
-		addedNumbers[3] = 1;
-		int ps = 4;
-		for (size_t i = 4; i < addedNumbers.size(); i++) {
-			int v = i + 1;
-			
-			if (isPerfectSqrt(v)) {
-				addedNumbers[v - 1] = 1;
-				ps = v;
+			for (size_t i = 0; i < sz; i++) {
+				if (binaryRep.test(i))
+					item.push_back(nums[i]);
 			}
-			else {
-				vector<int> values;
-				for (int i = 1; i <= min(v/2,700); i++) {
-					int x = i;
-					int y = v - i;
 
-					values.push_back(addedNumbers[x - 1] + addedNumbers[y - 1]);
-				}
-
-				addedNumbers[i] = *min_element(values.begin(), values.end());
-			}
+			sort(item.begin(), item.end());
+			returnedSet.insert(item);
 		}
 
-		return addedNumbers[number - 1];
+		vector<vector<int>> returnedItems;
+		for (auto item : returnedSet)
+			returnedItems.push_back(item);
+
+		return returnedItems;
 	}
 };
 
+template<typename T>
+void printVector(vector<T> items) {
+	cout << "[";
+	for (auto item : items) {
+		cout << item;
+		cout << ",";
+	}
+
+	cout << "]";
+}
+
 int main() {
 	Solution s;
+	vector<int> inp{ 1,2,2 };
+	vector<int> inp2{ 4, 4, 4, 1, 4 };
 
-	// 12 = 4 + 4 + 4
-	cout << "Test case 1:" << s.numSquares(12) << endl;
+	auto vals(s.subsetsWithDup(inp));
 
-	// 13 = 4 + 9
-	cout << "Test case 2:" << s.numSquares(13) << endl;
-	
-	// Fixed 55 Should output 4
-	cout << "Test case 3:" << s.numSquares(55) << endl;
+	for (auto v : vals) {
+		printVector(v);
+	}
+	cout << endl;
 
-	// Fixed TLE 6554 Output 2
-	cout << "Test case 4:" << s.numSquares(6554) << endl;
+	// Should output [],[1],[1,4],[1,4,4],[1,4,4,4],[1,4,4,4,4],[4],[4,4],[4,4,4],[4,4,4,4]]
+	auto vals2(s.subsetsWithDup(inp2));
 
-	// TLE with 7691 Output 3
-	cout << "Test case 5:" << s.numSquares(7691) << endl;
+	for (auto v : vals2) {
+		printVector(v);
+		cout << ",";
+	}
+	cout << endl;
 
 	return 0;
 }
