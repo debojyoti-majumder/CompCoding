@@ -1,3 +1,5 @@
+// This program can connect to multiple path on web socket based on the URL it is connected to
+
 "use strict";
 
 var WebSocketServer = require('websocket').server;
@@ -17,6 +19,7 @@ wsLoginServer.on('request', function(request) {
     console.log("Request came for Login webscoket Requset", request);
     var requestUrl = request.resourceURL;
 
+    // TODO: This should get removed with some callback items
     if( requestUrl.path == '/web/login') {
         var loginRequestConnection = request.accept(null, request.origin);
 
