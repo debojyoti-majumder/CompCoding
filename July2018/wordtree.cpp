@@ -6,14 +6,15 @@
 #include <vector>
 #include <set>
 #include <algorithm>
-#include <queue>
+#include <deque>
 
 using namespace std;
 
 class Solution {
 private:
-    queue<pair<string,int>> _searchQueue;        
+    deque<pair<string,int>> _searchQueue;        
     vector<string>          _wordList;
+    vector<string>          _excelude;
 
     set<string> getPossibleWords(size_t pos, const string& beginWord) {
         set<string> retValue;
@@ -28,7 +29,22 @@ private:
                     retValue.insert(tmpWord);
             }
         }
+        
         return retValue;
+    }
+
+    void addIfNotpresent(const pair<string,int>& item) {
+        bool bFound = false;
+
+        for(auto sh : _excelude ) {
+            if( sh.compare(item.first) == 0 ) {
+                bFound = true;
+                break;
+            }
+        }
+
+        if( bFound == false )
+            _searchQueue.push_back(item);
     }
 
     void addItemsToQueue(pair<string,int> queueItem, string endWord) {
@@ -44,7 +60,7 @@ private:
                     // Adding the item in the queue
                     seachItem.first = item;
                     seachItem.second = queueItem.second + 1;
-                    _searchQueue.push(seachItem);
+                    addIfNotpresent(seachItem);
                 }
             }
         }
@@ -54,14 +70,16 @@ public:
     int ladderLength(string beginWord, string endWord, const vector<string>& wordList) {
         pair<string,int> beginState(beginWord, 1);
         _wordList = wordList;
-        _searchQueue.push(beginState);
+        _searchQueue.push_back(beginState);
 
         while( !_searchQueue.empty() ) {
             auto m = _searchQueue.front();
+            _excelude.push_back(m.first);
+
             if( m.first.compare(endWord) == 0 )
                 return m.second;
 
-            _searchQueue.pop();
+            _searchQueue.pop_front();
             addItemsToQueue(m,endWord);
         }
 
