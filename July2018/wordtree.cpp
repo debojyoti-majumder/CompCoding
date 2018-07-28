@@ -54,13 +54,13 @@ public:
                 solutionCnadidates.push_back(item);
         }
 
-        cout << "Stack: " << statckCount << " " << beginWord << "[";
-        for( auto sol : solutionCnadidates ) {
-            auto it = find(solutionPath.begin(), solutionPath.end(), sol);
-            if( it == solutionPath.end() )
-                cout << sol << ",";
-        }
-        cout << "]" << endl;
+        // cout << "Stack: " << statckCount << " " << beginWord << "[";
+        // for( auto sol : solutionCnadidates ) {
+        //     auto it = find(solutionPath.begin(), solutionPath.end(), sol);
+        //     if( it == solutionPath.end() )
+        //         cout << sol << ",";
+        // }
+        // cout << "]" << endl;
         
 
         auto s = find(solutionCnadidates.begin(), solutionCnadidates.end(), endWord);
@@ -81,25 +81,16 @@ public:
 
         // This seems to be buggy
 		auto it = min_element(editValues.begin(), editValues.end());
-        if( it != editValues.end() )
+        if( it != editValues.end() ) {
+            //cout << "Stack " << statckCount << ":" << *it << endl;
             return (*it);
-        else
-            return 0;
+        }
+        else {
+            //cout << "Stack " << statckCount << ":" << 0 << endl;
+            if( solutionPath.size() )
+                return 10000;
+            else
+                return 0;
+        }
     }
 };
-
-int main() {
-	Solution s1, s2, s3, s4;
-	
-	vector<string> wordList{"hot","dot","dog","lot","log","cog"};
-	vector<string> wordlList2{"hot","dot","dog","lot","log"};
-	vector<string> wc3{"a", "b", "c"};
-    	vector<string> wc4{"bim", "tim", "tom", "tot","fot","fit"};
-
-	cout << s1.ladderLength("hit", "cog", wordList) << endl;		// Should output 5
-	cout << s2.ladderLength("hit", "cog", wordlList2) << endl;		// Should output 0
-	cout << s3.ladderLength("a","c", wc3) << endl;                  // Should output 2          
-    	cout << s4.ladderLength("bim","fot",wc4) << endl;               // Should output 5, test case created by me
-
-	return 0;
-}
