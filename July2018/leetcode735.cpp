@@ -1,5 +1,3 @@
-#include "stdafx.h"
-
 #include <vector>
 #include <iostream>
 
@@ -7,61 +5,30 @@ using namespace std;
 
 class Solution {
 private:
-	pair<int, int> getPossitiveNegativeCount(const vector<int>& arr) {
-		pair<int, int> countValues(0,0);
-
-		for (auto a : arr) {
-			if (a > 0)
-				countValues.first += 1;
-			else
-				countValues.second += 1;
-		}
-
-		return countValues;
-	}
+	
 public:
 	vector<int> asteroidCollision(vector<int>& asteroids) {
-		auto posAndNegs = getPossitiveNegativeCount(asteroids);
+		// Needs a stack based solutions
+		vector<int> collitionStack;
 		auto sz = asteroids.size();
 
-		// First is posisitive count, second is negative count
-		if (posAndNegs.first == 0 || posAndNegs.second == 0)
-			return asteroids;
-		
-		// Check for symetry
-		int leftMinusCounter = 0;
-		for (size_t i = 0; i < sz; i++) {
-			if (asteroids[i] < 0)
-				leftMinusCounter++;
-			else 
-				break;
-		}
-
-		if (leftMinusCounter == posAndNegs.first)
+		if (sz <= 1)
 			return asteroids;
 
-		// Getting the collition point
-		for (size_t i = 0; i < sz - 1; i++) {
-			auto item_1 = asteroids[i];
-			auto item_2 = asteroids[i + 1];
-			auto temp = item_1 * item_2;
-			
-			// Means there is sign mismatch, hence collition
-			if (temp < 0) {
-				auto abs_1 = abs(item_1);
-				auto abs_2 = abs(item_2);
+		// Now we know the size of the array must be greater than 2
+		collitionStack.push_back(asteroids[0]);
 
-				if (abs_1 == abs_2) {
-					asteroids.erase(asteroids.begin() + i);
-					asteroids.erase(asteroids.begin() + i);
-				}
-				else if( abs_1 < abs_2 ) {
-					asteroids.erase(asteroids.begin() + i);
-				}
-				else {
-					asteroids.erase(asteroids.begin() + i + 1);
-				}
+		for (size_t i = 1; i < sz; i++) {
+			auto item = collitionStack.back();
+			auto val = asteroids[i];
+
+			// This means it's a direction mismatch,
+			// Might have collition might be opposite direction
+			if (item * val < 0) {
+
 			}
+			else
+				collitionStack.push_back(item);
 		}
 
 		return asteroidCollision(asteroids);
@@ -94,9 +61,12 @@ int main() {
 	auto ans4(s.asteroidCollision(vector<int>{ -1,-2,5,1 }));
 	printEnumuarle(ans4);
 
-	// Should output {-2,-2,-2,1}
+	// Should output {-2, -2, -2, 1}
 	auto ans5(s.asteroidCollision(vector<int>{-2, -2, -2, 1}));
 	printEnumuarle(ans5);
+
+	auto ans6(s.asteroidCollision(vector<int>{-2, -2, 2, -1}));
+	printEnumuarle(ans6);
 
 	return 0;
 }
