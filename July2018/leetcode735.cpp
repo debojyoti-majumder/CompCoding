@@ -1,16 +1,10 @@
-#include "stdafx.h"
-
-#include <vector>
-#include <iostream>
-
-using namespace std;
-
 class Solution {
 public:
 	vector<int> asteroidCollision(vector<int>& asteroids) {
 		// Needs a stack based solutions
 		vector<int> collitionStack;
 		auto sz = asteroids.size();
+		bool collided = false;
 
 		if (sz <= 1)
 			return asteroids;
@@ -22,7 +16,8 @@ public:
 			}
 			else if (false == collitionStack.empty()) {
 				auto p = collitionStack.back();
-				
+				collided = true;
+
 				// If negative then there is a collition
 				if (p * t < 0) {
 					auto item_1 = abs(p);
@@ -30,18 +25,32 @@ public:
 
 					if (item_1 > item_2) {
 						// Remove Item 2
+						auto it = find(asteroids.begin(), asteroids.end(), t);
+						asteroids.erase(it);
 					}
 					else if (item_2 < item_1) {
 						// Remove item 1;
+						auto it = find(asteroids.begin(), asteroids.end(), p);
+						asteroids.erase(it);
 					}
 					else {
 						// Remove item 1 and 2
+						auto it_1 = find(asteroids.begin(), asteroids.end(), t);
+						auto it_2 = find(asteroids.begin(), asteroids.end(), p);
+
+						asteroids.erase(it_1);
+						asteroids.erase(it_2);
 					}
+
+					break;
 				}
 			}
 		}
 
-		return asteroidCollision(asteroids);
+		if (collided)
+			return asteroidCollision(asteroids);
+		else
+			return asteroids;
 	}
 };
 
@@ -75,6 +84,7 @@ int main() {
 	auto ans5(s.asteroidCollision(vector<int>{-2, -2, -2, 1}));
 	printEnumuarle(ans5);
 
+	// Should output {-2,-2, 2}
 	auto ans6(s.asteroidCollision(vector<int>{-2, -2, 2, -1}));
 	printEnumuarle(ans6);
 
