@@ -1,11 +1,11 @@
+#include "stdafx.h"
+
 #include <vector>
 #include <iostream>
 
 using namespace std;
 
 class Solution {
-private:
-	
 public:
 	vector<int> asteroidCollision(vector<int>& asteroids) {
 		// Needs a stack based solutions
@@ -15,20 +15,30 @@ public:
 		if (sz <= 1)
 			return asteroids;
 
-		// Now we know the size of the array must be greater than 2
-		collitionStack.push_back(asteroids[0]);
-
-		for (size_t i = 1; i < sz; i++) {
-			auto item = collitionStack.back();
-			auto val = asteroids[i];
-
-			// This means it's a direction mismatch,
-			// Might have collition might be opposite direction
-			if (item * val < 0) {
-
+		for (size_t i = 0; i < sz; i++) {
+			auto t = asteroids[i];
+			if (t >= 0) {
+				collitionStack.push_back(t);
 			}
-			else
-				collitionStack.push_back(item);
+			else if (false == collitionStack.empty()) {
+				auto p = collitionStack.back();
+				
+				// If negative then there is a collition
+				if (p * t < 0) {
+					auto item_1 = abs(p);
+					auto item_2 = abs(t);
+
+					if (item_1 > item_2) {
+						// Remove Item 2
+					}
+					else if (item_2 < item_1) {
+						// Remove item 1;
+					}
+					else {
+						// Remove item 1 and 2
+					}
+				}
+			}
 		}
 
 		return asteroidCollision(asteroids);
