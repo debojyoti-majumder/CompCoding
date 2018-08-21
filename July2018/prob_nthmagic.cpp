@@ -10,59 +10,51 @@ using namespace std;
 
 class Solution {
 	private:
-		set<int>		_results;
-		pair<int,int>	_multipliers;
-
-		vector<int> perfromMultiplication(const vector<int>& nums) {
-			vector<int> ret;
-
-			for (auto n : nums) {
-				auto v1 = n * _multipliers.first;
-				auto v2 = n * _multipliers.second;
-
-				auto res1 = _results.insert(v1);
-				auto res2 = _results.insert(v2);
-
-				if (res1.second)
-					ret.push_back(v1);
-
-				if (res2.second)
-					ret.push_back(v2);
-			}
-
-			return ret;
-		}
+		static long modulo;
 
 	public:
 		int nthMagicalNumber(int N, int A, int B) {
-			
-			vector<int> lastAddedNumber;
-			_multipliers.first = A;
-			_multipliers.second = B;
-			
-			_results.clear();
-			_results.insert(A);
-			_results.insert(B);
+			pair<int, int> items(A, B);
+			set<int> results;
 
-			lastAddedNumber.push_back(A);
-			lastAddedNumber.push_back(B);
-			
-			while (_results.size() < (size_t)N) {
-				auto item = perfromMultiplication(lastAddedNumber);
-				lastAddedNumber = item;
+			results.insert(A);
+			results.insert(B);
+			int index = 0;
+
+			while (index < N) {
+				auto it = results.begin();
+				advance(it, index);
+				auto i = *it;
+
+				if (i % A == 0)
+					results.insert((i + A) % Solution::modulo);
+
+				if (i % B == 0)
+					results.insert((i + B) % Solution::modulo);
+
+				index++;
 			}
 
-			auto it = _results.begin();
-			advance(it, N - 1);
+			// Returuning the n element 
+			auto it = results.begin();
+			advance(it, N-1);
 			return *it;
 		}
 };
+
+long Solution::modulo =(long) pow(10, 9) + 7;
 
 int main() {
 	Solution s;
 	
 	cout << s.nthMagicalNumber(4, 2, 3) << endl;	// Should return 6
 	cout << s.nthMagicalNumber(5, 2, 4) << endl;	// Should output 10
+	cout << s.nthMagicalNumber(3, 6, 4) << endl;	// Should output 8
+	// Should output 6 
+	cout << s.nthMagicalNumber(2, 7, 3) << endl;	
 
+	// Getting time limit error
+	cout << s.nthMagicalNumber(1000000000, 40000, 40000);
+	
 	return 0;
 }
