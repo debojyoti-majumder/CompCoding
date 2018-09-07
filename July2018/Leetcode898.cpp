@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <set>
+#include <algorithm>
 
 using namespace std;
 
@@ -30,15 +31,62 @@ private:
 		return retValues;
 	}
 
+	// The worst solution did not worked
+	int subarrayBitwiseORsV2(const vector<int>& inputArray) {
+		set<int> uniqueValues;
+		set<vector<int>> items;
+
+		for (auto e : inputArray)
+			items.insert(vector<int>{e});
+
+		while (true) {
+			vector<vector<int>> newItems;
+
+			for (auto row : items) {
+				auto v(row);
+				
+				for (auto item : inputArray) {
+					auto candidate(v);
+					auto m = find(candidate.begin(), candidate.end(), item);
+					
+					if( m == candidate.end() ) {
+						candidate.push_back(item);
+
+						auto it = find(items.begin(), items.end(), candidate);
+						if (it == items.end()) {
+							newItems.push_back(candidate);
+						}
+					}
+				}
+			}
+
+			if (newItems.size() == 0)
+				break;
+
+			for (auto e : newItems)
+				items.insert(e);
+
+			newItems.clear();
+		}
+
+		for (auto arr : items) {
+			int oredSum = 0;
+			for (auto num : arr)
+				oredSum |= num;
+
+			uniqueValues.insert(oredSum);
+		}
+
+		return uniqueValues.size();
+	}
 public:
 	int subarrayBitwiseORs(const vector<int>& inputArray) {
 		set<int> uniqueValues;
-
+		
 		for (size_t winSize = 1; winSize <= inputArray.size(); winSize++) {
 			auto ret = processWindow(inputArray, winSize);
-			for (auto e : ret) {
+			for (auto e : ret)
 				uniqueValues.insert(e);
-			}
 		}
 
 		return uniqueValues.size();
