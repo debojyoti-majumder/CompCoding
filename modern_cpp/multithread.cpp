@@ -3,8 +3,11 @@
 #include <vector>
 #include <memory>
 #include <random>
+#include <atomic>
 
 using namespace std;
+std::atomic<unsigned int> atomicJobsLeft(10);
+unsigned int jobsLeft = 10;
 
 void myfunction() {
     cout << "This is a thread function" << endl;
@@ -24,7 +27,9 @@ void multiThreadCreation() {
 
 }
 
-class SleepClass {
+
+
+class SleepClass {  
     private:
         int _sleepFor;
     public:
@@ -35,11 +40,17 @@ class SleepClass {
         // This is the functor opearator for the thread construction
         void operator()() {
             this_thread::sleep_for(chrono::seconds(_sleepFor));
-            cout << this_thread::get_id() <<" Thread job is done" << endl;
+            
+            // Indicate the jobs is done
+            atomicJobsLeft--;
+            jobsLeft--;
+            
+            // Verbose output
+            cout << this_thread::get_id() <<" Done!! Jobs left " << atomicJobsLeft << " " << jobsLeft << endl;
         }
 };
 
-int main() {
+void functorRandomWaitThreading() {
     random_device rd;
     mt19937 mt(rd());
     uniform_real_distribution<double> dist(1.0, 10.0);
@@ -55,7 +66,10 @@ int main() {
 
     for(auto& t: workerThreads) {
         t->join();
-    }
+    }    
+}
 
+int main() {
+    functorRandomWaitThreading();
     return 0;
 }
