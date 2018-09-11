@@ -1,12 +1,22 @@
+// Url link to follow: https://www.youtube.com/channel/UCEOGtxYTB6vo6MQ-WQ9W_nQ
+
+// TODO 1: Add singleton class for console output
+// TODO 2: Add logger capability to either to file to console may be stratagy pattern
+// TODO 3: Overload the streaming operator
+// TODO 4: Add mutex and scoped gaurd in the file
+
 #include <iostream>
 #include <thread>
 #include <vector>
 #include <memory>
 #include <random>
 #include <atomic>
+#include <mutex>
 
 using namespace std;
+
 std::atomic<unsigned int> atomicJobsLeft(10);
+
 unsigned int jobsLeft = 10;
 
 void myfunction() {
@@ -26,8 +36,6 @@ void multiThreadCreation() {
         if( t->joinable()) t->join();
 
 }
-
-
 
 class SleepClass {  
     private:
