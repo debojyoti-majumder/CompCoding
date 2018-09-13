@@ -28,10 +28,12 @@ class Solution {
 		bool addPoint = false;
 
 		for (auto& point : ship) {
-			auto x_cond = point.x == p.x - 1 || point.x == p.x + 1;
-			auto y_cond = point.y == p.y - 1 || point.y == p.y + 1;
+			if (point.x == p.x && (point.y == p.y + 1 || point.y == p.y - 1 )) {
+				addPoint = true;
+				break;
+			}
 
-			if (x_cond && y_cond ) {
+			if (point.y == p.y && (point.x == p.x + 1 || point.x == p.x - 1)) {
 				addPoint = true;
 				break;
 			}
@@ -48,8 +50,6 @@ class Solution {
 
 		for (auto& b : battleShips) {
 			isNewBattelShip = !updateBattleShip(p, b);
-			if (isNewBattelShip)
-				break;
 		}
 
 		if (isNewBattelShip) {
