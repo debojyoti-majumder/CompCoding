@@ -87,10 +87,13 @@ public:
 
 int main() {
 	vector<vector<char>> bd{ {'X', '.', '.', 'X'}, { '.', '.', '.', 'X'}, { '.', '.', '.', 'X' }};
+	vector<vector<char>> faildedTest{ { 'X','.','.','X' },{ '.','.','.','X' },{ '.','.','.','X' },{ 'X','.','.','X' } };
+
 	Solution s;
 	
-	// Should output 2
-	cout << s.countBattleships(bd) << endl; 
+	cout << s.countBattleships(bd) << endl;				// Should output 2
+	// This test case is failing
+	cout << s.countBattleships(faildedTest) << endl;	// Should output 3 
 
 	return 0;
 }
