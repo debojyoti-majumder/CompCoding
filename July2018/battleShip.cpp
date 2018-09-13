@@ -23,16 +23,15 @@ class Solution {
 	using BattleShip = vector<Point>;
 	vector<BattleShip> battleShips;
 
+	// This functions is not working
 	bool updateBattleShip(const Point& p, BattleShip& ship) {
 		bool addPoint = false;
 
 		for (auto& point : ship) {
-			if (point.x == p.x - 1 || point.x == p.x + 1) {
-				addPoint = true;
-				break;
-			}
+			auto x_cond = point.x == p.x - 1 || point.x == p.x + 1;
+			auto y_cond = point.y == p.y - 1 || point.y == p.y + 1;
 
-			if (point.y == p.y - 1 || point.y == p.y + 1) {
+			if (x_cond && y_cond ) {
 				addPoint = true;
 				break;
 			}
@@ -41,7 +40,7 @@ class Solution {
 		if (addPoint)
 			ship.push_back(p);
 
-		return !addPoint;
+		return addPoint;
 	}
 
 	void addPointToBattleShips(const Point& p) {
@@ -49,6 +48,8 @@ class Solution {
 
 		for (auto& b : battleShips) {
 			isNewBattelShip = !updateBattleShip(p, b);
+			if (isNewBattelShip)
+				break;
 		}
 
 		if (isNewBattelShip) {
@@ -62,10 +63,13 @@ public:
 		if (board.size() == 0)
 			return 0;
 
+		// Init cases
 		vector<Point> xPoints;
 		size_t row = board.size();
 		size_t col = board[0].size();
-		
+		battleShips.clear();
+
+		// Make a list of points which has 'X'
 		for (size_t i = 0; i < row; i++) {
 			for (size_t j = 0; j < col; j++) {
 				if (board[i][j] == 'X')
@@ -77,7 +81,7 @@ public:
 			addPointToBattleShips(p);
 		}
 
-		return xPoints.size();
+		return battleShips.size();
 	}
 };
 
