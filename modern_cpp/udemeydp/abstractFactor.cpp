@@ -1,11 +1,12 @@
-// This is an exmaple of abstarct factory,
-// This is a wrong implentation beccause I am return the same object
+// This is function programming style absatct factory, still there is memory leaks to be solved
+// There could be a bettre SingleTon implentation
 
 #include <iostream>
 #include <memory>
 #include <string>
 #include <map>
 #include <list>
+#include <functional>
 
 using namespace std;
 
@@ -62,33 +63,44 @@ class Tea : public IHotDrink {
         inline void setSize(short int s) { _quantity = s; }
 };
 
-struct IAbstarctFactory {
-    virtual IHotDrink* make(list<bool> options) = 0;
-    virtual ~IAbstarctFactory() = default;
-};
-
-class TeaFactory : public IAbstarctFactory {
-public:
-    IHotDrink* make(list<bool> option) override {
-        return new Tea();
-    }
-};
-
-class CoffeFactory : public IAbstarctFactory {
-public:
-    IHotDrink* make(list<bool> options) override {
-        return new Coffee(true);
-    }
-};
+using factoryMethod = function<IHotDrink* ()>;
 
 class HotDrinkFactory {
     private:
-        map<string, IAbstarctFactory*>      _objectStore;
-        static HotDrinkFactory*             _instnace;
-        
+        map<string, factoryMethod>     _functionalObjectStore;
+        static HotDrinkFactory*        _instnace;
+
         HotDrinkFactory() {
-            _objectStore.insert(make_pair("tea", new TeaFactory()));
-            _objectStore.insert(make_pair("coffe", new CoffeFactory()));
+            _functionalObjectStore.insert(make_pair("tea", [] () -> IHotDrink* {
+                return new Tea();
+            }));
+            
+            _functionalObjectStore.insert(make_pair("coffe",[] () -> IHotDrink* {
+                return new Coffee(true);
+            }));
+
+            _functionalObjectStore.insert(make_pair("blackcoffe",[] () -> IHotDrink* {
+                return new Coffee(false);
+            }));
+
+            _functionalObjectStore.insert(make_pair("smalltea", [] () -> IHotDrink* {
+                auto obj = new Tea();
+                obj->setSize(50);
+
+                return obj;
+            }));
+
+            _functionalObjectStore.insert(make_pair("largetea", [] () -> IHotDrink* {
+                auto obj = new Tea();
+                obj->setSize(300);
+
+                return obj;
+            }));
+
+            _functionalObjectStore.insert(make_pair("blacktea", [] () -> IHotDrink* {
+                return new Tea(true, false);
+            }));
+
         };
 
     public:
@@ -101,8 +113,8 @@ class HotDrinkFactory {
         }
 
         IHotDrink* createHotDrink(string drinkType) {
-            if( _objectStore.find(drinkType) != _objectStore.end() )
-                return _objectStore[drinkType]->make({});
+            if( _functionalObjectStore.find(drinkType) != _functionalObjectStore.end() )
+                return _functionalObjectStore[drinkType]();
             else
                 return nullptr;
         }
@@ -125,6 +137,9 @@ int main() {
         
         if( obj != nullptr ){
             obj->drink();
+        }
+        else {
+            cout << "We don't have the drink order something else" << endl;
         }
     }
 
