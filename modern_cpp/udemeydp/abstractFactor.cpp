@@ -5,12 +5,13 @@
 #include <memory>
 #include <string>
 #include <map>
+#include <list>
 
 using namespace std;
 
 struct IHotDrink {
     virtual void drink() = 0;
-    virtual ~IHotDrink() {}
+    virtual ~IHotDrink() = default;
 };
 
 class Coffee : public IHotDrink {
@@ -61,14 +62,33 @@ class Tea : public IHotDrink {
         inline void setSize(short int s) { _quantity = s; }
 };
 
+struct IAbstarctFactory {
+    virtual IHotDrink* make(list<bool> options) = 0;
+    virtual ~IAbstarctFactory() = default;
+};
+
+class TeaFactory : public IAbstarctFactory {
+public:
+    IHotDrink* make(list<bool> option) override {
+        return new Tea();
+    }
+};
+
+class CoffeFactory : public IAbstarctFactory {
+public:
+    IHotDrink* make(list<bool> options) override {
+        return new Coffee(true);
+    }
+};
+
 class HotDrinkFactory {
     private:
-        map<string, IHotDrink*>     _objectStore;
-        static HotDrinkFactory*     _instnace;
+        map<string, IAbstarctFactory*>      _objectStore;
+        static HotDrinkFactory*             _instnace;
         
         HotDrinkFactory() {
-            _objectStore.insert(make_pair("tea", new Tea()));
-            _objectStore.insert(make_pair("coffe", new Coffee(true)));
+            _objectStore.insert(make_pair("tea", new TeaFactory()));
+            _objectStore.insert(make_pair("coffe", new CoffeFactory()));
         };
 
     public:
@@ -82,7 +102,7 @@ class HotDrinkFactory {
 
         IHotDrink* createHotDrink(string drinkType) {
             if( _objectStore.find(drinkType) != _objectStore.end() )
-                return _objectStore[drinkType];
+                return _objectStore[drinkType]->make({});
             else
                 return nullptr;
         }
