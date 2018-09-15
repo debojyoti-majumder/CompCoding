@@ -35,6 +35,10 @@ class Coffee : public IHotDrink {
         }
 
         inline void setSize(short int s) { _quantity = s; }
+
+        ~Coffee() {
+            cout << "Time for some action now" << endl;
+        }
 };
 
 class Tea : public IHotDrink {
@@ -61,9 +65,13 @@ class Tea : public IHotDrink {
         }
 
         inline void setSize(short int s) { _quantity = s; }
+
+        ~Tea() {
+            cout << "Time for some cake maybe" << endl;
+        }
 };
 
-using factoryMethod = function<IHotDrink* ()>;
+using factoryMethod = function<unique_ptr<IHotDrink> ()>;
 
 class HotDrinkFactory {
     private:
@@ -71,36 +79,41 @@ class HotDrinkFactory {
         static HotDrinkFactory*        _instnace;
 
         HotDrinkFactory() {
-            _functionalObjectStore.insert(make_pair("tea", [] () -> IHotDrink* {
-                return new Tea();
+            _functionalObjectStore.insert(make_pair("tea", [] () -> unique_ptr<IHotDrink> {
+                unique_ptr<IHotDrink> obj = make_unique<Tea>(new Tea());
+                return obj;
             }));
             
-            _functionalObjectStore.insert(make_pair("coffe",[] () -> IHotDrink* {
-                return new Coffee(true);
-            }));
-
-            _functionalObjectStore.insert(make_pair("blackcoffe",[] () -> IHotDrink* {
-                return new Coffee(false);
-            }));
-
-            _functionalObjectStore.insert(make_pair("smalltea", [] () -> IHotDrink* {
-                auto obj = new Tea();
-                obj->setSize(50);
-
+            _functionalObjectStore.insert(make_pair("coffe",[] () -> unique_ptr<IHotDrink> {
+                unique_ptr<IHotDrink> obj = make_unique<Coffee>(new Coffee(true));
                 return obj;
             }));
 
-            _functionalObjectStore.insert(make_pair("largetea", [] () -> IHotDrink* {
-                auto obj = new Tea();
-                obj->setSize(300);
-
+            _functionalObjectStore.insert(make_pair("blackcoffe",[] () -> unique_ptr<IHotDrink> {
+                unique_ptr<IHotDrink> obj = make_unique<Coffee>(new Coffee(false));
                 return obj;
             }));
 
-            _functionalObjectStore.insert(make_pair("blacktea", [] () -> IHotDrink* {
-                return new Tea(true, false);
+            _functionalObjectStore.insert(make_pair("smalltea", [] () -> unique_ptr<IHotDrink> {
+                auto p = new Tea();
+                p->setSize(50);
+                
+                unique_ptr<IHotDrink> obj = make_unique<Tea>(p);
+                return obj;
             }));
 
+            _functionalObjectStore.insert(make_pair("largetea", [] () -> unique_ptr<IHotDrink> {
+                auto p = new Tea();
+                p->setSize(300);
+
+                unique_ptr<IHotDrink> obj = make_unique<Tea>(p);
+                return obj;
+            }));
+
+            _functionalObjectStore.insert(make_pair("blacktea", [] () -> unique_ptr<IHotDrink> {
+                unique_ptr<IHotDrink> obj = make_unique<Tea>(new Tea(true, false));
+                return obj;
+            }));
         };
 
     public:
@@ -112,7 +125,7 @@ class HotDrinkFactory {
             return *(_instnace);
         }
 
-        IHotDrink* createHotDrink(string drinkType) {
+        unique_ptr<IHotDrink> createHotDrink(string drinkType) {
             if( _functionalObjectStore.find(drinkType) != _functionalObjectStore.end() )
                 return _functionalObjectStore[drinkType]();
             else
