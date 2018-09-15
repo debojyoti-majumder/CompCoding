@@ -48,8 +48,8 @@ class Tea : public IHotDrink {
         short int _quantity;
     
     public:
-        Tea(bool sugerAdded = true, bool milkAdded = true) : _sugarAdded(true), _withMilk(true) {
-        _quantity = 150;
+        Tea(bool sugerAdded = true, bool milkAdded = true) : _sugarAdded(sugerAdded), _withMilk(milkAdded) {
+            _quantity = 150;
         }
 
         void drink() override {
@@ -80,38 +80,45 @@ class HotDrinkFactory {
 
         HotDrinkFactory() {
             _functionalObjectStore.insert(make_pair("tea", [] () -> unique_ptr<IHotDrink> {
-                unique_ptr<IHotDrink> obj = make_unique<Tea>(new Tea());
+                Tea t;
+                unique_ptr<IHotDrink> obj = make_unique<Tea>(t);
+                
                 return obj;
             }));
             
             _functionalObjectStore.insert(make_pair("coffe",[] () -> unique_ptr<IHotDrink> {
-                unique_ptr<IHotDrink> obj = make_unique<Coffee>(new Coffee(true));
+                Coffee cf(true);
+                unique_ptr<IHotDrink> obj = make_unique<Coffee>(cf);
+
                 return obj;
             }));
 
             _functionalObjectStore.insert(make_pair("blackcoffe",[] () -> unique_ptr<IHotDrink> {
-                unique_ptr<IHotDrink> obj = make_unique<Coffee>(new Coffee(false));
+                Coffee cf(false);
+                unique_ptr<IHotDrink> obj = make_unique<Coffee>(cf);
                 return obj;
             }));
 
             _functionalObjectStore.insert(make_pair("smalltea", [] () -> unique_ptr<IHotDrink> {
-                auto p = new Tea();
-                p->setSize(50);
+                Tea p;
+                p.setSize(50);
                 
                 unique_ptr<IHotDrink> obj = make_unique<Tea>(p);
                 return obj;
             }));
 
             _functionalObjectStore.insert(make_pair("largetea", [] () -> unique_ptr<IHotDrink> {
-                auto p = new Tea();
-                p->setSize(300);
+                Tea p;
+                p.setSize(300);
 
                 unique_ptr<IHotDrink> obj = make_unique<Tea>(p);
                 return obj;
             }));
 
             _functionalObjectStore.insert(make_pair("blacktea", [] () -> unique_ptr<IHotDrink> {
-                unique_ptr<IHotDrink> obj = make_unique<Tea>(new Tea(true, false));
+                Tea bt(true, false);
+                unique_ptr<IHotDrink> obj = make_unique<Tea>(bt);
+
                 return obj;
             }));
         };
