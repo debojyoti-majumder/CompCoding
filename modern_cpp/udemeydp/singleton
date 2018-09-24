@@ -1,0 +1,46 @@
+#include <iostream>
+#include <fstream>
+#include <map>
+#include <string>
+
+using namespace std;
+
+class PlayerRepository {
+    private:
+        map<string, int> _playerScores;
+        
+        PlayerRepository() {
+            ifstream datafile("datafile.txt");
+            string playerName, score;
+
+            // Reading the file data;
+            while( getline(datafile,playerName) ) {
+                getline(datafile, score);
+                _playerScores[playerName] = atoi(score.c_str());
+            }
+        }
+    public:
+        PlayerRepository(PlayerRepository const&) = delete;
+        PlayerRepository& operator=(PlayerRepository const&) = delete;
+
+        static PlayerRepository& getInstance() {
+            static PlayerRepository rep;
+            return rep;
+        }
+
+        int getScore(string const& player) {
+            if( _playerScores.find(player) != _playerScores.end() ) {
+                return _playerScores[player];
+            }
+            else
+                return -1;
+        }
+};
+
+int main() {
+    string m;
+    cin >> m;
+
+    cout << PlayerRepository::getInstance().getScore(m) << endl;
+    return 0;
+}
