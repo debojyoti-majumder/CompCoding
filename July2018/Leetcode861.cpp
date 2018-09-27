@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <bitset>
 
 using namespace std;
 
@@ -14,6 +16,7 @@ struct SumInfo {
 class Solution {
     private:
         vector<vector<int>> _matrix;
+        int _cost;
         size_t rows;
         size_t cols;
 
@@ -40,16 +43,70 @@ class Solution {
             return infos;
         }
 
+        void toggleMatrix(const SumInfo& inf) {
+            if( inf.type == SumInfo::SumType::row ) {
+                // Toggle row
+                for( int i=0; i<cols; i++ ) {
+                    if( _matrix[inf.num][i] == 0 )
+                        _matrix[inf.num][i] == 1;
+                    else
+                        _matrix[inf.num][i] == 0;
+                }
+            }
+            else {
+                // Toggle column
+                for( int i=0; i<rows; i++ ) {
+                    if( _matrix[i][inf.num] == 0 )
+                        _matrix[i][inf.num] = 1;
+                    else
+                        _matrix[i][inf.num] = 0;
+                }
+            }
+        }
+
+        int computeCost() {
+            int sum = 0;
+
+            for(auto r : _matrix) {
+                string str;
+                for( auto v : r ) {
+                    if( v == 0 ) 
+                        str +="0";
+                    else
+                        str +="1";
+                }
+
+                bitset<32> bitwiseData(str);
+                sum += bitwiseData.to_ulong();
+            }
+
+            return sum;
+        }
+
     public:
         int matrixScore(vector<vector<int>>& A) {
             _matrix = A;
+            _cost = 0;
             rows = A.size();
             if( rows == 0 ) return 0;
             cols = A[0].size();
             
-            auto sums(getSumInfo());
+            while(true) {
+                auto sums(getSumInfo());
+                auto minItem = min_element(sums.begin(), sums.end(),[](SumInfo& item1, SumInfo& item2) {
+                    return item1.sum < item2.sum;
+                });
 
-            return (int)sums.size();
+                toggleMatrix(*minItem);
+                auto cst = computeCost();
+
+                if(cst < _cost )
+                    break;
+                
+                _cost = cst;
+            }
+
+            return _cost;
     }
 };
 
