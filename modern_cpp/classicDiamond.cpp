@@ -1,3 +1,12 @@
+// This is an example of virtual base class, where the compiler gets confused becuase of multiple inhertinece and about which 
+// base class copy should be saved. The "virtual" keyword tell the compiler to only keep on copy of the base class to 
+// void ambiguation.
+
+// In the this exmaple of "Everything" class inheritence has been done from mutitple base class the order of the inheritence 
+// determines the output of the program. 
+
+// In this perticular exmaple the base class copy of the right most item has been saved.
+
 #include <iostream>
 
 using namespace std;
