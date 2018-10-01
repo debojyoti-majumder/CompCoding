@@ -82,8 +82,8 @@ class LinkList {
                     node = node->next;
                 }
 
-                Node<T>& operator->() {
-                    return *(node);
+                T& operator*() {
+                    return node->value;
                 }
 
                 bool operator!=(const iterator& other) {
@@ -146,9 +146,9 @@ int main() {
     cout << copy << endl;
     cout << myList << endl;
 
-    for(auto it=myList.begin(); it != myList.end(); ++it) {
-        cout << "Wow" << endl;
-    }
-
+    for(auto m : myList )
+        cout << m << " ";
+    cout << endl;
+    
     return 0;
 }
