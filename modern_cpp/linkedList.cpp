@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
@@ -70,9 +71,33 @@ class LinkList {
             return cursor->value;
         }
 
-        class LinkedListIterator {
+        class iterator {
+            private:
+                Node<T>* node;
 
-        }iterator;
+            public:
+                iterator(Node<T>* nd) : node{nd} {}
+
+                void operator++() {
+                    node = node->next;
+                }
+
+                Node<T>& operator->() {
+                    return *(node);
+                }
+
+                bool operator!=(const iterator& other) {
+                    return this->node != other.node;
+                }
+        };
+
+        iterator begin() {
+            return iterator{head};
+        }
+
+        iterator end() {
+            return iterator{nullptr};
+        }
 
         ~LinkList() {
             auto nd = head;
@@ -120,6 +145,10 @@ int main() {
     auto copy{myList};
     cout << copy << endl;
     cout << myList << endl;
-    
+
+    for(auto it=myList.begin(); it != myList.end(); ++it) {
+        cout << "Wow" << endl;
+    }
+
     return 0;
 }
