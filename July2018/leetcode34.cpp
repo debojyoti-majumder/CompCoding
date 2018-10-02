@@ -12,6 +12,9 @@ private:
     int pos;
 
     bool doBinarySearch(size_t startPos, size_t endPos) {
+        if( startPos < 0 || endPos >= _numbers.size() )
+            return false;
+
         if( startPos == endPos ) {
             pos = startPos;
             return _numbers[startPos] == _targetNumber;
@@ -41,19 +44,19 @@ public:
         _targetNumber = target;
         pos = -1;
 
-        auto sz = nums.size();
+        int sz = (int) nums.size();
         if( sz == 0 )
             return retValue;
-            
+
         if( doBinarySearch(0, sz-1) ) {
             // If found have to search left and right
-            auto pointerLeft = pos;
-            auto pointerRight = pos;
+            int pointerLeft = pos;
+            int pointerRight = pos;
 
-            while( _numbers[pointerLeft] == _targetNumber )
+            while( pointerLeft >= 0 && _numbers[pointerLeft] == _targetNumber )
                 --pointerLeft;
 
-            while( _numbers[pointerRight] == _targetNumber )
+            while( pointerRight < sz && _numbers[pointerRight] == _targetNumber )
                 ++pointerRight;
             
             retValue[0] = pointerLeft + 1;
@@ -86,5 +89,13 @@ int main() {
     ret = s.searchRange(inp,8);
     cout << ret[0] << " " << ret[1] << endl;
 
+    vector<int> u{2,2};
+    ret = s.searchRange(u,1);
+    cout << ret[0] << " " << ret[1] << endl;
+
+    vector<int> failedTestcase2{0,0,0,1,2,3};
+    ret = s.searchRange(failedTestcase2, 0);
+    cout << ret[0] << " " << ret[1] << endl;
+    
     return 0;
 }
