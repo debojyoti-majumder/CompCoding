@@ -6,61 +6,75 @@
 using namespace std;
 
 template <typename T>
-class DataItem {
+class Observable {
     private:
-        T& _value;
+        const T& _container;
         vector<function<void(T)>> _subscribers;
 
-    public:
-        DataItem() = delete;
-
-        explicit DataItem(T& b) : _value(b) {}
-
-        DataItem& operator=(T v) {
-            if( _value != v ) {
-                cout << "Data item changed. \n";
-                _value = v;
-
-                for( auto subs : _subscribers ) {
-                    subs(v);
-                }
+    protected:
+        void notify() {
+            for(auto fn : _subscribers) {
+                fn(_container);
             }
-
-            return *this;
         }
 
-        void addSubScriber(const function<void(T)>& fnc) {
-            _subscribers.emplace_back(fnc);
-        }        
+    public:
+        Observable() = delete;
+
+        Observable(const T& obj) : _container(obj) {
+
+        }
+
+        void addSubscriber(function<void(T)> func) {
+            _subscribers.emplace_back(func);
+        }
+
+        Observable<T>& operator=(const Observable<T>& rhs) {
+            changeValue(rhs._container);
+            notify();
+            return *(this);
+        }
+
+        virtual void changeValue(const T& rhs) = 0; 
+};
+
+
+class Parameter : public Observable<Parameter> {
+    private:
+        int     _value;
+        string  _units;
+    public:
+        Parameter() : Observable<Parameter>(*this) {
+            _value = 0;
+            _units = "db";
+        }
+
+        Parameter(int p) : Observable<Parameter>(*this), _value(p) , _units("untis") {}
+
+        friend ostream& operator<<(ostream& out, const Parameter& p) {
+            out << p._value << " " << p._units;
+            return out;
+        }
+
+        void changeValue(const Parameter& p) override {
+            _value = p._value;
+            _units = p._units;
+        }
 };
 
 int main() {
-    int i=0;
-    DataItem<int> item(i);
+    Parameter p1 , p2(10);
 
-    // setup change detetor;
-    item.addSubScriber([] (int v) {
-        cout << "Subscriber 1: Value change to " << v <<"\n";
+    p1.addSubscriber([](Parameter p) {
+        cout << "First Subscribers:" << p << "\n";
     });
 
-    item.addSubScriber([] (int v) {
-        if( v > 10 ) {
-            cout << "Subscriber 2: Value is too high\n";
-        }
+    p1.addSubscriber([](Parameter p) {
+        cout << "Second Subscribers:" << p << "\n";
     });
 
-    // Change the item
-    item = 10;
-    item = 10;
-    item = 30;
-
-    string stringData("Debojyoti");
-    DataItem<string> stringItem(stringData);
-
-    stringItem.addSubScriber([](string v) {
-        cout << "String changed:" << v << "\n";
-    });
-
-    stringItem = "ABCD";
+    cout << p1 << "\n";
+    p1 = p2;
+    cout << p1 << "\n";
     return 0;
 }
