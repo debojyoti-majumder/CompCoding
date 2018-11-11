@@ -10,6 +10,18 @@
 
 using namespace std;
 
+// https://www.hackerrank.com/challenges/mini-max-sum/problem
+void miniMaxSum(vector<int> arr) {
+    long sum = 0;
+    for(const auto& num: arr) 
+        sum += num;
+    
+    auto maxNum = max_element(arr.cbegin(), arr.cend());
+    auto minNum = min_element(arr.cbegin(), arr.cend());
+    
+    cout << (sum - *maxNum) << " " << (sum - *minNum) << endl;
+}
+
 // Complete the funnyString function below.
 string funnyString(string s) {
 	string reverseString(s);
