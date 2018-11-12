@@ -4,13 +4,12 @@
 
 #include <iostream>
 #include <string>
-#include <list>
-
+#include <vector>
 using namespace std;
 
 class Solution {
 private:
-	list<string> _numberString;
+	vector<string> _numberString;
 public:
 	Solution() {
 		_numberString.emplace_back("zero");
@@ -25,12 +24,37 @@ public:
 		_numberString.emplace_back("nine");
 	}
 
-	bool isDigitThere(string s, int index) {
-		return true;
+	vector<int> isDigitThere(const string& s, int index) {
+		vector<int> indexes;
+
+		for (const auto& ch : _numberString[index]) {
+			auto it = s.find(ch, 0);
+			if (it == -1)
+				return vector<int>{};
+			else
+				indexes.push_back((int)it);
+		}
+
+		return indexes;
 	}
 
 	string originalDigits(string s) {
-		return "";
+		string accString("");
+
+		while (s.length()) {
+			for (int i = 0; i < 10; i++) {
+				auto ind(isDigitThere(s, i));
+
+				if (ind.size()) {
+					accString += i;
+					for (auto i : ind)
+						s.erase(i, 1);
+					break;
+				}
+			}
+		}
+
+		return accString;
 	}
 };
 
