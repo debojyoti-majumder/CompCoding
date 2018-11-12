@@ -5,11 +5,31 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <sstream>
+
 using namespace std;
 
 class Solution {
 private:
 	vector<string> _numberString;
+
+	bool processDigit(string& s, int index) {
+		string copyString(s);
+
+		for (const auto& ch : _numberString[index]) {
+			auto it = copyString.find(ch, 0);
+			if (it == -1)
+				return false;
+			else {
+				auto in = copyString.find(ch);
+				copyString.erase(copyString.begin() + in);
+			}
+		}
+
+		s = copyString;
+		return true;
+	}
+
 public:
 	Solution() {
 		_numberString.emplace_back("zero");
@@ -24,32 +44,15 @@ public:
 		_numberString.emplace_back("nine");
 	}
 
-	vector<int> isDigitThere(const string& s, int index) {
-		vector<int> indexes;
-
-		for (const auto& ch : _numberString[index]) {
-			auto it = s.find(ch, 0);
-			if (it == -1)
-				return vector<int>{};
-			else
-				indexes.push_back((int)it);
-		}
-
-		return indexes;
-	}
-
 	string originalDigits(string s) {
 		string accString("");
 
 		while (s.length()) {
 			for (int i = 0; i < 10; i++) {
-				auto ind(isDigitThere(s, i));
-
-				if (ind.size()) {
-					accString += i;
-					for (auto i : ind)
-						s.erase(i, 1);
-					break;
+				if (processDigit(s, i)) {
+					stringstream ss;
+					ss << i;
+					accString += ss.str();
 				}
 			}
 		}
