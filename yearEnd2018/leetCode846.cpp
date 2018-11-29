@@ -21,7 +21,14 @@ private:
 
 public:
 	bool isNStraightHand(vector<int>& hand, int W) {
+		auto sz = hand.size();
+		auto numOfBlocks(sz / W);
 		vector<vector<int>> handArrangment(W);
+		
+		while (hand.empty() == false) {
+			auto item = hand.back();
+			hand.pop_back();
+		}
 
 		return true;
 	}
