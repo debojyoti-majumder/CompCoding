@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "ApplicationController.h"
 #include "EventSource.h"
 #include "Poco/Observer.h"
@@ -8,8 +7,8 @@ std::mutex ApplicationController::_instanceMutex;
 
 ApplicationController::ApplicationController() {
 	_eventSources.emplace_back(std::thread{ EventSource{_applicationNotificationCenter} });
-	_eventSources.emplace_back(thread{ EventSource{_applicationNotificationCenter, 30, "USB"} });
-	_eventSources.emplace_back(thread{ EventSource{_applicationNotificationCenter, 20, "GPIO"} });
+	_eventSources.emplace_back(std::thread{ EventSource{_applicationNotificationCenter, 30, "USB"} });
+	_eventSources.emplace_back(std::thread{ EventSource{_applicationNotificationCenter, 20, "GPIO"} });
 
 	addObservers();
 };
