@@ -20,3 +20,8 @@ cmake.check_cache
 
 /build
 ses2/a.out
+AuditLogger/.vs/
+AuditLogger/App1/Debug/App1.pch
+AuditLogger/App1/Debug/
+AuditLogger/App1/x64/Debug/
+AuditLogger/Debug/
