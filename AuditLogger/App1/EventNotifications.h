@@ -14,3 +14,11 @@ public:
 	int errorCode;
 	explicit UnknownEventNotification() : errorCode(5) {}
 };
+
+class GPIOEventNotification : public Poco::Notification {
+public:
+	int portNumber;
+	bool isOn;
+
+	GPIOEventNotification() : portNumber(-1), isOn(false) {}
+};

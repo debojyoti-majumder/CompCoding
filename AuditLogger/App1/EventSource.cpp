@@ -28,14 +28,22 @@ string EventSource::buildStringMessage() {
 	Poco::Random randomGenerator;
 	
 	message << _eventSource << " ";
+	if (randomGenerator.nextBool()) {
+		message << "DSPFn1" << " ";
+	}
+	else {
+		message << "DSPFn2" << " ";
+	}
+
 	message << randomGenerator.nextFloat() << " ";
-	
 	return message.str();
 }
 
 void EventSource::postEvent(const string & msg) {
 	if (_eventSource == "USB")
 		_notificationCenter.postNotification(new USBEventNotfication(msg));
+	else if (_eventSource == "GPIO")
+		_notificationCenter.postNotification(new GPIOEventNotification());
 	else
 		_notificationCenter.postNotification(new UnknownEventNotification());
 }
