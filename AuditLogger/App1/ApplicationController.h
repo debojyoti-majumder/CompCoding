@@ -13,9 +13,9 @@ private:
 	static std::shared_ptr<ApplicationController> _instance;
 	static std::mutex _instanceMutex;
 
-	std::vector<std::thread> _eventSources;
-	Poco::NotificationCenter _applicationNotificationCenter;
-	HwEventHandler evtHandler;
+	std::vector<std::thread>	_eventSources;
+	Poco::NotificationCenter	_applicationNotificationCenter;
+	HwEventHandler				_evtHandler;
 
 	ApplicationController();
 	void addObservers();

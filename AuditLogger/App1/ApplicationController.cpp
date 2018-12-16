@@ -16,16 +16,16 @@ ApplicationController::ApplicationController() {
 void ApplicationController::addObservers() {
 	// Subscribing to the HW events
 	_applicationNotificationCenter.addObserver(Poco::Observer<HwEventHandler, USBEventNotfication>
-		(evtHandler, &HwEventHandler::handleUSBEvent));
+		(_evtHandler, &HwEventHandler::handleUSBEvent));
 	_applicationNotificationCenter.addObserver(Poco::Observer<HwEventHandler, GPIOEventNotification>
-		(evtHandler, &HwEventHandler::handleGPIOEvent));
+		(_evtHandler, &HwEventHandler::handleGPIOEvent));
 }
 
 void ApplicationController::removeObservers() {
 	_applicationNotificationCenter.removeObserver(Poco::Observer<HwEventHandler, USBEventNotfication>
-		(evtHandler, &HwEventHandler::handleUSBEvent));
+		(_evtHandler, &HwEventHandler::handleUSBEvent));
 	_applicationNotificationCenter.removeObserver(Poco::Observer<HwEventHandler, GPIOEventNotification>
-		(evtHandler, &HwEventHandler::handleGPIOEvent));
+		(_evtHandler, &HwEventHandler::handleGPIOEvent));
 }
 
 std::shared_ptr < ApplicationController > ApplicationController::getInstance() {
