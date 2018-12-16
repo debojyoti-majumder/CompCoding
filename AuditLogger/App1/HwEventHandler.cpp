@@ -1,34 +1,8 @@
 #include "HwEventHandler.h"
 #include "MessageInterpreter.h"
-#include <iostream>
-
-class CommandDispatchingResponsibility {
-public:
-	bool operator()(const DSPMessage& msg) {
-		std::cout << "Should be sending out DSP command to DSP" << std::endl;
-		return true;
-	}
-};
-
-class AuditLoggingResponsibility {
-public:
-	bool operator()(const DSPMessage& msg) {
-		std::cout << "Should do DB logging" << std::endl;
-		return true;
-	}
-};
-
-class DeskmirroringResponsibility {
-public:
-	bool operator()(const DSPMessage& msg) {
-		std::cout << "Should send data out to the other mixing console" << std::endl;
-		return true;
-	}
-};
-
-bool exampleFunction(const DSPMessage& msg) {
-	return true;
-}
+#include "CommandDispatchingResponsibility.h"
+#include "AuditLoggingResponsibility.h"
+#include "DeskmirroringResponsibility.h"
 
 HwEventHandler::HwEventHandler() {
 	CommandDispatchingResponsibility resp1;
