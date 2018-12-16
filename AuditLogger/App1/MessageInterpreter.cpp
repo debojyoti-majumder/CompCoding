@@ -12,7 +12,5 @@ DSPMessage MessageInterpreter::getDSPMessage() const {
 }
 
 GPIOMessage MessageInterpreter::getGpioMessage() const {
-	GPIOMessage m;
-
-	return m;
+	return GPIOMessage{};
 }
