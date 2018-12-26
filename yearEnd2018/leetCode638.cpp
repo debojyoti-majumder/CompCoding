@@ -10,6 +10,11 @@ using namespace std;
 class Solution {
 private:
 	bool isOfferApplicable(const vector<int>& offer, const vector<int>& need) {
+		for (size_t i = 0; i < need.size(); i++) {
+			if (offer[i] > need[i])
+				return false;
+		}
+
 		return true;
 	}
 
@@ -24,6 +29,7 @@ public:
 			return 0;
 
 		vector<int> shoppingValues;
+		bool offerApplied = false;
 
 		// Going through each offer
 		for (const auto& offer : special) {
@@ -34,12 +40,18 @@ public:
 				// Reducing the need
 				auto newNeed{ needs };
 				for (size_t i = 0; i < newNeed.size(); i++) {
-
+					newNeed[i] -= offer[i];
 				}
 
 				// Recursive call
-				shoppingValues.emplace_back(shoppingOffers(price, special, newNeed));
+				auto shopVal{ shoppingOffers(price, special, newNeed) + offer[offer.size() - 1] };
+				shoppingValues.emplace_back(shopVal);
+				offerApplied = true;
 			};
+		}
+
+		if (false == offerApplied) {
+			auto firstItem{ *isNonZero };
 		}
 
 		// Returning the minimum element
