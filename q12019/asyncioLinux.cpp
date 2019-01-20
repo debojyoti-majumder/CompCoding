@@ -27,30 +27,63 @@ class LinuxFileDescriptor {
         }
 
         friend class AsyncRequest;
+        friend class SyncFileStream;
 };
 
 class AsyncRequest {
     private:
         aiocb _blockRequest;
+        int _blockSize;
 
     public:
-        AsyncRequest(int blockSize, const LinuxFileDescriptor& desp, long blockCount) {
+        AsyncRequest(const LinuxFileDescriptor& desp, int blockSize) {
             memset(&_blockRequest, 0 , sizeof(aiocb));
             
             // Setting up the requets
             _blockRequest.aio_nbytes = blockSize;
             _blockRequest.aio_fildes = desp._descriptor;
-            _blockRequest.aio_offset = blockSize * blockCount;
             _blockRequest.aio_buf = new char[blockSize];
+
+            _blockSize = blockSize;
         }
 
         ~AsyncRequest() {
-            delete[] _blockRequest.aio_buf;
         }
 
-        void read() {
+        void enQueueRead(int blockNumber) {
+            _blockRequest.aio_offset = _blockSize * blockNumber;
+            auto ret = aio_read(&_blockRequest);
 
+            if( ret == -1 )
+                throw "Read request creation error";
         }
+};
+
+class SyncFileStream {
+    private:
+        const LinuxFileDescriptor& _fd;
+        int _blockSize;
+        int _count;
+    public:
+        SyncFileStream(const LinuxFileDescriptor& fd) : _fd(fd) {
+            _blockSize = 512;
+            _count = 0;
+        }
+
+        bool read() {
+            auto buff = new char[_blockSize];
+
+            auto ret = ::read(_fd._descriptor, buff,_blockSize);
+            if( ret == 0 )
+                return false;
+
+            _count++;
+            delete[] buff;
+
+            return true;
+        }
+
+        int getCount() const { return _count; }
 };
 
 int main(int argc, char** argv) {
@@ -63,7 +96,10 @@ int main(int argc, char** argv) {
     }
 
     LinuxFileDescriptor file(argv[1]);
-    AsyncRequest req(512,file,0);
+    AsyncRequest req(file, 512);
+    SyncFileStream sreq(file);
 
+    while( sreq.read() );
+    cout << "Read count " << sreq.getCount() << endl;
     return 0;
 }
