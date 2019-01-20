@@ -15,6 +15,7 @@
 #include <sstream>
 #include <vector>
 #include <thread>
+#include <algorithm>
 
 using namespace std;
 
@@ -66,13 +67,16 @@ class LinuxFileDescriptor {
 
 class AsyncRequest {
     private:
-        aiocb _blockRequest;
-        int _blockSize;
+        aiocb   _blockRequest;
+        int     _blockSize;
+        bool    _isCompleted;
 
         void setupBuffer() {
             // Setting up the requets
             _blockRequest.aio_nbytes = _blockSize;
             _blockRequest.aio_buf = new char[_blockSize];
+
+            _isCompleted = false;
         }
 
     public:
@@ -82,7 +86,7 @@ class AsyncRequest {
 
             _blockSize = blockSize;
             _blockRequest.aio_fildes = desp._descriptor;
-            
+
             setupBuffer();
         }
 
@@ -107,8 +111,9 @@ class AsyncRequest {
                 throw "Read request creation error";
         }
 
-        bool isCompleted() const {
-            return aio_error(&_blockRequest) == 0 ? true : false;
+        bool isCompleted() {
+            _isCompleted = aio_error(&_blockRequest) == 0 ? true : false;
+            return _isCompleted;
         }
 };
 
@@ -155,11 +160,12 @@ void processReadRequests(vector<AsyncRequest>& readRequets, int offset = 0) {
     }
 
     auto doneCount = 0;
-    while(doneCount < readRequets.size() ) {
+    while( readRequets.size() ) {
         this_thread::sleep_for(std::chrono::milliseconds(10));
-        for(auto& rec: readRequets) {
-            if( rec.isCompleted() ) doneCount++;
-        }
+        readRequets.erase(remove_if(readRequets.begin(), readRequets.end(),
+            [](AsyncRequest& x) { 
+                return x.isCompleted();
+            }), readRequets.end());
     }
 }
 
