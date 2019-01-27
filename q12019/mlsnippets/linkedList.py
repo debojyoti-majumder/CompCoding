@@ -35,14 +35,30 @@ class LinkedList:
             print(it.getData())
             it = it.getNext()
 
-    def 
+    def findItem(self, data):
+        iterator = self.head
+
+        while iterator != None:
+            if iterator.data == data:
+                return iterator
+
+            iterator = iterator.getNext()
+
+        return None
+            
 
 
 print("Testing out linked list")
 myList = LinkedList(40)
 
+# Adding some dummy data
 myList.addData(23)
 myList.addData(45)
 myList.addData(34)
 
+# Simple iteration
 myList.printAll()
+
+# Finding element in the list
+print(myList.findItem(45))
+print(myList.findItem(15))
