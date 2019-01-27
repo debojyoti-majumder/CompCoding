@@ -1,3 +1,4 @@
+# Simple Linked list implmentation to understand python
 class Node:
     def __init__(self, data = None):
         self.data = data
@@ -32,8 +33,11 @@ class LinkedList:
         it = self.head
 
         while it != None:
-            print(it.getData())
+            print(it.getData(), end=" ")
             it = it.getNext()
+        
+        # Just a new line feed
+        print()
 
     def findItem(self, data):
         iterator = self.head
@@ -45,6 +49,23 @@ class LinkedList:
             iterator = iterator.getNext()
 
         return None
+
+    def deleteData(self, data):
+        # If the node is the first node
+        if self.head.data == data:
+            self.head = self.head.getNext()
+        elif self.head.getNext() != None:
+            iterator = self.head
+            nextNode = iterator.getNext()
+
+            while nextNode != None:
+                # Node found, link needs destoying
+                if nextNode.getData() == data:
+                    iterator.setNext(nextNode.getNext())
+
+                # Both reference it updated
+                iterator = iterator.getNext()
+                nextNode = nextNode.getNext()
             
 
 
@@ -62,3 +83,23 @@ myList.printAll()
 # Finding element in the list
 print(myList.findItem(45))
 print(myList.findItem(15))
+
+# Removing element from the list
+myList.deleteData(23)
+myList.deleteData(34)
+myList.printAll()
+
+# Removing the first node
+print("After head removed")
+myList.deleteData(40)
+myList.printAll()
+
+print("With bad data and head removed, list should be empty")
+myList.deleteData(30)
+myList.deleteData(45)
+myList.printAll()
+
+print("Again adding some data")
+myList.addData(10)
+myList.addData(20)
+myList.printAll()
