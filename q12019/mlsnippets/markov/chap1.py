@@ -1,3 +1,5 @@
+# This file has a basic implementation of Markov process 
+
 import numpy as np
 
 class EqualProbProcess:
