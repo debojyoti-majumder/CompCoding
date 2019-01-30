@@ -38,9 +38,28 @@ private:
             default:
                 break;
         }
+
+        return newPosition;
     }
 
     bool isValidPos(const pair<int,int>& pos) {
+        auto rowCount = _visitedMatrix.size();
+        if( rowCount == 0 )
+            return false;
+
+        // If visted then not valid
+        if( _visitedMatrix[pos.first][pos.second] ) 
+            return false;
+                    
+        // Bound checking for row
+        if( pos.first < 0 || pos.first >= rowCount )
+            return false;
+        
+        // Bound checking for column
+        auto colCount = _visitedMatrix[0].size();
+        if( pos.second < 0 || pos.second >= colCount )
+            return false;
+
         return true;
     }
 
@@ -50,9 +69,22 @@ private:
 
     bool getNextPos() {
         auto validPosFound = false;
+        
+        // Looking for next valid position
         for(int i=0; i<4; i++) {
+            auto nextPos = getNextIndex();
+            auto isValid = isValidPos(nextPos);
 
+            // Don't have to look for other position
+            if( isValid ) {
+                _currentPos = nextPos;
+                validPosFound = true;
+                break;
+            }
+            else 
+                changeDirection();
         }
+
         return validPosFound;
     }
 
@@ -63,6 +95,7 @@ public:
         _direction = 1;
         _currentPos.first = 0, _currentPos.second = 0;
 
+        // Initilizing the visited matrix
         for(const auto& row: matrix) 
             _visitedMatrix.emplace_back(vector<bool>(row.size(), false));
 
@@ -88,6 +121,6 @@ int main() {
     for( const auto& item : iter )
         cout << item << " ";
     cout << endl;
-    
+
     return 0;
 }
