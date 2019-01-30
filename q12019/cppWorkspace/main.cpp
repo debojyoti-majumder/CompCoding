@@ -63,6 +63,9 @@ public:
         _direction = 1;
         _currentPos.first = 0, _currentPos.second = 0;
 
+        for(const auto& row: matrix) 
+            _visitedMatrix.emplace_back(vector<bool>(row.size(), false));
+
         do {
             returnCollection.emplace_back(matrix[_currentPos.first][_currentPos.second]);
             _visitedMatrix[_currentPos.first][_currentPos.second] = true;
@@ -73,5 +76,18 @@ public:
 };
 
 int main() {
+    vector<vector<int>> testCase1{
+        vector<int> {1,2,3},
+        vector<int> {4,5,6},
+        vector<int> {7,8,9}
+    };
+
+    Solution s;
+    auto iter = s.spiralOrder(testCase1);
+
+    for( const auto& item : iter )
+        cout << item << " ";
+    cout << endl;
+    
     return 0;
 }
