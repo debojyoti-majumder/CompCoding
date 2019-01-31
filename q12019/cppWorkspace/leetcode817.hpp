@@ -19,7 +19,7 @@ public:
 	}
 };
 
-int testmain() {
+void testSolution() {
 	ListNode* head = new ListNode(0);
 	auto it = head;
 
@@ -32,7 +32,4 @@ int testmain() {
 	vector<int> links{ 0,3,1,4 };
 
 	cout << s.numComponents(head, links) << endl;
-	
-	// TODO: Memory freeing although not part of my problem
-	return 0;
 }
