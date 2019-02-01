@@ -15,41 +15,32 @@ struct ListNode {
 class Solution {
 public:
 	int numComponents(ListNode* head, vector<int>& G) {
-		auto listComponent{ G };
+		auto listComponent{ G };		// Simple copy wan't keep the function parameter as it is
 		auto it = head;
 		int componentCount = 0;
 
 		while (it != nullptr) {
 			auto val = it->val;
+			auto firstElement = find(listComponent.begin(), listComponent.end(), val);
 
-			if (it->next != nullptr) {
-				auto nextVal = it->next->val;
+			if (firstElement != listComponent.end()) {
+				componentCount++;
+				listComponent.erase(firstElement);
 
-				auto element1 = find(listComponent.begin(), listComponent.end(), val);
-				auto element2 = find(listComponent.begin(), listComponent.end(), nextVal);
+				if (it->next != nullptr) {
+					auto nextVal = it->next->val;
+					auto secondElement = find(listComponent.begin(), listComponent.end(), nextVal);
 
-				// If both the element is found then we have got a component
-				if (element1 != listComponent.end() && element2 != listComponent.end()) {
-					// Adding to the component count
-					componentCount++;
-
-					// Erasing those two elements
-					listComponent[element1 - listComponent.begin()] = -1;
-					listComponent[element2 - listComponent.begin()] = -1;
-					
-					// This should double icrement
-					it = it->next;
+					// We have got a pair hence treated as one component
+					if (secondElement != listComponent.end()) {
+						listComponent.erase(secondElement);
+						it = it->next;
+					}
 				}
 			}
 
 			it = it->next;
 		}
-
-		auto deletedCount = count_if(listComponent.begin(), listComponent.end(), [](int item) {
-			return item == -1;
-		});
-
-		if (deletedCount == listComponent.size() - 1)	componentCount++;
 
 		return componentCount;
 	}
@@ -59,13 +50,13 @@ int main() {
 	ListNode* head = new ListNode(0);
 	auto it = head;
 
-	for (int i = 1; i <= 4; i++) {
+	for (int i = 1; i <= 10; i++) {
 		it->next = new ListNode(i);
 		it = it->next;
 	}
 
 	Solution s;
-	vector<int> links{ 0,3,1,4 };
+	vector<int> links{ 0,3,1,10 };
 
 	// Should output 2
 	cout << s.numComponents(head, links) << endl;
