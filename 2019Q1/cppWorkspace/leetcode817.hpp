@@ -1,20 +1,42 @@
 // Problem URL: https://leetcode.com/problems/linked-list-components/
 
+#include "pch.h"
+
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <unordered_set>
 
 using namespace std;
 
+template <typename T>
 struct ListNode {
-	int val;
+	T val;
 	ListNode *next;
-	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(T x) : val(x), next(nullptr) {}
 };
 
-class Solution {
+template <typename T>
+ListNode<T>* createSingleList(initializer_list<T> listOfItems) {
+	ListNode<T>* head = nullptr, *it = nullptr;
+
+	for (const auto&item : listOfItems) {
+		if (head == nullptr) {
+			head = new ListNode<T>(item);
+			it = head;
+			continue;
+		}
+
+		it->next = new ListNode<T>(item);
+		it = it->next;
+	}
+
+	return head;
+}
+
+class OldSolution {
 public:
-	int numComponents(ListNode* head, vector<int>& G) {
+	int numComponents(ListNode<int>* head, vector<int>& G) {
 		auto listComponent{ G };		// Simple copy wan't keep the function parameter as it is
 		auto it = head;
 		int componentCount = 0;
@@ -46,21 +68,41 @@ public:
 	}
 };
 
-int main() {
-	ListNode* head = new ListNode(0);
-	auto it = head;
+class Solution {
+public:
+	int numComponents(ListNode<int>* head, vector<int>& G) {
+		auto count = (int)G.size();
+		unordered_set<int> hashSet;
 
-	for (int i = 1; i <= 10; i++) {
-		it->next = new ListNode(i);
-		it = it->next;
+		for (const auto& item : G)
+			hashSet.insert(item);
+
+		if (head == nullptr)
+			return 0;
+
+		for (auto it = head; it->next != nullptr; it=it->next) {
+			auto val = hashSet.count(it->val);
+			auto nextVal = hashSet.count(it->next->val);
+
+			if (val && nextVal ) count--;
+		}
+
+		return count;
 	}
+};
 
-	Solution s;
-	vector<int> links{ 0,3,1,10 };
+int testFunction() {
+	auto list = createSingleList({ 1,2,0,4,3 });
 
-	// Should output 2
-	cout << s.numComponents(head, links) << endl;
+	OldSolution s;
+	vector<int> links{ 3,4,0,2,1 };
+
+	// Should output 1
+	cout << s.numComponents(list, links) << "Output\n";
 	
+	Solution s2;
+	cout << "Hast set impl:" << s2.numComponents(list, links);
+
 	// TODO: Memory freeing although not part of my problem
 	return 0;
 }
