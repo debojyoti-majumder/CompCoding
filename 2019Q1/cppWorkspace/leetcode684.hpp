@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -35,7 +36,19 @@ private:
 	vector<TreeNode*> _nodes;
 	
 	TreeNode* findOrAddNodes(int nodeId) {
-		return nullptr;
+		auto node = find_if(_nodes.begin(), _nodes.end(), [&](auto n) {
+			n->ndValue == nodeId;
+		});
+
+		// If found retrun the exsisting node
+		if (node != _nodes.end())
+			return *node;
+
+		// Allocating the node
+		auto newNode = new TreeNode(nodeId);
+		_nodes.emplace_back(newNode);
+
+		return newNode;
 	}
 
 	void makeConnection(TreeNode* node1, TreeNode* node2) {
@@ -47,9 +60,9 @@ private:
 
 public:
 	vector<int> findRedundantConnection(vector<vector<int>>& edges) {
-		vector<int> redundentEdge{-1,1};
-		
+		vector<int> redundentEdge{-1,1};		
 
+		// Going through each edge and building the tree
 		for (const auto& edge : edges) {
 			if (edge.size() != 2)
 				return vector<int>{-1, -1};
@@ -59,6 +72,11 @@ public:
 		}
 
 		return redundentEdge;
+	}
+
+	~Solution() {
+		for (auto ptr : _nodes)
+			delete ptr;
 	}
 };
 
