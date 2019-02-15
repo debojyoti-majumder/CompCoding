@@ -6,29 +6,56 @@
 
 #include <iostream>
 #include <vector>
-#include <set>
 
 using namespace std;
 
-struct NodeState {
+struct TreeNode {
 	int ndValue;
-	bool isVisited;
+	struct TreeNode *left;
+	struct TreeNode *right;
 
-	explicit NodeState(int val) : ndValue(val), isVisited(false) {}
+	explicit TreeNode(int val) : ndValue(val), left(nullptr), right(nullptr) {}
+
+	bool addConnection(TreeNode* nd) {
+		if (nd->left == nullptr) {
+			nd->left = nd;
+			return true;
+		}
+		else if (nd->right == nullptr) {
+			nd->right = nd;
+			return true;
+		}
+		else
+			return false;
+	}
 };
 
 class Solution {
+private:
+	vector<TreeNode*> _nodes;
+	
+	TreeNode* findOrAddNodes(int nodeId) {
+		return nullptr;
+	}
+
+	void makeConnection(TreeNode* node1, TreeNode* node2) {
+		if( node1 != nullptr && node2 != nullptr ) {
+			node1->addConnection(node2);
+			node2->addConnection(node1);
+		}
+	}
+
 public:
 	vector<int> findRedundantConnection(vector<vector<int>>& edges) {
 		vector<int> redundentEdge{-1,1};
-		set<NodeState> nodes;
+		
 
 		for (const auto& edge : edges) {
 			if (edge.size() != 2)
 				return vector<int>{-1, -1};
 
-			NodeState firstNode{ edge[0] };
-			NodeState secondNode{ edge[1] };
+			auto nd1 = findOrAddNodes(edge[0]);
+			auto nd2 = findOrAddNodes(edge[1]);
 		}
 
 		return redundentEdge;
