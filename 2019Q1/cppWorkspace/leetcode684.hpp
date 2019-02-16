@@ -7,6 +7,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <queue>
+#include <set>
 
 using namespace std;
 
@@ -18,12 +20,12 @@ struct TreeNode {
 	explicit TreeNode(int val) : ndValue(val), left(nullptr), right(nullptr) {}
 
 	bool addConnection(TreeNode* nd) {
-		if (nd->left == nullptr) {
-			nd->left = nd;
+		if (left == nullptr) {
+			left = nd;
 			return true;
 		}
-		else if (nd->right == nullptr) {
-			nd->right = nd;
+		else if (right == nullptr) {
+			right = nd;
 			return true;
 		}
 		else
@@ -37,7 +39,7 @@ private:
 	
 	TreeNode* findOrAddNodes(int nodeId) {
 		auto node = find_if(_nodes.begin(), _nodes.end(), [&](auto n) {
-			n->ndValue == nodeId;
+			return n->ndValue == nodeId;
 		});
 
 		// If found retrun the exsisting node
@@ -58,6 +60,34 @@ private:
 		}
 	}
 
+	// Should return the redundent edges
+	pair<int,int> performBFS(TreeNode* root) {
+		queue<TreeNode*> pendingVisitQueue;
+		set<int> nodeIdSet;
+
+		pendingVisitQueue.push(root);
+
+		while (pendingVisitQueue.empty() == false) {
+			auto currentNode = pendingVisitQueue.front();
+			pendingVisitQueue.pop();
+
+			if (currentNode->left != nullptr)
+				pendingVisitQueue.push(currentNode->left);
+
+			if (currentNode->right != nullptr)
+				pendingVisitQueue.push(currentNode->right);
+
+			auto count = nodeIdSet.count(currentNode->ndValue);
+			if (count != 0) {
+				return pair<int, int>{currentNode->ndValue, -1};
+			}
+
+			nodeIdSet.insert(currentNode->ndValue);
+		}
+
+		return pair<int, int> {-1, -1};
+	}
+
 public:
 	vector<int> findRedundantConnection(vector<vector<int>>& edges) {
 		vector<int> redundentEdge{-1,1};		
@@ -69,7 +99,17 @@ public:
 
 			auto nd1 = findOrAddNodes(edge[0]);
 			auto nd2 = findOrAddNodes(edge[1]);
+
+			// This is unidirecrional connection
+			makeConnection(nd1, nd2);
 		}
+
+		// Handling zero input cases
+		if (_nodes.size() == 0)
+			return redundentEdge;
+
+		// Can choose any arbitary node
+		performBFS(_nodes[0]);
 
 		return redundentEdge;
 	}
