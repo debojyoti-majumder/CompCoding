@@ -14,10 +14,11 @@ using namespace std;
 
 struct TreeNode {
 	int ndValue;
-	struct TreeNode *left;
-	struct TreeNode *right;
+	struct TreeNode* parent;
+	struct TreeNode* left;
+	struct TreeNode* right;
 
-	explicit TreeNode(int val) : ndValue(val), left(nullptr), right(nullptr) {}
+	explicit TreeNode(int val) : ndValue(val), left(nullptr), right(nullptr), parent(nullptr) {}
 
 	bool addConnection(TreeNode* nd) {
 		if (left == nullptr) {
@@ -32,11 +33,8 @@ struct TreeNode {
 			return false;
 	}
 
-	bool isConnected(TreeNode* otherNode) {
-		if (left == otherNode || right == otherNode)
-			return true;
-		else
-			return false;
+	inline void makeParent(struct TreeNode* nd) {
+		parent = nd;
 	}
 };
 
@@ -64,6 +62,8 @@ private:
 		if( node1 != nullptr && node2 != nullptr ) {
 			node1->addConnection(node2);
 			node2->addConnection(node1);
+
+			node2->makeParent(node1);
 		}
 	}
 
@@ -81,11 +81,11 @@ private:
 			auto leftNode = currentNode->left;
 			auto rightNode = currentNode->right;
 
-			if (leftNode != nullptr && !leftNode->isConnected(currentNode)) {
+			if ( leftNode != nullptr && leftNode != currentNode->parent ) {
 				pendingVisitQueue.push(leftNode);
 			}
 
-			if (rightNode != nullptr && !rightNode->isConnected(currentNode)) {
+			if ( rightNode != nullptr && rightNode != currentNode->parent ) {
 				pendingVisitQueue.push(rightNode);
 			}
 
@@ -102,7 +102,7 @@ private:
 
 public:
 	vector<int> findRedundantConnection(vector<vector<int>>& edges) {
-		vector<int> redundentEdge{-1,1};		
+		_nodes.clear();
 
 		// Going through each edge and building the tree
 		for (const auto& edge : edges) {
@@ -114,18 +114,12 @@ public:
 
 			// This is unidirecrional connection
 			makeConnection(nd1, nd2);
-
-			if (detectLoop(nd1) == true) {
-				redundentEdge = edge;
-				break;
-			}
+			
+			auto isLoopPresent = detectLoop(nd1);
+			if (isLoopPresent) return edge;
 		}
 
-		// Handling zero input cases
-		if (_nodes.size() == 0)
-			return redundentEdge;
-
-		return redundentEdge;
+		return vector<int>{-1, -1};
 	}
 
 	~Solution() {
@@ -139,12 +133,22 @@ int main() {
 		{1,2}, {1,3}, {2,3}
 	};
 
+	vector<vector<int>> input2 = {
+			{1, 2}, { 2, 3}, { 3, 4}, { 1, 4}, { 1, 5 }
+	};
+	
+	vector<vector<int>> input3{ {1,3},{3,4},{1,5},{3,5},{2,3} };
+
 	Solution sol;
 	auto ret = sol.findRedundantConnection(input1);
-
-	if (ret.size() != 2)
-		return -1;
-
 	cout << ret[0] << ", " << ret[1] << "\n";
+
+	ret = sol.findRedundantConnection(input2);
+	cout << ret[0] << ", " << ret[1] << "\n";
+
+	// Should output 3,5, test case failing
+	ret = sol.findRedundantConnection(input3);
+	cout << ret[0] << ", " << ret[1] << "\n";
+
 	return 0;
 }
