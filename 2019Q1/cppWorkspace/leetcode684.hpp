@@ -31,6 +31,13 @@ struct TreeNode {
 		else
 			return false;
 	}
+
+	bool isConnected(TreeNode* otherNode) {
+		if (left == otherNode || right == otherNode)
+			return true;
+		else
+			return false;
+	}
 };
 
 class Solution {
@@ -61,7 +68,7 @@ private:
 	}
 
 	// Should return the redundent edges
-	pair<int,int> performBFS(TreeNode* root) {
+	bool detectLoop(TreeNode* root) {
 		queue<TreeNode*> pendingVisitQueue;
 		set<int> nodeIdSet;
 
@@ -71,21 +78,26 @@ private:
 			auto currentNode = pendingVisitQueue.front();
 			pendingVisitQueue.pop();
 
-			if (currentNode->left != nullptr)
-				pendingVisitQueue.push(currentNode->left);
+			auto leftNode = currentNode->left;
+			auto rightNode = currentNode->right;
 
-			if (currentNode->right != nullptr)
-				pendingVisitQueue.push(currentNode->right);
+			if (leftNode != nullptr && !leftNode->isConnected(currentNode)) {
+				pendingVisitQueue.push(leftNode);
+			}
+
+			if (rightNode != nullptr && !rightNode->isConnected(currentNode)) {
+				pendingVisitQueue.push(rightNode);
+			}
 
 			auto count = nodeIdSet.count(currentNode->ndValue);
 			if (count != 0) {
-				return pair<int, int>{currentNode->ndValue, -1};
+				return true;
 			}
 
 			nodeIdSet.insert(currentNode->ndValue);
 		}
 
-		return pair<int, int> {-1, -1};
+		return false;
 	}
 
 public:
@@ -102,14 +114,16 @@ public:
 
 			// This is unidirecrional connection
 			makeConnection(nd1, nd2);
+
+			if (detectLoop(nd1) == true) {
+				redundentEdge = edge;
+				break;
+			}
 		}
 
 		// Handling zero input cases
 		if (_nodes.size() == 0)
 			return redundentEdge;
-
-		// Can choose any arbitary node
-		performBFS(_nodes[0]);
 
 		return redundentEdge;
 	}
