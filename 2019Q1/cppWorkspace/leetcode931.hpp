@@ -3,16 +3,28 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <unordered_map>
 
 using namespace std;
 
 typedef pair<size_t, size_t> MatrixLocation;
+
+struct pair_hash {
+	template <class T1, class T2>
+	std::size_t operator () (const std::pair<T1, T2> &p) const {
+		auto h1 = std::hash<T1>{}(p.first);
+		auto h2 = std::hash<T2>{}(p.second);
+
+		return h1 ^ h2;
+	}
+};
 
 class Solution {
 private:
 	vector<vector<int>> _matrix;
 	size_t _rowSize;
 	size_t _colSize;
+	unordered_map<MatrixLocation,int,pair_hash> _valueLookup;
 
 	vector<MatrixLocation> getPossiblePaths(MatrixLocation currentLocation) {
 		vector<MatrixLocation> possiblePath;
@@ -40,9 +52,20 @@ private:
 
 		if (depth != _rowSize - 1) {
 			for (const auto& point : paths) {
-				// Cacluting the lower path cost
-				auto newPath{ getPossiblePaths(point) };
-				auto cost = getMinCost(newPath);
+				auto it = _valueLookup.find(point);
+				int cost;
+
+				if( it == _valueLookup.end() ) {
+					// Cacluting the lower path cost if lookup failed
+					auto newPath{ getPossiblePaths(point) };
+					cost = getMinCost(newPath);
+
+					// Adding to the cache
+					_valueLookup.insert(make_pair(point, cost));
+				}
+				else {
+					cost = it->second;
+				}
 
 				// Adding the cost of the node also
 				cost += _matrix[point.first][point.second];
@@ -77,7 +100,7 @@ public:
 	}
 };
 
-int main() {
+int testSolution() {
 	Solution s;
 
 	vector<vector<int>> input1 = { {1,2,3}, {4,5,6}, {7,8,9} };
