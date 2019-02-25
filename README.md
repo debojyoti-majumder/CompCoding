@@ -4,8 +4,9 @@ To see solved example please look into the closed issue section, that is where a
 
 If you want me to solve any perticual problem please create an issue using this link https://github.com/debojyoti-majumder/CompCoding/issues
 
-// Problems To be looked later based on #347
-// https://leetcode.com/problems/top-k-frequent-words/
-// https://leetcode.com/problems/split-array-into-consecutive-subsequences/
-// https://leetcode.com/problems/sort-characters-by-frequency/
-// https://leetcode.com/problems/kth-largest-element-in-an-array/
+Problems To be looked later based on #347 and issues to be created 
+
+- https://leetcode.com/problems/top-k-frequent-words/
+- https://leetcode.com/problems/split-array-into-consecutive-subsequences/
+- https://leetcode.com/problems/sort-characters-by-frequency/
+- https://leetcode.com/problems/kth-largest-element-in-an-array/
