@@ -3,76 +3,40 @@
 // Issue ID: 14
 
 #include <vector>
-#include <queue>
+#include <unordered_map>
+#include <algorithm>
 #include <iostream>
 
 using namespace std;
 
-struct HeapNode {
-	int item;
-	int itemCount;
-
-	HeapNode* left;
-	HeapNode* right;
-
-	HeapNode(int val) : item(val), itemCount(0), left(nullptr), right(nullptr) {}
-};
-
 class Solution {
 private:
-	vector<HeapNode*> heapNodes;
-
-	vector<int> getVectorFromHeap() {
-		vector<int> items;
-		for (const auto& nd : heapNodes)
-			items.emplace_back(nd->item);
-
-		return items;
-	}
-
-	void addElementtoHeap(HeapNode* node, int val) {
-		if (node == nullptr)
-			return;
-
-		// Uninitilized node
-		if (node->item == 0 && node->itemCount == 0) {
-			node->item = val;
-			node->itemCount = 1;
-			return;
-		}
-
-		// If the same value increment count
-		if (node->item == val) {
-			node->itemCount += 1;
-			return;
-		}
-
-		if (val < node->item)
-			addElementtoHeap(node->left, val);
-		else
-			addElementtoHeap(node->right, val);
-	}
 
 public:
 	vector<int> topKFrequent(vector<int>& nums, int k) {
-		
-		for (auto i = 0; i < k; i++)
-			heapNodes.emplace_back(new HeapNode(0));
+		unordered_map<int, int> valuecount;
+		vector<pair<int, int>> freqencyVector;
+		vector<int> returnValue;
 
-		for (int i = 0; i < (int)(k / 2); i++) {
-			auto leftIndex = 2 * i + 1;
-			auto rightIdnex = 2 * i + 2;
-
-			if (leftIndex < k)	heapNodes[i]->left = heapNodes[leftIndex];
-			if (rightIdnex < k) heapNodes[i]->right = heapNodes[rightIdnex];
+		for (const auto& number : nums) {
+			auto it = valuecount.find(number);
+			if (it != valuecount.end())
+				it->second += 1;
+			else
+				valuecount.insert(make_pair(number, 1));
 		}
+		
+		for (const auto& item : valuecount)
+			freqencyVector.emplace_back(item);
 
-		// Always adding from the root
-		for (const auto& item : nums)
-			addElementtoHeap(heapNodes[0], item);
+		sort(freqencyVector.begin(), freqencyVector.end(), [](const auto& item1, const auto& item2){
+			return item1.second > item2.second;
+		});
 
-		// Returning the values in the node, not the nodes itself
-		return getVectorFromHeap();
+		for (size_t i = 0; i < k; i++)
+			returnValue.emplace_back(freqencyVector[i].first);
+
+		return returnValue;
 	}
 };
 
