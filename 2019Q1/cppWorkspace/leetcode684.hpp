@@ -1,5 +1,5 @@
-// LeetCodeWhiteBoard.cpp : This file contains the 'main' function. Program execution begins and ends there.
-// Problem URL: https://leetcode.com/problems/redundant-connection/
+// https://leetcode.com/problems/out-of-boundary-paths/
+// https://leetcode.com/problems/target-sum/
 
 #include <iostream>
 #include <vector>
@@ -27,9 +27,8 @@ struct LoopingException {
 class Solution {
 private:
 	map<int, GraphNode*>	_nodes;
-	set<int>				_vistsedList;
 
-	void buildNodes(vector<vector<int>>& edges) {
+	vector<int> buildNodes(vector<vector<int>>& edges) {
 		// Going through all the edges and building the graph
 		for (const auto& edge : edges) {
 			auto node1Id = edge[0];
@@ -55,20 +54,25 @@ private:
 			// This is because it's unidiretional graph
 			node1->addConnection(node2);
 			node2->addConnection(node1);
+
+			if (detectLoop())
+				return edge;
 		}
+
+		return vector<int> {-1, -1};
 	}
 
-	void performDFS(GraphNode* node, GraphNode* parent = nullptr ) {
+	void performDFS(GraphNode* node, set<int>& visitedList, GraphNode* parent = nullptr) {
 		if (node == nullptr)
 			return;
 
-		auto it = _vistsedList.count(node->value);
+		auto it = visitedList.count(node->value);
 
 		if (it == 0) {
-			_vistsedList.insert(node->value);
+			visitedList.insert(node->value);
 
 			for (auto& nd : node->childrens) {
-				if( nd != parent ) performDFS(nd, node);
+				if( nd != parent ) performDFS(nd, visitedList, node);
 			}
 		}
 		else {
@@ -76,34 +80,32 @@ private:
 			if (parent != nullptr)
 				ex.source = parent->value;
 
-			_vistsedList.clear();
+			visitedList.clear();
 			throw ex;
 		};
 	}
 
+private:
+	bool detectLoop() {
+		set<int> visitedList;
+
+		try {
+			auto startNode = _nodes.begin();
+			performDFS(startNode->second, visitedList);
+		}
+		catch (LoopingException& ex) {
+			return true;
+		}
+
+		visitedList.clear();
+		return false;
+	}
 public:
 	vector<int> findRedundantConnection(vector<vector<int>>& edges) {
 		// Doing the job of a constructor here
 		_nodes.clear();
-		_vistsedList.clear();
 		
-		vector<int> retVal{ -1,-1 };
-		buildNodes(edges);
-
-		try {
-			auto startNode = _nodes.begin();
-			performDFS(startNode->second);
-		}
-		catch(LoopingException& ex) {
-			for (auto it = edges.crbegin(); it != edges.crend(); it++) {
-				auto edge = *it;
-
-				if (edge[0] == ex.source || edge[1] == ex.source) {
-					retVal = edge;
-					break;
-				}
-			}
-		}
+		auto retVal = buildNodes(edges);
 
 		// Memory cleanup
 		for (auto& nd : _nodes)
