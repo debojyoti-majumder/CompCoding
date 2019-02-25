@@ -1,5 +1,4 @@
-// https://leetcode.com/problems/out-of-boundary-paths/
-// https://leetcode.com/problems/target-sum/
+// Problem URL: https://leetcode.com/problems/redundant-connection/
 
 #include <iostream>
 #include <vector>
@@ -55,7 +54,7 @@ private:
 			node1->addConnection(node2);
 			node2->addConnection(node1);
 
-			if (detectLoop())
+			if (detectLoop(node1))
 				return edge;
 		}
 
@@ -86,12 +85,11 @@ private:
 	}
 
 private:
-	bool detectLoop() {
+	bool detectLoop(GraphNode* nd) {
 		set<int> visitedList;
 
 		try {
-			auto startNode = _nodes.begin();
-			performDFS(startNode->second, visitedList);
+			performDFS(nd, visitedList);
 		}
 		catch (LoopingException& ex) {
 			return true;
