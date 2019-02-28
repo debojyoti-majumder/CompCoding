@@ -10,3 +10,6 @@ Problems To be looked later based on #347 and issues to be created
 - https://leetcode.com/problems/split-array-into-consecutive-subsequences/
 - https://leetcode.com/problems/sort-characters-by-frequency/
 - https://leetcode.com/problems/kth-largest-element-in-an-array/
+- https://leetcode.com/problems/house-robber/
+- https://leetcode.com/problems/house-robber-ii/
+- https://leetcode.com/problems/house-robber-iii/
