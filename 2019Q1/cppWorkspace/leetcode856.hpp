@@ -11,11 +11,28 @@ using namespace std;
 class Solution {
 private:
 	bool isBalanced(string expr) {
-		return true;
+		vector<char> symbolStack;
+
+		for (const auto& ch : expr) {
+			if (ch == '(') {
+				symbolStack.emplace_back(ch);
+			}
+			else if (ch == ')') {
+				if (symbolStack.size() == 0)
+					return false;
+
+				symbolStack.pop_back();
+			}
+		}
+		
+		auto bRet = symbolStack.size() == 0 ? true : false;
+		return bRet;
 	}
 
 public:
 	int scoreOfParentheses(string S) {
+		int score = 0;
+
 		if (S == "()")
 			return 1;
 
@@ -25,14 +42,37 @@ public:
 
 		if (firstChar == '(' && lastChar == ')') {
 			auto str = S.substr(1, inputLength - 2);
-			if (isBalanced(str))
-				return 2 * scoreOfParentheses(str);
+
+			// If not balanced then break into multiple component
+			if ( !isBalanced(str) ) {
+				vector<string> subComponents;
+				string accumulator{ "" };
+				int balance = 0;
+
+				for (const auto& ch : S) {
+					if (ch == '(')
+						balance += 1;
+					else if (ch == ')')
+						balance -= 1;
+
+					if (balance == 0) {
+						subComponents.emplace_back(accumulator);
+						accumulator = "";
+					}
+					else
+						accumulator += ch;
+				}
+
+				for (auto& component : subComponents) {
+					score += scoreOfParentheses(component);
+				}
+			}
 			else {
-				cout << "This is to be looked later" << endl;
+				score = 2 * scoreOfParentheses(str);
 			}
 		}
 
-		return -1;
+		return score;
 	}
 };
 
