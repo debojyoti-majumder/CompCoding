@@ -55,12 +55,12 @@ public:
 					else if (ch == ')')
 						balance -= 1;
 
+					accumulator += ch;
+
 					if (balance == 0) {
 						subComponents.emplace_back(accumulator);
 						accumulator = "";
 					}
-					else
-						accumulator += ch;
 				}
 
 				for (auto& component : subComponents) {
