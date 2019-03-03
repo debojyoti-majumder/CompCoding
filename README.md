@@ -23,9 +23,6 @@ This is a repository where I am solving problems from different online judges. T
 - https://leetcode.com/problems/top-k-frequent-words/
 - https://leetcode.com/problems/split-array-into-consecutive-subsequences/
 - https://leetcode.com/problems/sort-characters-by-frequency/
-- https://leetcode.com/problems/kth-largest-element-in-an-array/
-- https://leetcode.com/problems/house-robber/
-- https://leetcode.com/problems/house-robber-ii/
-- https://leetcode.com/problems/house-robber-iii/
+- https://leetcode.com/problems/kth-largest-element-in-an-array/ 
 - https://leetcode.com/problems/out-of-boundary-paths/
 - https://leetcode.com/problems/target-sum/
