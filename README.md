@@ -5,7 +5,7 @@ This is a repository where I am solving problems from different online judges. T
 # Finding your way around
 - To see solved example please look into the closed issue section by clicking [here](https://github.com/debojyoti-majumder/CompCoding/issues?q=is:issue%20is:closed), that is where all the submitted problems would be found. There is table of all solved problems also give the list of solutions. Clicking on the problem ID should take you to the problem source site.
 
-- Majority of the problems are solved using C++11/14 language set and using STL when ever possible. In the "Code Link" column should give you an hint in which language the problem have been implemented.
+- Majority of the problems are solved using C++11/14 language set and using STL when ever possible. In the "Code Link" column should give you an hint in which language the problem have been implemented. Looking at the commit histroy might help you to understand some common problems people face while solving a problem or what have worked and what did not.
 
 - If you want me to solve any particular problem please create an issue using this link https://github.com/debojyoti-majumder/CompCoding/issues. 
 
