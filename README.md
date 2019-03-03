@@ -17,8 +17,9 @@ This is a repository where I am solving problems from different online judges. T
 |[684](https://leetcode.com/problems/redundant-connection)| Redundant Connection | [cpp](https://github.com/debojyoti-majumder/CompCoding/blob/master/2019Q1/cppWorkspace/leetcode684.hpp) | DFS
 |[817](https://leetcode.com/problems/linked-list-components)| Linked List Components | [cpp](https://github.com/debojyoti-majumder/CompCoding/blob/master/2019Q1/cppWorkspace/leetcode817.hpp)
 |[347](https://leetcode.com/problems/top-k-frequent-elements)| Top K frequent element | [cpp](https://github.com/debojyoti-majumder/CompCoding/blob/master/2019Q1/cppWorkspace/leetcode347.hpp) | Hash map
+|[931](https://leetcode.com/problems/minimum-falling-path-sum/)| Minimum Falling Path Sum| [cpp](https://github.com/debojyoti-majumder/CompCoding/blob/master/2019Q1/cppWorkspace/leetcode931.hpp) | Dynamic Programming
 
-# Problem To Takeup
+# Problems To Takeup
 - https://leetcode.com/problems/top-k-frequent-words/
 - https://leetcode.com/problems/split-array-into-consecutive-subsequences/
 - https://leetcode.com/problems/sort-characters-by-frequency/
