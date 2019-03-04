@@ -18,6 +18,7 @@ This is a repository where I am solving problems from different online judges. T
 |[817](https://leetcode.com/problems/linked-list-components)| Linked List Components | [cpp](https://github.com/debojyoti-majumder/CompCoding/blob/master/2019Q1/cppWorkspace/leetcode817.hpp)
 |[347](https://leetcode.com/problems/top-k-frequent-elements)| Top K frequent element | [cpp](https://github.com/debojyoti-majumder/CompCoding/blob/master/2019Q1/cppWorkspace/leetcode347.hpp) | Hash map
 |[931](https://leetcode.com/problems/minimum-falling-path-sum/)| Minimum Falling Path Sum| [cpp](https://github.com/debojyoti-majumder/CompCoding/blob/master/2019Q1/cppWorkspace/leetcode931.hpp) | Dynamic Programming
+|[331](https://leetcode.com/problems/verify-preorder-serialization-of-a-binary-tree)| Verify Preorder Serialization of a Binary Tree| [cpp](https://github.com/debojyoti-majumder/CompCoding/blob/master/yearEnd2018/ses2/leetcode/prob12.cpp) | Queue
 
 # Problems To Takeup
 - https://leetcode.com/problems/top-k-frequent-words/
