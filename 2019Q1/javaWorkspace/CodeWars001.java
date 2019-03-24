@@ -2,8 +2,6 @@
 
 import java.util.Vector;
 
-import com.sun.crypto.provider.BlowfishKeyGenerator;
-
 public class CodeWars001 {
     public static class BattleField {
         private class Position {
@@ -41,7 +39,7 @@ public class CodeWars001 {
                     index = index + 1;
                 }
 
-                end.y = index;
+                end.y = index - 1;
             } else {
                 end.y = s.y;
                 int index = s.x;
@@ -50,21 +48,21 @@ public class CodeWars001 {
                     index = index + 1;
                 }   
 
-                end.x = index;
+                end.x = index - 1;
             }
 
             return new Blocks(s, end, isHorizontal);
         }
 
-        private boolean isValidBlock(int[][] field, Block b) {
+        private boolean isValidBlock(int[][] field, Blocks b) {
             return false;
         }
 
         public boolean fieldValidator(int[][] field) {
             if( field.length == 0 )
-                return 0;
+                return true;
 
-            blocksCopy = field.clone();
+            int[][] blocksCopy = field.clone();
             Vector<Blocks> blocks = new Vector<>();
 
             for( int i=0; i<blocksCopy.length; i++ ) {
