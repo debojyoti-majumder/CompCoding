@@ -2,6 +2,8 @@
 
 import java.util.Vector;
 
+import com.sun.crypto.provider.BlowfishKeyGenerator;
+
 public class CodeWars001 {
     public static class BattleField {
         private class Position {
@@ -17,62 +19,94 @@ public class CodeWars001 {
         private class Blocks {
             public Position start;
             public Position end;
+            public boolean isHorizontal;
 
-            public Blocks(Position s, Position e) {
+            public Blocks(Position s, Position e, boolean b) {
                 start = s;
                 end = e;
+                isHorizontal = b;
             }
         }
 
-        private Vector getBlocks(int[][] field, boolean isHorizontal) {
-            Vector blocks = new Vector<>();
+        private Blocks getBlock(int[][] field, boolean isHorizontal, Position s) { 
+            Position end = new Position();
             int rows = field.length;
             int cols = field[0].length;
-                
+
             if( isHorizontal ) {
-                for(int i=0; i<rows; i++) {
-                    Position start = new Position();
-                    Position end = new Position();
-
-                    start.x = i;
-                    end.x = i;
-
-                    for( int j=0; j<cols; j++ ) {
-                        if( field[i][j] == 1 ) {
-                            if( start.y == -1 )
-                                start.y = j;
-                            end.y = j;
-                        } else if( end.y != -1 ) { 
-                            // This means a new block is starting again
-                            blocks.add(new Blocks(start, end));
-
-                            start.y = -1;
-                            end.y = -1;
-                        }
-                    }
-
-                    if( start.x != -1 && start.y != -1 ) {
-                        Blocks bl = new Blocks();
-                        bl.start = start;
-                        bl.end = end;
-
-                        blocks.add(bl);
-                    }
+                end.x = s.x;
+                int index = s.y;
+                
+                while( field[s.x][index] != 0 && index < cols) {
+                    index = index + 1;
                 }
 
-                return blocks;
+                end.y = index;
             } else {
+                end.y = s.y;
+                int index = s.x;
 
+                while( field[index][s.y] != 0 && index < rows ) {
+                    index = index + 1;
+                }   
+
+                end.x = index;
             }
 
-            return blocks;
+            return new Blocks(s, end, isHorizontal);
+        }
+
+        private boolean isValidBlock(int[][] field, Block b) {
+            return false;
         }
 
         public boolean fieldValidator(int[][] field) {
             if( field.length == 0 )
                 return 0;
 
-            return false;
+            blocksCopy = field.clone();
+            Vector<Blocks> blocks = new Vector<>();
+
+            for( int i=0; i<blocksCopy.length; i++ ) {
+                for(int j=0; j<blocksCopy[0].length - 1; j++) {    
+                    if( blocksCopy[i][j] == 1 && blocksCopy[i][j+1] == 1 ) {
+                        Position pos = new Position();
+                        pos.x = i;
+                        pos.y = j;
+
+                        Blocks b = this.getBlock(blocksCopy, true, pos);
+                        blocks.add(b);
+
+                        for(int m = b.start.y; m<=b.end.y; m++) {
+                            blocksCopy[b.start.x][m] = 0;   
+                        }
+                    }
+                }
+            }
+
+            for(int i=0; i<blocksCopy.length - 1; i++) {
+                for(int j=0; j<blocksCopy[0].length; j++) {
+                    if( blocksCopy[i][j] == 1 && blocksCopy[i+1][j] == 1 ) {
+                        Position pos = new Position();
+                        pos.x = i;
+                        pos.y = j;
+
+                        Blocks b = this.getBlock(blocksCopy, false, pos);
+                        blocks.add(b);
+
+                        for(int m=b.start.x; m<=b.end.x; m++) {
+                            blocksCopy[m][b.start.y] = 0;
+                        }
+                    } 
+                }
+            }
+
+            for( Blocks b : blocks ) {
+                if( isValidBlock(field, b) == false )
+                    return false;
+            }
+
+            return true;
         }
     }
 
