@@ -1,4 +1,5 @@
 // Problem URL: https://leetcode.com/problems/expressive-words/
+// Map is incorrect container to choose, to be fixed
 
 #include <string>
 #include <vector>
@@ -7,81 +8,32 @@
 
 using namespace std;
 
-// This can be replaced by a vector also
-typedef map<char,int> CharMap;
+typedef vector<pair<char,int>> CharSequence;
 
 class Solution {
 private:
-    CharMap getCharMap(string s) {
-        CharMap charMap;
-        
-        // Empty string won't be having map
-        if( s.length() == 0 ) {
-            return charMap;
-        }
+    CharSequence getCharSequence(const string& str) {
+        CharSequence seq;
 
-        char prevCh = s[0];
-        int currentCounter = 1;
-
-        for( size_t i=1; i<s.length(); i++ ) {
-            auto ch {s[i]};
-            
-            if( ch != prevCh ) {
-                charMap.insert(make_pair(prevCh, currentCounter));
-                prevCh = ch;
-                currentCounter = 1;
-            } else {
-                currentCounter++;
-            }
-        }
-
-        // This is for the last character
-        charMap.insert(make_pair(prevCh, currentCounter));
-        return charMap;
+        return seq;
     }
 
-    bool compareCharMap(const CharMap& lhs, const CharMap& rhs) {
-        // If sizes are not same then they are not going to be comapred 
-        auto sz = lhs.size();
-        if( sz != rhs.size() ) {
-            return false;
-        }
-
-        // Going through each letter
-        for(const auto& item : lhs ) {
-            auto it = rhs.find(item.first);
-            if( it == rhs.end() ) {
-                return false;
-            }
-
-            int sourceCount = item.second;
-            int targetCount = it->second;
-            
-            if( sourceCount > 2 ) {
-                continue;
-            }
-
-            if( sourceCount != targetCount )
-                return false;
-        }
-
+    bool compareCharSequence(const CharSequence& source, const CharSequence& target) {
         return true;
     }
 
 public:
     int expressiveWords(string S, vector<string>& words) {
-        auto sourceStrMap { getCharMap(S) };
-        int compareCounter = 0;
+        auto sourceSequence{ getCharSequence(S) };
+        int matchCounter = 0;
 
-        for(const auto& word: words) {
-            auto wordMap{ getCharMap(word)};
-            
-            if( compareCharMap(sourceStrMap, wordMap) ) {
-                compareCounter += 1;
-            } 
+        for(const auto& word : words) {
+            auto targetSequence { getCharSequence(word) };
+            if( compareCharSequence(sourceSequence, targetSequence) == 0 )
+                matchCounter++;
         }
 
-        return compareCounter;        
+        return matchCounter;
     }
 };
 
@@ -89,8 +41,49 @@ int main() {
     string inputWord{"heeeeeellloooo"};
     vector<string> possibleMatch{"hello", "hi", "helo"};
 
+    
     Solution s;
     cout << s.expressiveWords(inputWord, possibleMatch) << endl;
+    
+    // Should output zero
+    string testWord{"aaa"};
+    vector<string> match{"aaaa"};
+    cout << s.expressiveWords(testWord, match) << endl;
+    
+    string test2{"vvvppppeeezzzzztttttkkkkkkugggggbbffffffywwwwwwbbbccccddddddkkkkksssppppddpzzzzzhhhhbbbbbmmmy"};
+    vector<string> match2{
+                "vvpeezttkkuggbbfywwbbccddkkspdpzhbbmmyy",
+                "vvppeeztkkugbfywwbccddkksspdppzhhbmyy",
+                "vppezzttkkugbffyywbccddksspddpzhhbmy",
+                "vvppezztkugbffyywwbbccddkssppddpzzhhbbmmy",
+                "vvppezttkuggbfyywwbbcddkspdppzhhbmy",
+                "vppeezzttkkuugbfyywwbbccdkkssppdpzzhbbmy",
+                "vpeezztkkugbbffyywwbbccddkksppdpzzhhbbmmy",
+                "vppeeztkkuuggbffywbbccddkksppdppzhhbmyy",
+                "vpeeztkkuggbfyywbbccdksppdpzhbmy",
+                "vpeezztkkugbffywwbbccdkkssppddppzzhhbbmmy",
+                "vvpeztkkugbbfyywbcdkssppddpzzhhbbmyy",
+                "vpezztkugbbffyywwbcddksppddpzzhbbmy",
+                "vvpeezztkkugbbffywwbccdkkspddpzzhbmmyy",
+                "vvpeezzttkkuuggbbffyywbbccdkspdppzhhbmy",
+                "vvppeezztkkuggbbfywbcdkspdpzhhbmyy",
+                "vvppeezzttkkuugbffyywwbbccddkkspddpzzhbmyy",
+                "vppezztkuuggbffywwbcdksspdppzhhbmyy",
+                "vvppeezzttkuuggbffywbccddkksspddppzzhhbmmy",
+                "vvppezzttkuggbffywbbccdkspddppzzhhbmy",
+                "vvpezzttkuugbbfywwbccdkssppdpzhbbmmy",
+                "vvpeezzttkuugbbffyywbccdksppddppzhhbmyy",
+                "vpeezzttkkuggbbffywbccddksppddpzhhbbmy",
+                "vvpezttkuuggbffywwbbccddkspdppzhhbmmyy",
+                "vppeezzttkkuugbffywbccddksppddpzhhbmmyy",
+                "vvpezttkkuugbbfywbccdkspddppzzhbbmmy",
+                "vppezzttkkuugbbffywwbcddkssppddpzhhbmmy",
+                "vppezzttkugbfywbbcdksppddppzzhhbmyy",
+                "vppeeztkuggbbffywbbccdkkspddppzzhbbmmy",
+                "vvpeeztkuuggbbfywbcdkksspddppzhhbbmmyy","vpezttkkuuggbbffyywwbbcdksspddppzhhbmy","vpeezzttkkuuggbffywwbccdkksspddppzzhbmyy","vpezttkkuugbffyywbccdksspddppzhbbmmyy","vvppezztkugbbffyywbbccdkksppdppzhbmyy","vvpeezttkuggbbfyywwbbcddkksppdpzzhbbmyy","vvpeztkuuggbffyywbbccdkksspddppzzhbbmy","vppeezzttkugbbffyywbccddksppdppzzhbmmyy","vppeezttkkuugbbfywwbccddkksspdpzhhbmmy","vpeezzttkugbbffywbbccdkksspddppzhbbmyy","vpeezttkkuugbbfywbbccddksppddppzzhhbmmy","vpeezztkuuggbbffywwbbccddksspddpzzhhbbmmyy","vppeezttkkuggbbffyywwbccdksspdpzzhbmy","vpezzttkkuugbbfyywbbcdksspdppzzhbbmyy","vvppezttkkuggbbfyywbbccdkksspddpzhbbmyy","vvpezzttkuggbbffyywbbcdkksppdpzzhbmmyy","vvpeztkugbfywwbccddkkspddpzhhbbmyy","vvppezttkuugbbfyywwbcddkksspdppzhhbbmy","vvpeeztkkuuggbbfywwbcdkspddpzzhhbmmy","vvpeezttkugbffywbbccdkkssppddppzhhbbmyy","vpeztkuuggbbfyywwbcddksppddpzhbbmy","vppeztkuggbbfyywbcdksspdppzzhhbmy","vppeezttkkugbbffyywbccddkksppdpzhhbmy","vvppeeztkugbfyywbcdkksppdppzhbmyy","vpezttkuugbbffywbcdksppddpzzhhbbmmy","vppezzttkuugbfyywbcddkksspdpzhbbmmy","vppezzttkkuggbffywbbcdksspdpzzhhbbmmyy","vpezzttkuggbfyywbbccdksspdpzhhbbmmy","vvppezttkkugbffyywbcdkssppdpzzhbmy","vvpeezttkkuuggbbfyywbbccdkspdppzhhbmy","vpeezttkkuugbfywbccddkksppddpzzhhbmmy","vvppezttkuuggbbffywbbccdkksppdpzzhhbbmmy","vvppeeztkuggbbffyywbccdksspddppzzhbmmyy","vvppeezztkuggbfywwbccddkkspddpzhbbmy","vpezttkuuggbfyywwbcdkkspdpzhhbbmmyy","vppezzttkuggbffywbbcdkkssppddppzhhbmyy","vppeztkuuggbffyywbccdkkspdppzzhhbmmyy","vppeezztkuuggbfywbccddkksspddppzhhbbmyy","vvppeztkuugbfywwbccdkkspddppzzhhbmmy","vvpezztkuugbbffyywwbbccddksppdpzhbbmmyy","vvpezzttkkuuggbffyywwbbcdkspdpzhbmmyy","vvppeztkkuuggbbfyywbbccdksppdppzzhbmmyy","vvppezztkuggbffyywwbcddkkssppdpzhbmmyy","vvpezzttkkuggbbffywwbcddkksspdpzzhhbbmmy","vpezztkkuuggbfyywwbccddkssppdppzhhbbmmy","vvppezztkuugbffywwbccdkkspdppzhhbmmy","vpeztkugbfyywwbcdkksspdppzzhbmmy","vvpeezzttkkugbbfywwbcdkkspdpzzhhbmmy","vpezzttkuuggbbfywbccdkspddppzzhhbbmmy","vppeztkkuugbffyywwbbcddksspddppzhbbmyy","vpeztkkuggbffyywbbccddkssppdppzhbmyy","vvppeezztkuggbffyywwbcddkksppdppzhbmyy","vpeezztkugbfyywbbccdkkspdppzhbmmyy","vvppeezttkugbfywwbcddkkssppdppzhbmmyy","vpeeztkuggbffywwbbccddksspdppzzhhbmmy","vvppeeztkuugbfywbcddkssppddppzzhhbbmyy","vpezzttkuggbbffyywwbbccdkssppddppzhbbmy","vpezttkugbfywbbcddkksspddppzhbbmy","vpeezzttkkuggbbffyywwbccddkspddppzhbmyy","vppeezzttkugbffywbccdkkspddpzhhbbmyy","vpezzttkuggbbfyywbbccdkksspddpzzhhbmmy","vvppezttkugbfywwbbcdkksspddpzzhhbbmyy","vppezztkkuggbffyywbcddkkssppddpzzhhbbmmy","vppeztkkuggbfywwbccdkksppdppzhhbmmy","vvpeezzttkugbffyywwbbcddkssppddpzzhbmmy","vvpezztkkuuggbfyywbccdkksspddpzhhbbmyy","vpezttkuuggbffywbbccdksppdpzhbmmyy","vvpezzttkuggbbfywbccddksspdpzzhhbmmy","vvpeezzttkkugbbfywwbcdkksppddpzhbmy","vppeezttkkuugbbfyywwbcddkkspdpzhhbbmmyy",
+                "vvppeeztkkuugbbfyywwbbcddkksspdppzhbbmyy","vvpeezzttkkuugbfywwbbcddkspdpzzhbbmyy"};
 
+    // Should output 2
+    cout << s.expressiveWords(test2, match2) << endl;
     return 0;
 }
