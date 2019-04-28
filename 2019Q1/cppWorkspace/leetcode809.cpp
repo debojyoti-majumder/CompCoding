@@ -1,10 +1,19 @@
-// Problem URL: https://leetcode.com/problems/expressive-words/
-// Map is incorrect container to choose, to be fixed
+/*
+Problem URL: https://leetcode.com/problems/expressive-words/
+
+Related Problems: 
+    a. https://leetcode.com/problems/regular-expression-matching/
+    b. https://leetcode.com/problems/output-contest-matches/ ( Premium )
+    c. https://leetcode.com/problems/ambiguous-coordinates/
+
+TODO:
+    This problem can be optimized by not building the all the character frequency.
+    We have to compare the char count simultaniously
+*/
 
 #include <string>
 #include <vector>
 #include <iostream>
-#include <map>
 
 using namespace std;
 
@@ -14,11 +23,50 @@ class Solution {
 private:
     CharSequence getCharSequence(const string& str) {
         CharSequence seq;
+        auto len { str.length() };
 
+        // Return empty sequence for empty string
+        if( len == 0 )
+            return seq;
+
+        char prevChar = str[0];
+        int counter = 1;
+        
+        for(size_t i=1; i<len; i++) {
+            if( prevChar != str[i] ) {
+                seq.emplace_back(pair<char,int>{prevChar, counter});
+                prevChar = str[i];
+                counter = 1;
+            }
+            else {
+                counter++;
+            }
+        }
+
+        seq.emplace_back(pair<char,int>{prevChar,counter});
         return seq;
     }
 
     bool compareCharSequence(const CharSequence& source, const CharSequence& target) {
+        auto sourceLength { source.size() };
+        auto targetLength { target.size() };
+
+        if( sourceLength != targetLength )
+            return false;
+
+        for( size_t i=0; i<sourceLength; i++ ) {
+            // "first" is the character that we are comparing
+            if( source[i].first == target[i].first ) {
+                if( (source[i].second < 3 && source[i].second != target[i].second) 
+                    || target[i].second > source[i].second ) { 
+                    return false;
+                }
+            }
+            else {
+                return false;
+            }
+        }   
+
         return true;
     }
 
@@ -29,7 +77,7 @@ public:
 
         for(const auto& word : words) {
             auto targetSequence { getCharSequence(word) };
-            if( compareCharSequence(sourceSequence, targetSequence) == 0 )
+            if( compareCharSequence(sourceSequence, targetSequence) )
                 matchCounter++;
         }
 
@@ -38,7 +86,7 @@ public:
 };
 
 int main() {
-    string inputWord{"heeeeeellloooo"};
+    string inputWord{"heeeeeelloooo"};
     vector<string> possibleMatch{"hello", "hi", "helo"};
 
     
