@@ -3,7 +3,7 @@
 This is a repository where I am solving problems from different online judges. To see any of my solutions please search the repository with the search id. I am trying to create a folder structure based on year and a quarter, in hope that will make the collection problems. 
 
 # Finding your way around
-- To see solved example please look into the closed issue section by clicking [here](https://github.com/debojyoti-majumder/CompCoding/issues?q=is:issue%20is:closed), that is where all the submitted problems would be found. There is table of all solved problems also give the list of solutions. Clicking on the problem ID should take you to the problem source site.
+- To see solved example please look into the closed issue section by clicking [here](https://github.com/debojyoti-majumder/CompCoding/issues?q=is:issue%20is:closed). There is table of all solved problems also give the list of solutions. Clicking on the problem ID should take you to the problem source site.
 
 - Majority of the problems are solved using C++11/14 language set and using STL when ever possible. In the "Code Link" column should give you an hint in which language the problem have been implemented. Looking at the commit histroy might help you to understand some common problems people face while solving a problem or what have worked and what did not.
 
@@ -21,6 +21,7 @@ This is a repository where I am solving problems from different online judges. T
 |[331](https://leetcode.com/problems/verify-preorder-serialization-of-a-binary-tree)| Verify Preorder Serialization of a Binary Tree| [cpp](https://github.com/debojyoti-majumder/CompCoding/blob/master/yearEnd2018/ses2/leetcode/prob12.cpp) | Queue
 |[658](https://leetcode.com/problems/find-k-closest-elements/)| Find K Closest Elements| [cpp](https://github.com/debojyoti-majumder/CompCoding/blob/master/yearEnd2018/ses2/leetcode/prob6.cpp) | Search
 |[494](https://leetcode.com/problems/target-sum/)| Target Sum| [cpp](https://github.com/debojyoti-majumder/CompCoding/blob/master/2019Q1/cppWorkspace/leetcode494.cpp) | DFS
+|[809](https://leetcode.com/problems/expressive-words/)| Expressive Words| [cpp](https://github.com/debojyoti-majumder/CompCoding/blob/master/2019Q1/cppWorkspace/leetcode809.cpp) | String
 
 # Problems To Takeup
 - https://leetcode.com/problems/top-k-frequent-words/
@@ -29,3 +30,5 @@ This is a repository where I am solving problems from different online judges. T
 - https://leetcode.com/problems/kth-largest-element-in-an-array/ 
 - https://leetcode.com/problems/out-of-boundary-paths/
 - https://leetcode.com/problems/container-with-most-water/
+- https://leetcode.com/problems/regular-expression-matching/
+- https://leetcode.com/problems/ambiguous-coordinates/
