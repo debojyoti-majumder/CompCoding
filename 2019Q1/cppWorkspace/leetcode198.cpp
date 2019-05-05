@@ -12,36 +12,35 @@ Related Problems:
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <map>
 
 using namespace std;
 
 class Solution {
+private:
+    map<size_t,int> _cache;
+
 public:
-    int rob(vector<int>& nums) {
-        size_t sz = nums.size();
-        int robbedAmount { 0 };
-        
-        // Covering all the base cases
-        if( sz == 0 ) return 0;
-        else if( sz == 1 ) return nums[0];
-        else if( sz == 2 ) return nums[0] > nums[1] ? nums[0] : nums[1];
-
-        // Size of the array is atleast 3
-        auto cost1 { nums[0] + nums[2] };
-        auto cost2 { nums[1] };
-        // This is also a base case
-        if(sz == 3) return max(cost1, cost2);
-
-        cost2 += nums[3];                   // For the mask 0101
-        auto cost3 { nums[0] + nums[3] };   // For mask 1001   
-        nums.erase(nums.begin(), nums.begin() + 4);
-        
-        auto maxProfit { max({ cost1, cost2, cost3 }) };
-        auto is4thElemeSelected{ (maxProfit == cost2 || maxProfit == cost3) };
-        if( is4thElemeSelected && sz > 4 )
-            nums.erase(nums.begin());
+    int rob(vector<int>& nums, size_t index = 0 ) {
+        auto sz { nums.size() };
+        if( index == 0 )    
+            _cache.clear();
             
-        return maxProfit + rob(nums);
+        // Base case
+        if( index >= sz ) return 0;
+        
+        // DP table lookup
+        auto it { _cache.find(index) };
+        if( it != _cache.end() ) return it->second;
+
+        // Calling recusrsively
+        auto currentNotSelected { rob(nums, index + 1) };
+        auto curentSelected { nums[index] + rob(nums, index + 2) };
+        auto maxValue { max(currentNotSelected, curentSelected) };
+
+        // Adding to the cache
+        _cache.insert(make_pair(index, maxValue));
+        return maxValue;
     }
 };
 
@@ -69,5 +68,6 @@ int main() {
     
     // Getting TLE error, correct output 4517
     cout << s.rob(tleTestCase) << endl;
+    
     return 0;
 }
