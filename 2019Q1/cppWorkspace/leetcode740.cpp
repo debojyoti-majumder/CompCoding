@@ -14,20 +14,9 @@ using namespace std;
 
 class Solution {
 private:
-    map<string,int> _cache;
-
-    string stringfy(const vector<int>& nums) {
-        stringstream ss;
-        
-        for( const auto& num : nums ) {
-            ss << num << " ";
-        }
-        
-        return ss.str();        
-    }
-
-    vector<int> getReducedList(const vector<int>& nums, int pickedNumber, size_t excludeIndex) {
+    vector<int> getReducedList(const vector<int>& nums, size_t excludeIndex) {
         vector<int> reducedList;
+        auto pickedNumber { nums[excludeIndex] };
 
         for( size_t i=0; i<nums.size(); i++ ) {
             auto n { nums[i] };
@@ -43,41 +32,28 @@ private:
         return reducedList;
     }
 
-    int getMaxPoint(vector<int>& nums) {
+    // Recursive function that given us the cost value
+    int getMaxPoint(vector<int>& nums, size_t selectIndex = 0 ) {
         size_t sz { nums.size() };
 
         // base cases 
-        if( sz == 0 ) return 0;
+        if( selectIndex >= sz  ) return 0;
         else if( sz == 1 ) return nums[0];
 
-        // Representing the vector as string
-        string strRepresentation { stringfy(nums) };
-        vector<int> costs;
+        // Case: Current index is part of the final solution
+        auto reducedList { getReducedList(nums, selectIndex) };
+        auto selectedCost { nums[selectIndex] + getMaxPoint(reducedList) };
 
-        // DP table lookup
-        auto it = _cache.find(strRepresentation);
-        if( it != _cache.end() ) return it->second;
+        // Case: Current index is not part of the final solution
+        auto startIndex { selectIndex + 1 };
+        auto notSelectedCost { getMaxPoint(nums, startIndex) };
 
-        // Picking up one number, calulating the cost for the reduced list
-        for( size_t i=0; i<nums.size(); i++ ) {
-            auto number{ nums[i] };
-            auto rlist { getReducedList(nums, number, i) };
-            costs.emplace_back( number + getMaxPoint(rlist) );
-        }
-
-        // Adding to the DP table
-        auto maxCost { max_element(begin(costs), end(costs)) };
-        _cache.insert(make_pair(strRepresentation, *maxCost));
-        
-        return *maxCost;
+        return max(selectedCost, notSelectedCost);
     }
 
 public:
     int deleteAndEarn(vector<int>& nums) {
-        // Preparing input for the main routine
-        sort(nums.begin(), nums.end());
-        _cache.clear();
-
+        // Starting selection from the first item
         return getMaxPoint(nums);
     }
 };
