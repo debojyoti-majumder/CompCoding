@@ -14,47 +14,62 @@ using namespace std;
 
 class Solution {
 private:
-    vector<int> getReducedList(const vector<int>& nums, size_t excludeIndex) {
-        vector<int> reducedList;
-        auto pickedNumber { nums[excludeIndex] };
+    map<int, size_t> buildMap(const vector<int>& vec) {
+        map<int,size_t> returnedMap;
 
-        for( size_t i=0; i<nums.size(); i++ ) {
-            auto n { nums[i] };
+        for( const auto& item : vec ) {
+            auto it { returnedMap.find(item) };
+            if( it != returnedMap.end() )
+                it->second += 1;
+            else
+                returnedMap.insert(make_pair(item, 1));
+        }
+        
+        return returnedMap;
+    }
 
-            // Don't add the number in that case
-            if( n == pickedNumber + 1 || n == pickedNumber - 1 || i == excludeIndex ) {
+    map<int, size_t> getReducedList(map<int, size_t> numberMap, map<int, size_t>::iterator candidateItem) {
+        map<int, size_t> reducedList;
+        auto pickedNumber { candidateItem->first };
+
+        for( const auto& item : numberMap ) {
+            if( pickedNumber == item.first || item.first == pickedNumber - 1 || 
+                item.first == pickedNumber + 1) {
                 continue;
             }
-            
-            reducedList.emplace_back(n);
+
+            reducedList.insert(make_pair(item.first, item.second));
         }
 
         return reducedList;
     }
 
     // Recursive function that given us the cost value
-    int getMaxPoint(vector<int>& nums, size_t selectIndex = 0 ) {
-        size_t sz { nums.size() };
-
-        // base cases 
-        if( selectIndex >= sz  ) return 0;
-        else if( sz == 1 ) return nums[0];
+    int getMaxPoint(map<int,size_t>& numberMap, map<int, size_t>::iterator candidateItem) {
+        // base case
+        if( candidateItem == numberMap.end() || numberMap.size() == 0 ) return 0;
 
         // Case: Current index is part of the final solution
-        auto reducedList { getReducedList(nums, selectIndex) };
-        auto selectedCost { nums[selectIndex] + getMaxPoint(reducedList) };
+        auto reducedList { getReducedList(numberMap, candidateItem) };
+        int selectedCost {  
+            (int)( candidateItem->first * candidateItem->second ) + 
+            getMaxPoint(reducedList, reducedList.begin()) 
+        };
 
         // Case: Current index is not part of the final solution
-        auto startIndex { selectIndex + 1 };
-        auto notSelectedCost { getMaxPoint(nums, startIndex) };
+        auto startIndex { next(candidateItem) };
+        int notSelectedCost { getMaxPoint(numberMap, startIndex) };
 
         return max(selectedCost, notSelectedCost);
     }
 
 public:
     int deleteAndEarn(vector<int>& nums) {
+        // Building the map of numbers
+        auto numMap { buildMap(nums) };
+
         // Starting selection from the first item
-        return getMaxPoint(nums);
+        return getMaxPoint(numMap, numMap.begin());
     }
 };
 
@@ -73,9 +88,4 @@ void testLeetcode740() {
 
     // Should not get TLE, correct output 138
     cout << s.deleteAndEarn(tleCase) << endl;
-}
-
-int main() {
-    testLeetcode740();
-    return 0;
 }
