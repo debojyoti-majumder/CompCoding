@@ -1,89 +1,81 @@
-// Leetcode282: https://leetcode.com/problems/expression-add-operators/
+/*
+    Problem URL:    https://leetcode.com/problems/expression-add-operators/
+    Problem ID:     282
+*/
 
-#include "pch.h"
-
-#include <vector>
-#include <iostream>
-#include <string>
+#include "myhelper.hpp"
 
 using namespace std;
 
 class Solution {
 private:
-    void static addToExpr(char op, const string exp, vector<string>& outStrings) {
-        for( size_t i=0; i<outStrings.size(); i++ ) {
-            string tmp{exp};
-            tmp += " " + op;
-            tmp += " ";
-            tmp += outStrings[i];
+    void addToSolution(vector<string>& retVal, string left, char symbol) {
 
-            outStrings[i] = tmp;
-        }
     }
 
+private:
+    vector<string> getTarget() {
+
+    }
+    
 public:
     vector<string> addOperators(string num, int target) {
-        vector<string> retStrings;
-        
+        vector<string> retValues;
+        auto stringLength { num.length() };
+
         // Base case
-        if (num.length() == 0)
-            return retStrings;
+        if( stringLength == 0 ) return retValues;
 
-        if (atoi(num.c_str()) == target) {
-            retStrings.push_back(num);
-        }
+        for( size_t i=0; i<stringLength; i++ ) {
+            auto leftPart { num.substr(0, i + 1) };
+            auto rightPart { num.substr(i+1) };
 
-        for (int i = 0; i < num.length(); i++) {
-            auto comp1{ num.substr(0,i+1) };
-            auto comp2{ num.substr(i+1) };
-
-            int val = atoi(comp1.c_str());
+            auto leftValue { atoi(leftPart.c_str()) };
             
-            auto plusOp{ addOperators(comp1, target - val) };
-            auto minsOp{ addOperators(comp1, target + val) };
-            vector<string> multiplyOp;
+            if( leftValue == target ) retValues.emplace_back(leftPart);
 
-            // If divisable
-            if( target % val == 0 ) {
-                multiplyOp = addOperators(comp1, target / val);
+            if( rightPart.length() ) {
+                auto rightValue { atoi(rightPart.c_str()) };
 
+                auto minusTarget = target + rightValue;
+                auto plusTarget = target - rightValue;
+                auto devideTarget = target * rightValue;
+
+                if( leftValue % rightValue == 0 ) {
+                    auto multiplyTarget = leftValue * rightValue; 
+                } 
+                else if( rightValue % leftValue == 0 ) {
+                    auto multiplyTarget = leftValue * rightValue;
+                }
             }
 
-            Solution::addToExpr('+', comp1, plusOp);
-            retStrings.insert(retStrings.end(), plusOp.begin(), plusOp.end());
-
-            Solution::addToExpr('-', comp1, minsOp);
-            retStrings.insert(retStrings.end(), minsOp.begin(), minsOp.end());
-
-            Solution::addToExpr('*', comp1, multiplyOp);
-            retStrings.insert(retStrings.end(), multiplyOp.begin(), multiplyOp.end());
+            
         }
 
-        return retStrings;
+        return retValues;
     }
 };
 
-template <typename T>
-void printIter(const vector<T>& items) {
-    cout << "[ ";
+void test282() {
+    Solution s;
 
-    for (const auto& val : items)
-        cout << val << " ";
+    // ["1+2+3", "1*2*3"] 
+    s.addOperators("123", 6);
+    
+    // Should output ["2*3+2", "2+3*2"]
+    s.addOperators("232", 8);
 
-    cout << " ]" << endl;
+    // Should output ["1*0+5","10-5"]
+    s.addOperators("105", 5);
+    
+    // Should output ["0+0", "0-0", "0*0"]
+    s.addOperators("00",  0);
+
+    // Should output []
+    s.addOperators("3456237490", 9191);
 }
 
 int main() {
-    Solution s;
-    
-    auto out1{ s.addOperators("123", 6) };
-    printIter(out1);
-
-    auto out2{ s.addOperators("232", 8) };
-    printIter(out2);
-
-    auto out3{ s.addOperators("105", 5) };
-    printIter(out3);
-
+    test282();
     return 0;
 }
