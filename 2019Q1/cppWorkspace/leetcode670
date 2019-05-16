@@ -8,27 +8,35 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
 class Solution {
 private:
     // Should return maximum value and at which possition
-    size_t returnMax(const string& str) {
-        size_t retValue{0};
+    vector<size_t> maxPositions(const string& str) {
+        vector<size_t> retValues;
         int maxValue = ( (int) str[0] ) - 48;
 
         for( size_t i=1; i<str.length(); i++ ) {
             auto currValue { str[i] - 48 };
             
-            // Updaing the max value and the index also
-            if( currValue > maxValue ) {
-                retValue = i;
+            // Updating the max value and the index also
+            if( currValue >= maxValue ) {
+                retValues.emplace_back(i);
                 maxValue = currValue;
             }
         }
 
-        return retValue;
+        return retValues;
+    }
+
+    // Swaps characters in a string
+    void swapChars(string& str, size_t srcIndex, size_t destIndex ) {
+        auto temp { str[srcIndex] };
+        str[srcIndex] = str[destIndex];
+        str[destIndex] = temp;
     }
 
 public:
@@ -37,16 +45,36 @@ public:
         stringstream ss;
         ss << num;
         string numString { ss.str() };
+        auto numCopy{ numString };
+        size_t startIndex { 0 };
+        vector<size_t> swapIndexes;
 
-        // Swaping the max digit value with the first position should give 
-        // us the value with just one swap
-        auto maxIndex { returnMax(numString) };
-        auto tmp { numString[0] };
-        numString[0] = numString[maxIndex];
-        numString[maxIndex] = tmp;
+        while( numCopy.length() ) {
+            auto maxIndex { maxPositions(numCopy) };
+            
+            // No swap, possible number swap would on the next array
+            if( maxIndex.size() != 0 && maxIndex[0] != 0 ) {
+                for( auto i : maxIndex ) {
+                    swapIndexes.emplace_back(startIndex + i); 
+                }
 
-        // Retuning the numerical value
-        return atoi(numString.c_str());        
+                break;
+            }
+
+            // Looking if swaping on the next index can be helpfull or not
+            startIndex++;
+            numCopy.erase(numCopy.begin());
+        }
+
+        vector<int> maxValues;
+        maxValues.emplace_back(atoi(numString.c_str()));
+        for( auto idx : swapIndexes ) {
+            auto s { numString };
+            swapChars(s, startIndex, idx);
+            maxValues.emplace_back(atoi(s.c_str()));
+        }
+
+        return *max_element(maxValues.begin(), maxValues.end());        
     }
 };
 
@@ -62,9 +90,12 @@ void test670() {
     // If the first number is max, we should look for the next one
     // Should ouput 98863
     cout << s.maximumSwap(98368) << endl;
+
+    // Although there is a 9 on the second position, swaping with the third given max result
+    cout << s.maximumSwap(1993) << endl;
 }
 
-int main() {
+int main(int argc, const char *argv[]) {
     test670();
     return 0;
 }
