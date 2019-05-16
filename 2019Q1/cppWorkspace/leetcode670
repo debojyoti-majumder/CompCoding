@@ -22,11 +22,15 @@ private:
         for( size_t i=1; i<str.length(); i++ ) {
             auto currValue { str[i] - 48 };
             
-            // Updating the max value and the index also
             if( currValue >= maxValue ) {
-                retValues.emplace_back(i);
                 maxValue = currValue;
             }
+        }
+
+        for( size_t i=0; i<str.length(); i++ ) {
+            auto targetVal { ( (int) str[i] ) - 48};
+            if( maxValue == targetVal )
+                retValues.emplace_back(i);
         }
 
         return retValues;
@@ -92,10 +96,6 @@ void test670() {
     cout << s.maximumSwap(98368) << endl;
 
     // Although there is a 9 on the second position, swaping with the third given max result
+    // Should output 9913
     cout << s.maximumSwap(1993) << endl;
-}
-
-int main(int argc, const char *argv[]) {
-    test670();
-    return 0;
 }
