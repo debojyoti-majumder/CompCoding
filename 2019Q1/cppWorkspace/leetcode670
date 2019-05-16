@@ -1,0 +1,70 @@
+/*
+    Problem URL:    https://leetcode.com/problems/maximum-swap/
+    Problem ID:     670
+    Issue ID:       23
+*/
+
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+private:
+    // Should return maximum value and at which possition
+    size_t returnMax(const string& str) {
+        size_t retValue{0};
+        int maxValue = ( (int) str[0] ) - 48;
+
+        for( size_t i=1; i<str.length(); i++ ) {
+            auto currValue { str[i] - 48 };
+            
+            // Updaing the max value and the index also
+            if( currValue > maxValue ) {
+                retValue = i;
+                maxValue = currValue;
+            }
+        }
+
+        return retValue;
+    }
+
+public:
+    int maximumSwap(int num) {
+        // Converting the number to string
+        stringstream ss;
+        ss << num;
+        string numString { ss.str() };
+
+        // Swaping the max digit value with the first position should give 
+        // us the value with just one swap
+        auto maxIndex { returnMax(numString) };
+        auto tmp { numString[0] };
+        numString[0] = numString[maxIndex];
+        numString[maxIndex] = tmp;
+
+        // Retuning the numerical value
+        return atoi(numString.c_str());        
+    }
+};
+
+void test670() {
+    Solution s;
+
+    // Should output 7236
+    cout << s.maximumSwap(2736) << endl;
+
+    // Should output 9973
+    cout << s.maximumSwap(9973) << endl;
+
+    // If the first number is max, we should look for the next one
+    // Should ouput 98863
+    cout << s.maximumSwap(98368) << endl;
+}
+
+int main() {
+    test670();
+    return 0;
+}
