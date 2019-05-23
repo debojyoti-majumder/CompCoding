@@ -2,6 +2,9 @@
     Problem URL:    https://leetcode.com/problems/add-to-array-form-of-integer/
     Problem ID:     989
     Issue Id:       25       
+
+    Related Challange:
+        https://leetcode.com/problems/plus-one/
 */
 
 #include <vector>
@@ -18,11 +21,11 @@ private:
         // Should not happen but still it's safegaurd
         if( number >= 10) return;
 
-        auto startPos { A.size() - pos };
-        auto tempVal { A[startPos] };
+        int startPos { (int)A.size() - (int)pos };
         bool additionalDigitRequired { true };
 
-        for( auto i=startPos; i>=0; i-- ) {
+        for( int i=startPos; i>=0; i-- ) {
+            auto tempVal { A[i] };
             tempVal += number;
 
             if( tempVal < 10 ) {
@@ -47,13 +50,22 @@ public:
         stringstream numberStream;
         numberStream << K;
         auto numberString { numberStream.str() };
+        auto digitCounter { 1 };
 
-        for( size_t i=1; i<=numberString.length(); i++ ) {
-            // 48 is zero acsi value, calling the helper 
-            auto actualNumber{ (int)numberString[i-1] - 48 };
-            addDigitAt(A, actualNumber, i);
+        // If the number is bigger the array it need to be padded
+        int sizeDiff { int(numberString.size() - A.size()) };
+        if( sizeDiff > 0 ) {
+            for( int i=0; i<sizeDiff; i++ )    A.insert(A.begin(),0);
         }
 
+        // Adding one digit at a time
+        for( size_t i=numberString.length(); i>=1; i-- ) {
+            // 48 is zero acsi value, calling the helper 
+            auto actualNumber{ (int)numberString[i-1] - 48 };
+            addDigitAt(A, actualNumber, digitCounter++);
+        }
+
+        // returning the updated array
         return A;
     }
 };
@@ -79,18 +91,22 @@ int main() {
 
     // Should output 455
     vector<int> inp2{2,7,4};
-    auto ret2 { s.addToArrayForm(inp2, 181) };
-    printVector(ret2);
+    printVector(s.addToArrayForm(inp2, 181));
 
     // Should output 1021
     vector<int> inp3 {2,1,5};
-    auto ret3 { s.addToArrayForm(inp3, 806) };
-    printVector(ret3);
+    printVector(s.addToArrayForm(inp3, 806));
 
     // Should output 10000000000
     vector<int> inp4 { 9,9,9,9,9,9,9,9,9,9 };
-    auto ret4 { s.addToArrayForm(inp4, 1) };
-    printVector(ret4);
+    printVector(s.addToArrayForm(inp4, 1));
     
+    // Should output 23
+    vector<int> inp5 {0};
+    printVector(s.addToArrayForm(inp5, 23));
+
+    // 
+    vector<int> inp6 { 1, 6 };
+    printVector(s.addToArrayForm(inp6, 116 ));
     return 0;
 }
