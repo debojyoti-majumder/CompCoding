@@ -2,6 +2,11 @@
     Problem URL:    https://leetcode.com/problems/clumsy-factorial/description/
     Problem ID:     1006
     Issue Id:       28
+
+    Related Problems:
+        https://leetcode.com/problems/nth-digit/
+        https://leetcode.com/problems/robot-bounded-in-circle/
+        https://leetcode.com/problems/reaching-points/
 */
 
 #include <iostream>
@@ -15,13 +20,24 @@ private:
     struct OperationDescription {
         int operand;
         bool type; // 1 = add , 0 = sub
+
+        explicit OperationDescription(int p) : operand(p), type(false) {
+        }
+
+        OperationDescription(int p, bool val) : operand(p), type(val) {
+        }
+
+        OperationDescription() = default;
     };
 
     int evaluateExpression( const vector<OperationDescription>& expr ) {
-        auto sum { expr[0].operand };
-        auto iterCount { expr.size() - 1 };
+        auto sz { expr.size() };
+        if( sz == 0 ) return 0;
 
-        for( size_t i=1; i<expr.size(); i++ ) {
+        auto sum { expr[0].operand };
+        auto iterCount { sz - 1 };
+
+        for( size_t i=1; i<sz; i++ ) {
             if( expr[i-1].type )
                 sum += expr[i].operand;
             else
@@ -40,42 +56,35 @@ public:
 
         auto number { N };
         short int operand = 0;
-        int prevNumber;
         vector<OperationDescription> operationsTBD;
 
         while( number > 0 ) {
             // This is for multiplication, nothing to be done for division
             if( operand == 0 ) {
                 if( number > 2 ) {
-                    prevNumber = (number * (number - 1)) / (number - 2);
+                    auto res { (number * (number - 1)) / (number - 2) };
                     
                     // The devide is need to be skipped, because the calulation 
                     // is already done, saying next operation is 3 which is addition
+                    operationsTBD.emplace_back(OperationDescription{res, true});
                     number -= 3;
                     operand = 2;
                 }
                 else {
-                    prevNumber = (number * (number - 1));
-                    OperationDescription desc;
-                    desc.operand = 2;
-                    operationsTBD.emplace_back(desc);
-
                     // No more numbers to process
-                    number = 0;
+                    operationsTBD.emplace_back(OperationDescription{number});
+                    break;
                 }
             }
             else if( operand == 2 || operand == 3 ) {
                 // This is for addition and substraction
-                OperationDescription desc;
-                desc.operand = prevNumber;
-                desc.type = operand == 2 ? true : false;
-                operationsTBD.emplace_back(desc);
+                if( operand == 2 ) {
+                    operationsTBD.emplace_back(OperationDescription{number, false});
+                    number--;
+                }
 
-                prevNumber = number;
-
-                // Determining the what would be next operation
-                if( desc.type ) number--;
-                operand = desc.type ? 3 : 0;
+                operand++;
+                operand = operand % 4;
             }
         }
 
@@ -89,6 +98,8 @@ int main() {
     // Should ouput 7
     cout << s.clumsy(4) << endl;
     
+    cout << s.clumsy(7) << endl;
+
     // Should output 11
     cout << s.clumsy(9) << endl;
 
@@ -98,5 +109,6 @@ int main() {
     // Should output 12
     cout << s.clumsy(10) << endl;
 
+    cout << s.clumsy(3) << endl;
     return 0;
 }
