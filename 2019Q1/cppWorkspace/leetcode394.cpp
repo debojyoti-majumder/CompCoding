@@ -2,83 +2,85 @@
     Problem URL:    https://leetcode.com/problems/decode-string/description/
     Problem Id:     394
     Issue Id        30
+
+    Comments:       Have tried iterative method, seems best to use recusion
+
+    Related Questions:
+        https://leetcode.com/problems/number-of-atoms/
+        
 */
 
 #include <iostream>
 #include <string>
-#include <sstream>
 #include <stack>
 
 using namespace std;
 
-class Solution {
-private:
+class Solution
+{
 public:
-    string decodeString(string s) {
-        stack<int> repCountStack;
-        stack<string> stringStack;
+    string decodeString(const string &inputString) {
+        string returnValue;
+        int braceCount { 0 };
+        int repCount = 1;
+        string subString{""};
+        string repString{""};
 
-        stringstream loopAccumulator;
-        for( const auto& ch: s ) {
-            if( isdigit(ch) ) {
-                repCountStack.push(ch - 48);
-                continue;
-            }
-            else if( ch == '[' ) {
-                // Would resetting the accumulator
-                auto str { loopAccumulator.str() };
-                if( str.length() != 0 ) 
-                    stringStack.push(str);
+        // base case
+        if( inputString.length() == 0 ) return "";
 
-                // Reset the accumulator    
-                loopAccumulator.str("");
-                continue;
-            }
-            else if( ch == ']' ) {
-                auto reps { repCountStack.top() };
-                repCountStack.pop();
-
-                auto str { loopAccumulator.str() };
-                if( str.length() != 0 )
-                    stringStack.push(str);
-                
-                str = stringStack.top();
-                stringStack.pop();
-                string res { "" };
-
-                for( auto i=0; i<reps; i++ ) {
-                    res+= str;
-                }
-
-                // Clearing the accumulator is close ] is seen
-                if( stringStack.empty() ) {
-                    stringStack.push(res);
+        for( size_t i=0; i<inputString.size(); i++ ) {
+            if( isdigit(inputString[i]) ) {
+                if( braceCount == 0 ) {
+                    repString += inputString[i];            
+                    subString = "";
                 }
                 else {
-                    // Modifing the top most item in the stack
-                    stringStack.top().append(res);
+                    subString += inputString[i];
                 }
+            }
+            else if( inputString[i] == '[' ) {
+                if( braceCount != 0 ) 
+                    subString += '[';
+                else {
+                    if( repString.length() ) {
+                        repCount = atoi(repString.c_str());
+                        repString = "";
+                    }
+                }
+                braceCount++;
+            }
+            else if( inputString[i] == ']' ) {
+                braceCount--;
 
-                loopAccumulator.str("");
-                continue;
+                if( braceCount == 0 ) {
+                    auto ret = decodeString(subString);
+                    for( int i=0; i<repCount; i++ )
+                        returnValue += ret;
+
+                    subString = "";
+                    repCount = 1;
+                }
+                else {
+                    subString += ']';
+                }
             }
             else {
-                loopAccumulator << ch;
+                if( braceCount )
+                    subString+= inputString[i];
+                else 
+                    returnValue += inputString[i];
             }
         }
 
-        auto retValue { stringStack.top() };
-
-        // This is for string from last after ]
-        auto addString { loopAccumulator.str() };
-        if( addString.length() != 0 )
-            retValue +=addString;
-
-        return retValue;      
+        auto sub { decodeString(subString) };
+        for(int i=0; i<repCount; i++) returnValue += sub;
+        return returnValue;
     }
 };
 
-int main() {
+int main()
+{
     Solution s;
 
     // Should output aaabcbc
@@ -90,6 +92,8 @@ int main() {
     // Should outout abcabccdcdcdef
     cout << s.decodeString("2[abc]3[cd]ef") << endl;
 
-    // Should output "aabaabaabaabaabaabcd"
-    cout << s.decodeString("2[3[2[a]b]]cd") << endl;
+    // Should output abcbcabcbcabcbc
+    cout << s.decodeString("3[[a2[bc]]") << endl;
+
+    cout << s.decodeString("10[deb]") << endl;
 }
