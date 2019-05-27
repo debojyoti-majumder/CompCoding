@@ -3,7 +3,7 @@
 /*
     Problem URL:    https://leetcode.com/problems/out-of-boundary-paths/
     Problem ID:     576
-    Issue ID:       24
+    Issue Id:       24
 */
 
 namespace Leetcode576
