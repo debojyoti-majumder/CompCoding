@@ -1,6 +1,9 @@
 #pragma once
+
 /*
-    Problem URL: https://leetcode.com/problems/bulb-switcher/
+    Problem URL:    https://leetcode.com/problems/bulb-switcher/
+    Problem ID:     319
+    Issue Id:       32
 */
 
 namespace Leetcode319 {

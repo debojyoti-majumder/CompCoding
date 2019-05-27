@@ -13,9 +13,6 @@ namespace tests
     public:
         TEST_METHOD(Case1) {
             Assert::AreEqual(s.bulbSwitch(3), 1);
-        }
-
-        TEST_METHOD(Case2) {
             Assert::AreEqual(s.bulbSwitch(18), 4);
         }
     };
