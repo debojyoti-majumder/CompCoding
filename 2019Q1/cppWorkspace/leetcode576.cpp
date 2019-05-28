@@ -1,100 +1,105 @@
 /*
     Problem URL:    https://leetcode.com/problems/out-of-boundary-paths/
     Problem ID:     576
-    Issue number:   24
+    Issue Id:       24
 */
 
-#include <iostream>
 #include <vector>
 #include <queue>
+#include <iostream>
 
 using namespace std;
 
 class Solution {
 private:
-    vector<vector<bool>> _visitedMatrix;
-    
-    // Represents the visit cursor
     struct Position {
         int x;
         int y;
         int movesLeft;
     };
 
-    vector<Position> getAllPosition(const Position& startPos) {
-        vector<Position> positions;
+    pair<int, int> _boundary;
 
-        return positions;
+    vector<Position> getPossiblePaths(const Position &currentPos) {
+        vector<Position> possiblePaths;
+
+        // There are no more moves left
+        if (currentPos.movesLeft < 0)
+            return possiblePaths;
+
+        auto toLeft{currentPos};
+        toLeft.x--;
+
+        auto toRight{currentPos};
+        toRight.x++;
+
+        auto toUp{currentPos};
+        toUp.y--;
+
+        auto toDown{currentPos};
+        toDown.y++;
+
+        // Adding all the posibilities
+        possiblePaths.emplace_back(toLeft);
+        possiblePaths.emplace_back(toRight);
+        possiblePaths.emplace_back(toUp);
+        possiblePaths.emplace_back(toDown);
+
+        return possiblePaths;
     }
 
-    bool isOutside(const Position& pos) {
-        return false;
-    }
-
-    int performBFS(const Position& startPosistion) {
-        int pathCount { 0 };
-
-        // Queue for pending items to visit
-        queue<Position> visitQueue;
-        visitQueue.emplace(startPosistion);
-
-        while( false == visitQueue.empty() ) {
-            // Taking the first item from the queue
-            auto item { visitQueue.front() };
-            visitQueue.pop();
-            auto isOut { isOutside(item) };
-
-            // Later on the code flow we don't have to worry 
-            // about indexes
-            if( isOut ) {
-                pathCount++;
-                continue;
-            }
-
-            // Visitng an unvisited node with non zero moves left
-            auto isVisited { _visitedMatrix[item.x][item.y] };
-            if( false == isVisited && item.movesLeft != 0 ) {
-                _visitedMatrix[item.x][item.y] = true;
-                auto nextPositions { getAllPosition(item) };
-
-                for( auto pos : nextPositions ) {
-                    pos.movesLeft--;
-                    visitQueue.emplace(pos);
-                }
-            }
-        }
-
-        return pathCount;
+    bool isOutside(const Position &pos) {
+        if (pos.x < 0 || pos.x >= _boundary.first)
+            return true;
+        else if (pos.y < 0 || pos.y >= _boundary.second)
+            return true;
+        else
+            return false;
     }
 
 public:
-    int findPaths(int m, int n, int N, int i, int j) {
-        // Resetting the program states
-        _visitedMatrix.clear();
-    
-        // Creating a matrix to remember if we have already visisted the matrix or not
-        for( auto i=0; i<m; i++ ) {
-            vector<bool> visitMask(n, false);
-            _visitedMatrix.emplace_back(visitMask);
+    int findPaths(int m, int n, int N, int i, int j)
+    {
+        auto retCount{0};
+        _boundary.first = m;
+        _boundary.second = n;
+
+        Position startingPosition{i, j, N};
+        queue<Position> pendingPosisition;
+        pendingPosisition.push(startingPosition);
+
+        while (!pendingPosisition.empty())
+        {
+            auto currentPos{pendingPosisition.front()};
+            pendingPosisition.pop();
+            
+            // Get all the possible coordidate in which the in next move
+            currentPos.movesLeft--;
+            auto paths{getPossiblePaths(currentPos)};
+            
+            for (const auto &p : paths)
+            {
+                if (isOutside(p))
+                    retCount++;
+                else
+                    pendingPosisition.push(p);
+            }
         }
 
-        // Calling the BFS algo
-        Position pos{ i, j, N };
-        return performBFS(pos);        
+        return retCount;
     }
 };
 
-void test576() {
+int main() {
     Solution s;
 
     // Should output 6
-    cout << s.findPaths(2,2,2,0,0) << endl;
-
+    cout << s.findPaths(2, 2, 2, 0, 0) << endl;
+    
     // Should output 12
-    cout << s.findPaths(1,3,3,0,1);
-}
+    cout << s.findPaths(1, 3, 3, 0, 1) << endl;
 
-int main() {
-    test576();
+    // Getting TLE, should output 121406
+    cout << s.findPaths(10, 10, 11, 5, 5) << endl;
     return 0;
 }
