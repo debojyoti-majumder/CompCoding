@@ -18,7 +18,9 @@ private:
         int movesLeft;
     };
 
+    // States used by other functions
     pair<int, int> _boundary;
+    vector<vector<bool>> _visitedMatrix;
 
     vector<Position> getPossiblePaths(const Position &currentPos) {
         vector<Position> possiblePaths;
@@ -63,26 +65,35 @@ public:
         auto retCount{0};
         _boundary.first = m;
         _boundary.second = n;
+        _visitedMatrix = vector<vector<bool>> (
+            m,
+            vector<bool>(n,false)
+        );
 
         Position startingPosition{i, j, N};
         queue<Position> pendingPosisition;
         pendingPosisition.push(startingPosition);
-
+        
         while (!pendingPosisition.empty())
         {
+            // Visiting the current node
             auto currentPos{pendingPosisition.front()};
             pendingPosisition.pop();
-            
+            _visitedMatrix[currentPos.x][currentPos.y] = true;
+
             // Get all the possible coordidate in which the in next move
             currentPos.movesLeft--;
             auto paths{getPossiblePaths(currentPos)};
             
-            for (const auto &p : paths)
-            {
-                if (isOutside(p))
-                    retCount++;
-                else
+            for (const auto &p : paths) {
+                if (isOutside(p)) {
+                    retCount += 1;
+                    retCount = retCount % (int)(pow(10,9) + 7);
+                }
+                else if( _visitedMatrix[p.x][p.y] == false ) {
+                    // If already visited not going to explore
                     pendingPosisition.push(p);
+                }
             }
         }
 
