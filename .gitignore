@@ -18,20 +18,6 @@ CmakeCache.txt
 TargetDirectories.txt
 cmake.check_cache
 
-/build
-ses2/a.out
-AuditLogger/.vs/
-AuditLogger/App1/Debug/App1.pch
-AuditLogger/App1/Debug/
-AuditLogger/App1/x64/Debug/
-AuditLogger/Debug/
-
-q12019/cppWorspace/build/
-/.vs
-/VS2019/DebSolutions/Debug
-/VS2019/DebSolutions/.vs/DebSolutions/v15
-/VS2019/DebSolutions/sources/Debug
-/VS2019/DebSolutions/tests/Debug
 .vscode/*
 leetcode2019Q2/build/*
 leetcode2019Q2/.vscode/ipch/*
