@@ -33,3 +33,5 @@ q12019/cppWorspace/build/
 /VS2019/DebSolutions/sources/Debug
 /VS2019/DebSolutions/tests/Debug
 .vscode/*
+leetcode2019Q2/build/*
+leetcode2019Q2/.vscode/ipch/*
