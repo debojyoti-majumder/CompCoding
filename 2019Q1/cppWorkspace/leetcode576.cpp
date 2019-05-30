@@ -30,16 +30,16 @@ private:
             return possiblePaths;
 
         auto toLeft{currentPos};
-        toLeft.x--;
+        toLeft.y--;
 
         auto toRight{currentPos};
-        toRight.x++;
+        toRight.y++;
 
         auto toUp{currentPos};
-        toUp.y--;
+        toUp.x--;
 
         auto toDown{currentPos};
-        toDown.y++;
+        toDown.x++;
 
         // Adding all the posibilities
         possiblePaths.emplace_back(toLeft);
@@ -60,8 +60,7 @@ private:
     }
 
 public:
-    int findPaths(int m, int n, int N, int i, int j)
-    {
+    int findPaths(int m, int n, int N, int i, int j) {
         auto retCount{0};
         _boundary.first = m;
         _boundary.second = n;
@@ -82,12 +81,17 @@ public:
             _visitedMatrix[currentPos.x][currentPos.y] = true;
 
             // Get all the possible coordidate in which the in next move
-            currentPos.movesLeft--;
-            auto paths{getPossiblePaths(currentPos)};
+            auto nextMove { currentPos };
+            nextMove.movesLeft--;
+            auto paths{getPossiblePaths(nextMove)};
             
             for (const auto &p : paths) {
                 if (isOutside(p)) {
-                    retCount += 1;
+                    if( currentPos.movesLeft > 2 )
+                        retCount += 2;
+                    else
+                        retCount += 1;
+
                     retCount = retCount % (int)(pow(10,9) + 7);
                 }
                 else if( _visitedMatrix[p.x][p.y] == false ) {
