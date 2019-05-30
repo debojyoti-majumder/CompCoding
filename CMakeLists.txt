@@ -1,13 +1,15 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(debsapp VERSION 0.1.0)
+project(compcode VERSION 0.1.0)
 
-add_executable(debsapp main.cpp)
-set_target_properties(debsapp PROPERTIES
-    CXX_STANDARD 14
-    CXX_STANDARD_REQUIRED YES
-    CXX_EXTENSIONS NO
-)
+# GTest
+#########################################################################
+ADD_SUBDIRECTORY (googletest-master)
+enable_testing()
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+########################################################################
 
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-include(CPack)
+add_executable(compcode main.cpp)
+
+target_link_libraries(compcode gtest gtest_main)
+add_test( compcode compcode )
