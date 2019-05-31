@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(leetcode VERSION 0.1.0)
 
-add_compile_definitions(GTEST_HAS_PTHREAD, 0)
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 add_subdirectory(googletest)
