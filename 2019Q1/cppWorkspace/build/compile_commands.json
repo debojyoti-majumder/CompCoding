@@ -1,7 +1,0 @@
-[
-{
-  "directory": "d:/githubrepos/CompCoding/q12019/cppWorkspace/build",
-  "command": "C:\\PROGRA~2\\MICROS~1\\2017\\COMMUN~1\\VC\\Tools\\MSVC\\1416~1.270\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1   /FoCMakeFiles\\compCoding.dir\\main.cpp.obj /FdTARGET_COMPILE_PDB /FS -c D:\\githubrepos\\CompCoding\\q12019\\cppWorkspace\\main.cpp",
-  "file": "D:/githubrepos/CompCoding/q12019/cppWorkspace/main.cpp"
-}
-]
