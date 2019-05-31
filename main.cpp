@@ -1,6 +1,5 @@
-#include <iostream>
-
 #include "gtest/gtest.h"
+
 #include "2019Q2/leetcode816.hpp"
 
 int main(int argc, char** argv) {
