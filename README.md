@@ -13,7 +13,7 @@ This is a repository where I am solving problems from different online judges. T
 
 # Get started in you local environment 
 
-git clone https://github.com/debojyoti-majumder/CompCoding
-git submodule init
-git submodule update
-code .
+- git clone https://github.com/debojyoti-majumder/CompCoding
+- git submodule init
+- git submodule update
+- code .
