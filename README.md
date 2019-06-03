@@ -10,3 +10,10 @@ This is a repository where I am solving problems from different online judges. T
 - If you want me to solve any particular problem please create an issue using this link https://github.com/debojyoti-majumder/CompCoding/issues. 
 
 - See https://github.com/debojyoti-majumder/CompCoding/wiki for solved problems
+
+# Get started in you local environment 
+
+git clone https://github.com/debojyoti-majumder/CompCoding
+git submodule init
+git submodule update
+code .
