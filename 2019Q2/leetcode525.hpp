@@ -18,7 +18,7 @@ namespace Leetcode525 {
 
                 // Base cases
                 if( pos >= sz - 1 ) return 0;
-                if( contOneCount > itemsRemaining || contZeroCount > itemsRemaining ) return 0;
+                if( contOneCount > (int)itemsRemaining || contZeroCount > (int)itemsRemaining ) return 0;
 
                 auto num { (bool)numbers[pos] };
                 auto nextNumber { (bool)numbers[pos +1] };
