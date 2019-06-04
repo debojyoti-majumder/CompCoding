@@ -21,8 +21,18 @@
             }
         ]
     },
-    "gtest-adapter.debugConfig": [
-        "Default"
-    ],
-    "gtest-adapter.supportLocation": true
+
+    "gtest-adapter.debugConfig":"Default",
+    "gtest-adapter.supportLocation": true,
+    "catch2TestExplorer.enableCodeLens": true,
+    "catch2TestExplorer.executables": [
+        {
+            "name": "${workspaceFolder}/build/leetcode.exe",
+            "pattern": "{build,Build,BUILD,out,Out,OUT}/**/*{test,Test,TEST}*",
+            "cwd": "${absDirpath}",
+            "env": {
+                "C2TESTEXECUTABLEPATH": "${absPath}"
+            }
+        }
+    ]
 }
