@@ -2,6 +2,8 @@
 // Issue Id: 17
 
 #include <vector>
+#include <unordered_map>
+
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
@@ -9,9 +11,30 @@ namespace Leetcode056 {
     using namespace std;
         
     class Solution {
+        private:
+            unordered_map<int,int> _occupencyMap;
+            unordered_map<int, pair<int,int>> _rangeIdMap;
+
+            void addToMergedSet(const pair<int,int>& item) {
+
+            }
+
         public:
             vector<vector<int>> merge(vector<vector<int>>& intervals) {
-                return {};
+                _occupencyMap.clear();
+                _rangeIdMap.clear();
+                
+                auto sz { intervals.size() };
+                if( sz <= 1 ) return intervals;
+
+                for( const auto& interval : intervals )
+                    addToMergedSet(make_pair(interval[0],interval[1]));
+
+                // Converting from map to vector, which is our return type
+                vector<vector<int>> returnValue;
+                for( const auto& item : _rangeIdMap )
+                    returnValue.emplace_back(vector<int>{item.second.first, item.second.second});
+                return returnValue;
             }
     };
 
