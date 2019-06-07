@@ -16,7 +16,46 @@ namespace Leetcode056 {
             unordered_map<int, pair<int,int>> _rangeIdMap;
 
             void addToMergedSet(const pair<int,int>& item) {
+                auto conflictId { -1 };
+                static int idCount;
 
+                for( int i=item.first; i<=item.second; i++ ) {
+                    if( _occupencyMap[i] != -1 ) {
+                        conflictId = _occupencyMap[i];
+                        break;
+                    }
+                }
+
+                if( conflictId == -1 ) {
+                    // No conflict the number can be added correctly
+                    idCount++;
+                    _rangeIdMap.insert(make_pair(idCount, item));
+
+                    // Update the occupency map
+                    for( int i=item.first; i<=item.second; i++ )
+                        _occupencyMap[i] = idCount;
+                }
+                else {
+                    // Needs to be merged with the existing interval
+                    auto& interval { _rangeIdMap[conflictId] };
+                    if( item.first < interval.first ) interval.first = item.first;
+                    if( item.second > interval.second ) interval.second = item.second;
+
+                    for( int i=interval.first; i<=interval.second; i++ )
+                        _occupencyMap[i] = conflictId;
+                }
+            }
+            
+            pair<int,int> getMinMax(const vector<vector<int>>& intervals) {
+                auto minVal { intervals[0][0] };
+                auto maxVal { intervals[0][1] };
+
+                for( size_t i=1; i<intervals.size(); i++ ) {
+                    if( intervals[i][0] < minVal )  minVal = intervals[i][0];
+                    if( intervals[i][1] > maxVal )  maxVal = intervals[i][1];
+                }
+
+                return make_pair(minVal, maxVal);
             }
 
         public:
@@ -26,6 +65,11 @@ namespace Leetcode056 {
                 
                 auto sz { intervals.size() };
                 if( sz <= 1 ) return intervals;
+
+                // -1 means the place is empty
+                auto range { getMinMax(intervals) };
+                for( auto i=range.first; i<=range.second; i++ )
+                    _occupencyMap.insert(make_pair(i, -1));
 
                 for( const auto& interval : intervals )
                     addToMergedSet(make_pair(interval[0],interval[1]));
@@ -52,6 +96,14 @@ namespace Leetcode056 {
         vector<vector<int>> out{{1,5}};
         Solution s;
 
+        ASSERT_THAT(s.merge(inp), testing::UnorderedElementsAreArray(out));
+    }
+
+    GTEST_TEST(Leet056, Test3) {
+        vector<vector<int>> inp{{2,3},{4,5},{6,7},{8,9},{1,10}};
+        vector<vector<int>> out{{1,10}};
+
+        Solution s;
         ASSERT_THAT(s.merge(inp), testing::UnorderedElementsAreArray(out));
     }
 }
