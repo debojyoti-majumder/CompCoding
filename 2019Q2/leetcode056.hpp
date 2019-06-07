@@ -1,6 +1,10 @@
-// Problem URL: https://leetcode.com/problems/merge-intervals/
-// Issue Id: 17
+/*      Problem URL: https://leetcode.com/problems/merge-intervals/
+*       Issue Id: 17
 
+*       Related problems:
+            https://leetcode.com/problems/teemo-attacking/
+            https://leetcode.com/problems/insert-interval/
+*/
 #include <vector>
 #include <unordered_map>
 
@@ -75,18 +79,21 @@ namespace Leetcode056 {
                     addToMergedSet(make_pair(interval[0],interval[1]));
 
                 
+                // There has been no reduction
+                if( _rangeIdMap.size() == intervals.size() )
+                    return intervals;
+
                 // Converting from map to vector, which is our return type
                 // also remvoving redundent items
                 vector<vector<int>> returnValue;
                 for( const auto& item : _rangeIdMap ) {
                     auto intervalId { item.first };
                     auto intr { item.second };
-
-                    if( _occupencyMap[intr.first] == intervalId && _occupencyMap[intr.second] == intervalId )
-                        returnValue.emplace_back(vector<int>{intr.first, intr.second});
+                    
+                    returnValue.emplace_back(vector<int>{intr.first, intr.second});
                 }
 
-                return returnValue;
+                return merge(returnValue);
             }
     };
 
@@ -116,10 +123,13 @@ namespace Leetcode056 {
     }
 
     GTEST_TEST(Leet056, Test4) {
-        vector<vector<int>> inp {{2,3},{4,6},{5,7},{3,4}};
-        vector<vector<int>> out {{2,7}};
+        vector<vector<int>> inp1 {{2,3},{4,6},{5,7},{3,4}};
+        vector<vector<int>> inp2 {{1,4},{5,6}};
+        vector<vector<int>> out1 {{2,7}};
+        vector<vector<int>> out2 {{1,4},{5,6}};
 
         Solution s;
-        ASSERT_THAT(s.merge(inp), testing::UnorderedElementsAreArray(out));
+        ASSERT_THAT(s.merge(inp1), testing::UnorderedElementsAreArray(out1));
+        ASSERT_THAT(s.merge(inp2), testing::UnorderedElementsAreArray(out2));
     }
 }
