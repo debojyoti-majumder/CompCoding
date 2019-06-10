@@ -53,34 +53,58 @@ namespace Leetcode767 {
     };
 
     class Solution {
-        public:
-            string reorganizeString(string S, size_t startPos = 0) {
-                auto lengthDiff { S.length() - startPos };
-                string retValue {""};
+        private:
+            string _inputString;
 
-                // These will be base cases for the recursive call
-                if( lengthDiff <= 1 ) return S;
-                else if( lengthDiff == 2 ) return S[startPos] == S[startPos + 1] ? "" : S;
+            int getAdjacentIndex() {
+                auto index { -1 };
+                auto strLength { _inputString.length() };
 
-                auto char1 { S[startPos] };
-                auto char2 { S[startPos + 1] };
-                
-                if( char1 == char2 ) {
-                    // Have to find a character which is not equal to those chars
-                    auto it = find_if(S.begin(), S.end(), [&](char ch) {
-                        return ch != char1;
-                    });
-                    
-                    if( it != S.end() ) {
+                for( size_t i=0; i<strLength-1; i++ ) {
+                    if( _inputString[i] == _inputString[i+1] ) {
+                        index = i;
+                        break;
                     }
                 }
-                else {
-                    auto nextString { S.substr(startPos+1) };
-                    auto ret { reorganizeString(nextString) };
+
+                return index;
+            }
+
+            int getCandidateChar(char ch, size_t lastSwapIndex) {
+                int index { -1 };
+
+                for( size_t i=lastSwapIndex; i<_inputString.length(); i++ ) {
+                    if( _inputString[i] != ch ) {
+                        index = i;
+                        break;
+                    }
+                }
+
+                return index;
+            }
+
+        public:
+            string reorganizeString(string S) {
+                string retValue {""};
+                _inputString = S;
+                int lastIndex {0};
+
+                auto len { S.size() };
+
+                for( size_t i=0; i<len-1; i++ ) {
+                    auto index = getAdjacentIndex();
                     
-                    if( ret.length() != 0 && char2 != ret[0]) {
-                        retValue += char1 + char2;
-                        retValue += ret;
+                    if( index == -1 ) {
+                        retValue = _inputString;
+                        break;
+                    }
+
+                    auto swIndex = getCandidateChar(_inputString[i], lastIndex);
+                    if( swIndex != -1 ) {
+                        lastIndex = swIndex + 1;
+                        auto tmp { _inputString[index+1] };
+                        _inputString[index+1] = _inputString[swIndex];
+                        _inputString[swIndex] = tmp;
                     }
                 }
 
@@ -91,7 +115,7 @@ namespace Leetcode767 {
     GTEST_TEST(Leet767, Test1) {
         Solution s;
         ASSERT_THAT(s.reorganizeString("aab"), "aba");
-        ASSERT_THAT(s.reorganizeString("abcdeff"), "abcdfef");
+        ASSERT_NE(s.reorganizeString("abcdeff"), "");
     }
 
     GTEST_TEST(Leet767, Test2) {
