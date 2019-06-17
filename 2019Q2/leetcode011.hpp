@@ -1,4 +1,6 @@
 // Problem URL: https://leetcode.com/problems/container-with-most-water/
+// Related Problem: https://leetcode.com/problems/trapping-rain-water/
+// Issue id: 34
 
 #include <vector>
 #include "gtest/gtest.h"
@@ -36,10 +38,10 @@ namespace Leetcode011 {
                     }
                     
                     retVal = getSocre(height);
-                    if( get<0>(retVal) < maxVal ) 
-                        break;
-                    
-                    maxVal = get<0>(retVal);
+                    auto t { get<0>(retVal) };
+
+                    if( t > maxVal )
+                        maxVal = t;
                 }
 
                 return maxVal;
