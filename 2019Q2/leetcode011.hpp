@@ -3,7 +3,9 @@
 // Issue id: 34
 
 #include <vector>
+
 #include "gtest/gtest.h"
+#include "gmock/gmock.h"
 
 namespace Leetcode011 {
     using namespace std;

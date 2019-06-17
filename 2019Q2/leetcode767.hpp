@@ -55,59 +55,11 @@ namespace Leetcode767 {
     class Solution {
         private:
             string _inputString;
-
-            int getAdjacentIndex() {
-                auto index { -1 };
-                auto strLength { _inputString.length() };
-
-                for( size_t i=0; i<strLength-1; i++ ) {
-                    if( _inputString[i] == _inputString[i+1] ) {
-                        index = i;
-                        break;
-                    }
-                }
-
-                return index;
-            }
-
-            int getCandidateChar(char ch, size_t lastSwapIndex) {
-                int index { -1 };
-
-                for( size_t i=lastSwapIndex; i<_inputString.length(); i++ ) {
-                    if( _inputString[i] != ch ) {
-                        index = i;
-                        break;
-                    }
-                }
-
-                return index;
-            }
-
         public:
             string reorganizeString(string S) {
                 string retValue {""};
                 _inputString = S;
-                int lastIndex {0};
-
-                auto len { S.size() };
-
-                for( size_t i=0; i<len-1; i++ ) {
-                    auto index = getAdjacentIndex();
-                    
-                    if( index == -1 ) {
-                        retValue = _inputString;
-                        break;
-                    }
-
-                    auto swIndex = getCandidateChar(_inputString[i], lastIndex);
-                    if( swIndex != -1 ) {
-                        lastIndex = swIndex + 1;
-                        auto tmp { _inputString[index+1] };
-                        _inputString[index+1] = _inputString[swIndex];
-                        _inputString[swIndex] = tmp;
-                    }
-                }
-
+                
                 return retValue;
             }
     };
@@ -125,6 +77,6 @@ namespace Leetcode767 {
 
     GTEST_TEST(Leet767, TLECase1) {
         Solution s;
-        ASSERT_THAT(s.reorganizeString("kkkkzrkatkwpkkkktrq"), "");
+        ASSERT_NE(s.reorganizeString("kkkkzrkatkwpkkkktrq"), "");
     }
 }
