@@ -55,11 +55,60 @@ namespace Leetcode767 {
     class Solution {
         private:
             string _inputString;
+
+            // if returned -1 then the replacment character is not found
+            int getReplacementCharPos(size_t pos) {
+                auto retVal{-1};
+                auto sz {_inputString.size() };
+
+                for( size_t i=0; i<sz; i++ ) {
+                    if( _inputString[pos] != _inputString[i] && pos != i ) {
+                        if( i == 0 || i == sz - 1 ) {
+                            retVal = i;
+                            break;
+                        }
+
+                        auto& ch1 { _inputString[i-1] };
+                        auto& ch2 { _inputString[i+1] };
+
+                        if( ch1 != ch2 ) {
+                            retVal = i;
+                            break;
+                        }
+                    }
+                }
+
+                return retVal;
+            }
+
         public:
             string reorganizeString(string S) {
                 string retValue {""};
                 _inputString = S;
                 
+                // If the string size is leq 2 then there is no option
+                // to swap the string
+                auto sz { _inputString.size() };
+                if( sz <= 2 ) return S;
+
+                for( size_t i=0; i<sz-1; i++ ) {
+                    if( _inputString[i] == _inputString[i+1] ) {
+                        auto pos { getReplacementCharPos(i) };
+                        
+                        // Should return empty string
+                        if( pos == -1 ) {
+                            retValue = "";
+                            break;
+                        }
+
+                        // Swaping to break sequence like "kk"
+                        auto tmp { _inputString[i+1] };
+                        _inputString[i+1] = _inputString[pos];
+                        _inputString[pos] = tmp;
+                        retValue = _inputString;
+                    }
+                }
+
                 return retValue;
             }
     };
@@ -78,5 +127,6 @@ namespace Leetcode767 {
     GTEST_TEST(Leet767, TLECase1) {
         Solution s;
         ASSERT_NE(s.reorganizeString("kkkkzrkatkwpkkkktrq"), "");
+        ASSERT_THAT(s.reorganizeString("baaba"),"ababa");
     }
 }
