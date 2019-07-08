@@ -1,7 +1,13 @@
 // Problem URL: https://leetcode.com/problems/boats-to-save-people/
 // Issue Id: 35
 
+// Comment logs
+
+//  1.  Starting with a greedy approch, dynamic programming does not seems necessary. I don't see many possiblity for the 
+//      for the passengers to sit in
+
 #include <vector>
+#include <list>
 #include "gtest/gtest.h"
 
 namespace Leetcode881 {
@@ -10,7 +16,29 @@ namespace Leetcode881 {
     class Solution {
     public:
         int numRescueBoats(vector<int>& people, int limit) {
-            return 0;
+            auto numberOfPeople { people.size() };
+            auto originalLimit { limit };
+
+            list<vector<int>::iterator> canBeFitInBoat;
+
+            if( numberOfPeople == 0 ) return 0;
+
+            for(size_t i=0; i<numberOfPeople; i++) {
+                // This means the boat is full
+                if( limit == 0 ) break;
+                
+                // Assigning the persons in the boat
+                if( people[i] <= limit ) {
+                    limit -= people[i];
+                    canBeFitInBoat.emplace_back(people.begin() + i);
+                }
+            }
+
+            for( const auto& it : canBeFitInBoat ) {
+                people.erase(it);
+            }
+
+            return 1 + numRescueBoats(people, originalLimit);
         }
     };
 
