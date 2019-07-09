@@ -12,6 +12,9 @@
 //      This is the exact solution they have provided but they are not removing element from the vector
 //      Have taken 67 ms
 
+// 4.  With usage of index run time reduced by half ( 30 ms ) should not have been the case in STL. 
+//     Really need to look into your own list implementation 
+
 #include <vector>
 #include <algorithm>
 
@@ -72,7 +75,23 @@ namespace Leetcode881 {
         }
 
         int numRescueBoats(vector<int>& people, int limit) {
-            return 0;
+            sort(people.begin(), people.end());
+            auto boatsRequired { 0 };
+            int leftIndex { 0 };
+            int rightIndex { (int) (people.size() - 1) };
+
+            while( leftIndex <= rightIndex ) {
+                // If the lightest person can be fit in with the heaviest person
+                auto totalWeight { people[leftIndex] + people[rightIndex] };
+                if( totalWeight <= limit && leftIndex != rightIndex )
+                    leftIndex++;
+                
+                // the heaviest person always gets boarded
+                rightIndex--;
+                boatsRequired++;
+            }
+
+            return boatsRequired;
         }
     };
 
