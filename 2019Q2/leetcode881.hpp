@@ -8,34 +8,45 @@
 
 // 2.   Would not have worked out because of cases like 4,1 and 3,2 with limit 5
 
-// 3.   Getting TLE error with 50000 input value ranging 200,960 and limit of 1000
+// 3.   Getting TLE error with 50000 input value ranging 200,960 and limit of 1000.
+//      This is the exact solution they have provided but they are not removing element from the vector
+//      Have taken 67 ms
 
 #include <vector>
 #include <algorithm>
 
+// Includs for unit testing
 #include "gtest/gtest.h"
+#include <random>
 
 namespace Leetcode881 {
     using namespace std;
 
     class Solution {
     private:
-        int minBoatRequired(vector<int>& people, int limit) {
+        int _returnValue;
+
+        // Expects the array to be sorted and uses recusion
+        void minBoatRequired(vector<int>& people, int limit) {
             auto numberofPeople { people.size() };
             auto origialLimit{ limit };
 
             // Base case
-            if( numberofPeople == 0 ) return 0;
+            if( numberofPeople == 0 ) return;
 
             auto firstItem { people.front() };
             auto lastItem { people.back() };
             
             // This is kind of a invalid case, if false that means the 
             // boat won't be able to carry them
-            if( firstItem > limit && lastItem > limit ) return 0;
+            if( firstItem > limit && lastItem > limit ) return;
 
             // This is also kind of a base case
-            if( numberofPeople == 1 ) return 1;
+            if( numberofPeople == 1 ) { 
+                people.pop_back();
+                _returnValue++;
+                return;
+            }
 
             // The largest person is on the boat
             limit -= lastItem;
@@ -46,14 +57,22 @@ namespace Leetcode881 {
                 people.erase(people.begin());
             }
 
-            // Finding boat with the rest of the people
-            return 1 + minBoatRequired(people, origialLimit);
+            _returnValue++;
+        }
+    public:
+        int numRescueBoatsNotUsed(vector<int>& people, int limit) {
+            // Given TLE on 50K length of data
+            sort(people.begin(), people.end());
+            _returnValue = 0;
+
+            while( false == people.empty() )
+                minBoatRequired(people, limit);
+
+            return _returnValue;
         }
 
-    public:
         int numRescueBoats(vector<int>& people, int limit) {
-            sort(people.begin(), people.end());
-            return minBoatRequired(people, limit);            
+            return 0;
         }
     };
 
@@ -64,6 +83,10 @@ namespace Leetcode881 {
         vector<int> baseCase{1,2};
         ASSERT_EQ(s.numRescueBoats(baseCase, 3), 1);
 
+        // Got a crash on this test case
+        vector<int> inp1 { 2,4 };
+        ASSERT_EQ(s.numRescueBoats(inp1, 5), 2);
+
         // Explanation: // (1, 2), (2) and (3)
         vector<int> input1{3,2,2,1};  
         ASSERT_EQ(s.numRescueBoats(input1, 3), 3);
@@ -73,10 +96,18 @@ namespace Leetcode881 {
         ASSERT_EQ(s.numRescueBoats(input2, 5), 4);
     }
 
-    GTEST_TEST(Leet881, ExTest) {
+    GTEST_TEST(Leet881, LoadTest) {
         Solution s;
+        vector<int> input;
 
-        vector<int> inp1 { 2,4 };
-        ASSERT_EQ(s.numRescueBoats(inp1, 5), 2);
+        random_device random_device;
+        mt19937 random_engine(random_device());
+        uniform_int_distribution<int> testInputGenerator(200, 960);
+
+        for(long i=0; i<50000; i++) {
+            input.emplace_back(testInputGenerator(random_engine));
+        }
+
+        ASSERT_NE(s.numRescueBoats(input,1000),0);
     }
 }
