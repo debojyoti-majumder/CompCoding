@@ -4,10 +4,7 @@
 //  1. Should be in O(n)
 
 #include <string>
-#include <sstream>
-#include <iostream>
 #include <stack>
-#include <algorithm>
 
 #include "gtest/gtest.h"
 
@@ -33,39 +30,57 @@ namespace Leetcode388 {
             return tabCount;
         }
 
+        string getGoodPath(const string& input) {
+            string outputString{""};
+            auto charSeen { false };
+
+            for( size_t i=0; i<input.size(); i++ ) {
+                if( (input[i] == '\t' || input[i] == ' ') && charSeen == false ) {
+                    continue;
+                }
+                else {
+                    charSeen = true;
+                    outputString += input[i];
+                }
+            }
+
+            return outputString;
+        }
+
         void processToken(const string& str) {
             auto level { getTabCount(str) };    
-            auto folderName { str };
             auto dotIndex { str.find_first_of('.') };
 
             if( dotIndex == string::npos ) {
                 // This means it's folder
-                folderName.erase(remove(folderName.begin(), folderName.end(), '\t'), folderName.end());
+                auto folderName { getGoodPath(str) };
                 auto folderNameLength { folderName.size() };
                 
                 if( level > _currentLevel ) {
                     auto lastLen { _folderNameLengthStack.top() };
                     _folderNameLengthStack.emplace(folderNameLength + lastLen + 1);
                 }
-                else {
-                    if( false == _folderNameLengthStack.empty() ) {
+                else {    
+                    if( _folderNameLengthStack.size() > 1 ) {
                         _folderNameLengthStack.pop();
                         auto lastLen { _folderNameLengthStack.top() };
                         _folderNameLengthStack.emplace(lastLen + folderNameLength + 1);
                     }
                     else {
+                        if( !_folderNameLengthStack.empty() )
+                            _folderNameLengthStack.pop();
+                        
                         _folderNameLengthStack.emplace(folderNameLength);
                     }
                 }
             }
             else {
                 // This is for file
-                auto fileName { str };
-                fileName.erase(remove(fileName.begin(), fileName.end(), '\t'), fileName.end());
+                auto fileName { getGoodPath(str) };
                 auto pathLength { (int)fileName.length() };
 
-                // If the stack is empty then it is just a file name
-                if( false == _folderNameLengthStack.empty() ) {
+                
+                if( !_folderNameLengthStack.empty() ) {
                     auto topItem { _folderNameLengthStack.top() };
                     pathLength += 1 + topItem;
                 }
@@ -85,6 +100,8 @@ namespace Leetcode388 {
             // Initilizing the states
             _returnValue = 0;
             _currentLevel = 0;
+            
+            // Ensuring the number stack would never be empty
             while(!_folderNameLengthStack.empty()) 
                 _folderNameLengthStack.pop();
 
@@ -108,5 +125,16 @@ namespace Leetcode388 {
         EXPECT_EQ(s.lengthLongestPath(inp2), 32);
         EXPECT_EQ(s.lengthLongestPath(inp3), 5);
         EXPECT_EQ(s.lengthLongestPath(inp4), 9);
+    }
+
+    GTEST_TEST(Leetcode388, ExTestCases) {
+        auto inp1 { "dir\n    file.txt" };
+        auto inp2 {"dir\n\tsubdir1\n\tsubdir2"};
+        auto filenamewithSpaces {"new folder\n\tsome file.txt"};
+        Solution s;
+
+        EXPECT_EQ(s.lengthLongestPath(inp1), 12);
+        EXPECT_EQ(s.lengthLongestPath(inp2), 0);
+        EXPECT_EQ(s.lengthLongestPath(filenamewithSpaces), 24);
     }
 }
