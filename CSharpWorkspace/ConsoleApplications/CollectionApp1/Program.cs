@@ -10,6 +10,7 @@ namespace CollectionApp1
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Smaple comment");
         }
     }
 }

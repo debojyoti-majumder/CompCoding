@@ -2,3 +2,4 @@ build/*
 .vscode/ipch/*
 /CSharpWorkspace/ConsoleApplications/.vs/ConsoleApplications/v15
 /CSharpWorkspace/ConsoleApplications/CollectionApp1/obj/Debug
+CSharpWorkspace/ConsoleApplications/CollectionApp1/bin/Debug
