@@ -28,7 +28,7 @@ namespace GraphLoop {
         private:
             map<int, GraphNode> _nodes;
             
-            GraphNode getNode(int nodeId) {
+            GraphNode& getNode(int nodeId) {
                 auto it = _nodes.find(nodeId);
                 if( it == _nodes.end() ) {
                     _nodes.insert(make_pair(nodeId, GraphNode{nodeId}));
@@ -52,7 +52,7 @@ namespace GraphLoop {
 
     GTEST_TEST(GraphLoop, basicTest) {
         Graph g;
-        
+
         g.addEdge(0,1);
         g.addEdge(1,2);
         g.addEdge(2,3);
