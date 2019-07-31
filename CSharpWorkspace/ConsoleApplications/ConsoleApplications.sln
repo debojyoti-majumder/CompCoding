@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.489
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectionApp1", "CollectionApp1\CollectionApp1.csproj", "{5EDAA0AB-2FBE-4EEF-B8F7-6D1EFC8F108D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETLXMLReader", "ETLXMLReader\ETLXMLReader.csproj", "{91671AA9-CE14-4A16-9F7F-2C8142011437}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{5EDAA0AB-2FBE-4EEF-B8F7-6D1EFC8F108D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EDAA0AB-2FBE-4EEF-B8F7-6D1EFC8F108D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EDAA0AB-2FBE-4EEF-B8F7-6D1EFC8F108D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91671AA9-CE14-4A16-9F7F-2C8142011437}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91671AA9-CE14-4A16-9F7F-2C8142011437}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91671AA9-CE14-4A16-9F7F-2C8142011437}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91671AA9-CE14-4A16-9F7F-2C8142011437}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
