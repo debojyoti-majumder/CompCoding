@@ -13,15 +13,18 @@ namespace PushDominos
             if( isLeft )
             {
                 if (index == 0) return false;
-                else if (index == 1) return true;
-                else return _outputString[index - 2] != 'R';
-
+                else return _outputString[index - 1] == '.';
             }
             else {
                 if (index == _outputString.Length - 1) return false;
-                else if (index == _outputString.Length - 2) return true;
-                else return _outputString[index + 2] != 'L';
+                else return _outputString[index + 1] == '.';
             }
+        }
+
+        private bool CanStandStill(int index)
+        {
+            if (index == 0 || index == _outputString.Length) return false;
+            else return false; 
         }
 
         public string PushDominoes(string dominoes)
@@ -31,6 +34,7 @@ namespace PushDominos
 
             for(int i=0; i<_outputString.Length; i++)
             {
+
                 if( dominoes[i] == 'L' && IsToBeAltered(true, i) )
                 {
                     if (isChangesMade == false)
@@ -49,10 +53,11 @@ namespace PushDominos
                 }
             }
 
+            var processedString = _outputString.ToString();
             if (isChangesMade == false)
-                return _outputString.ToString();
+                return processedString;
 
-            return PushDominoes(dominoes);
+            return PushDominoes(processedString);
         }
     }
 }
