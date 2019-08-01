@@ -5,3 +5,6 @@ build/*
 CSharpWorkspace/ConsoleApplications/CollectionApp1/bin/Debug
 /CSharpWorkspace/ConsoleApplications/ETLXMLReader/obj/Debug
 /CSharpWorkspace/ConsoleApplications/ETLXMLReader/bin/Debug
+/CSharpWorkspace/ConsoleApplications/CollectionApp1/obj/Release
+/CSharpWorkspace/ConsoleApplications/ETLXMLReader/bin/Release
+/CSharpWorkspace/ConsoleApplications/ETLXMLReader/obj/Release

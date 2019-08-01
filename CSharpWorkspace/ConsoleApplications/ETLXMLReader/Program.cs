@@ -20,7 +20,7 @@ namespace ETLXMLReader
         }
 
         // Outputing to console, should go out in a file
-        static bool ProcessEventNode(XmlNode eventNode)
+        static bool ProcessEventNode(XmlNode eventNode, bool consoleOut = false)
         {
             XmlNode systemNode = null;
             XmlNode debugDataNode = null;
@@ -43,7 +43,9 @@ namespace ETLXMLReader
                 if (m.Length != 0)
                     outputOpt += m + " ";
             }
-            Console.WriteLine(outputOpt);
+
+            if( consoleOut )
+                Console.WriteLine(outputOpt);
 
             return true;
         }
@@ -63,17 +65,46 @@ namespace ETLXMLReader
                 return;
             }
 
-            var xmlTextReader = new XmlDocument();
-            xmlTextReader.Load(fileName);
-            int count = 0;
-
-            foreach( XmlNode childNode in xmlTextReader.DocumentElement.ChildNodes)
+            // Start REPL loop, TODO to be refactored with some object oriented approch
+            while(true)
             {
-                if( ProcessEventNode(childNode) )
-                    count++;
-            }
+                Console.Write("#");
+                var command = Console.ReadLine();
+                var splittedCommand = command.Split(' ');
+                var keyword = splittedCommand[0];
 
-            Console.WriteLine("{0} event processes", count);
+                if( keyword == "load" )
+                {
+                    Console.WriteLine("Loading trace..");
+
+                    var xmlTextReader = new XmlDocument();
+                    xmlTextReader.Load(fileName);
+                    int count = 0;
+
+                    foreach (XmlNode childNode in xmlTextReader.DocumentElement.ChildNodes)
+                    {
+                        if (ProcessEventNode(childNode))
+                            count++;
+                    }
+
+                    Console.WriteLine("{0} event processes", count);
+                }
+                else if( keyword == "function" )
+                {
+                    if( splittedCommand.Length == 2 ) {
+                        var functionName = splittedCommand[1];
+                        Console.WriteLine("Logs from function {0}", functionName);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invald usage");
+                    }
+                }
+                else if( keyword == "exit" )
+                {
+                    break;
+                }
+            }
         }
     }
 }
