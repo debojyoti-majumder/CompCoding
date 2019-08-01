@@ -66,6 +66,11 @@ namespace TreeDepthTraverser
 
         private List<int> GetResultsOnDepth(TreeNode nd, int d, int currentDepth = 1)
         {
+            if (nd == null)
+            {
+                return new List<int>();
+            }
+
             if (currentDepth == d)
             {
                 return new List<int> { nd.Data };
@@ -81,7 +86,7 @@ namespace TreeDepthTraverser
 
         public List<int> GetNodesAtDepth(int depth)
         {
-            if (depth > this.Depth)
+            if (depth + 1 >= this.Depth)
                 throw new Exception("Bad argument");
 
             return GetResultsOnDepth(_root, depth);
