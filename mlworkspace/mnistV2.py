@@ -1,5 +1,8 @@
-# This would add hidden layers with drop outs
+# This would add hidden layers with drop outs, generally there is no need to run 200 epochs
+# model kind of happens to be at a good state after 60 epochs
 
+# TODO: Save the model information, put it through the forward pass and  
+# predict gieven the mnist data given as input
 from __future__ import print_function
 
 import numpy as np
