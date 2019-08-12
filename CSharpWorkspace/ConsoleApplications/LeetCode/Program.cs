@@ -5,7 +5,7 @@ namespace LeetCode
 {
     class Program
     {
-        static void Main(string[] args)
+        static void tc1()
         {
             MyCalendarTwo c = new MyCalendarTwo();
 
@@ -15,6 +15,11 @@ namespace LeetCode
             Console.WriteLine(c.Book(5, 15));       // returns false
             Console.WriteLine(c.Book(5, 10));       // returns true
             Console.WriteLine(c.Book(25, 55));      // returns true
+        }
+
+        static void Main(string[] args)
+        {
+            LargestPlusSign.TestCases();
         }
     }
 }
