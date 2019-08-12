@@ -7,13 +7,14 @@ namespace LeetCode
     {
         static void Main(string[] args)
         {
-            PushDominos.Solution s = new PushDominos.Solution();
+            MyCalendarTwo c = new MyCalendarTwo();
 
-            // Should ouput "LL.RR.LLRRLL.."
-            Console.WriteLine(s.PushDominoes(".L.R...LR..L.."));
-
-            // Should output "RR.L"
-            Console.WriteLine(s.PushDominoes("RR.L"));
+            Console.WriteLine(c.Book(10, 20));      // returns true
+            Console.WriteLine(c.Book(50, 60));      // returns true
+            Console.WriteLine(c.Book(10, 40));      // returns true
+            Console.WriteLine(c.Book(5, 15));       // returns false
+            Console.WriteLine(c.Book(5, 10));       // returns true
+            Console.WriteLine(c.Book(25, 55));      // returns true
         }
     }
 }

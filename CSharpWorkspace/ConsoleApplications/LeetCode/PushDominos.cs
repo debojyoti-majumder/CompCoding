@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 // Problem URL: https://leetcode.com/problems/push-dominoes/
 
@@ -55,5 +56,18 @@ namespace PushDominos
 
             return PushDominoes(processedString);
         }
+
+        public static void TestCases()
+        {
+            PushDominos.Solution s = new PushDominos.Solution();
+
+            // Should ouput "LL.RR.LLRRLL.."
+            Console.WriteLine(s.PushDominoes(".L.R...LR..L.."));
+
+            // Should output "RR.L"
+            Console.WriteLine(s.PushDominoes("RR.L"));
+
+        }
     }
+
 }
