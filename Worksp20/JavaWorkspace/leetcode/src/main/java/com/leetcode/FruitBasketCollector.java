@@ -36,14 +36,14 @@ public class FruitBasketCollector {
             return true;
         }
 
-        if( _bucketTwo.isEmpty() ) {
-            _bucketTwo.count = 1;
-            _bucketTwo.fruitType = type;
+        if( _bucketOne.fruitType == type ) {
+            _bucketOne.count++;
             return true;
         }
 
-        if( _bucketOne.fruitType == type ) {
-            _bucketOne.count++;
+        if( _bucketTwo.isEmpty() ) {
+            _bucketTwo.count = 1;
+            _bucketTwo.fruitType = type;
             return true;
         }
 
@@ -76,7 +76,7 @@ public class FruitBasketCollector {
             _bucketTwo = new FruitBucket();
 
             // Get the max value
-            int startOverValue = getMaxScore(i-1);
+            int startOverValue = getMaxScore(startIndex + 1);
             retVal = Math.max(retVal, startOverValue);
         }
 
