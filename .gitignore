@@ -15,3 +15,4 @@ mlworkspace/*.csv
 Worksp20/JavaWorkspace/leetcode/target/classes/com/leetcode/*.class
 Worksp20/JavaWorkspace/leetcode/target/test-classes/com/leetcode/*.class
 Worksp20/JavaWorkspace/leetcode/target/maven-status/maven-compiler-plugin/compile/default-compile/*.lst
+Worksp20/JavaWorkspace/leetcode/.sts4-cache/classpath-data.json
