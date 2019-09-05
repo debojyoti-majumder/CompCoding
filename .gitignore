@@ -11,3 +11,7 @@ CSharpWorkspace/ConsoleApplications/CollectionApp1/bin/Debug
 /CSharpWorkspace/ConsoleApplications/LeetCode/obj/Debug
 /CSharpWorkspace/ConsoleApplications/LeetCode/bin/Debug
 mlworkspace/*.csv
+
+Worksp20/JavaWorkspace/leetcode/target/classes/com/leetcode/*.class
+Worksp20/JavaWorkspace/leetcode/target/test-classes/com/leetcode/*.class
+Worksp20/JavaWorkspace/leetcode/target/maven-status/maven-compiler-plugin/compile/default-compile/*.lst
