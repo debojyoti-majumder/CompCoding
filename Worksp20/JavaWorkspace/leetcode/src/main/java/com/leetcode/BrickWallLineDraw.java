@@ -8,5 +8,9 @@ import java.util.List;
 public class BrickWallLineDraw {
     public BrickWallLineDraw(List<List<Integer>> wall) {
 
-    }    
+    } 
+    
+    public int getMinCount() {
+        return 0;
+    }
 }
