@@ -1,24 +1,13 @@
 // Problem URL: https://leetcode.com/problems/brick-wall/
 // Problem ID:  554
 
-//Input: [[1,2,2,1],
-//        [3,1,2],
-//        [1,3,2],
-//        [2,4],
-//        [3,1,2],
-//        [1,3,1,1]]
-
-//Output: 2
-
 package com.leetcode;
 
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class BrickWallLineDrawTest {
