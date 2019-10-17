@@ -20,8 +20,30 @@ public class BrickWallLineDraw {
             _wallWidth += firstRow.get(i);
     } 
     
+    private boolean isMatched(int rowNumber, int lineOffset) {
+        List<Integer> row = _wallConfiguration.get(rowNumber);
+        int sum = 0;
+
+        for( int i=0; sum<=lineOffset; i++ ) {
+            // This is just for safekeeping
+            if( i == row.size() ) break;
+
+            // Accumulating
+            sum += row.get(i);
+        }
+
+        return sum == lineOffset ? true : false;
+    }
+
     private int getCrossingScore(int lineOffset) {
-        return lineOffset;
+        int retValue = 0;
+
+        for( int i=0; i<_wallConfiguration.size(); i++ ) {
+            // This means we have to cross the brick
+            if( false == isMatched(i, lineOffset) ) retValue += 1; 
+        }
+
+        return retValue;
     }
 
     public int getMinCount() {
