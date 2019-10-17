@@ -27,6 +27,7 @@ public class BrickWallLineDraw {
         for( int i=0; sum<=lineOffset; i++ ) {
             // This is just for safekeeping
             if( i == row.size() ) break;
+            else if( sum == lineOffset ) break;
 
             // Accumulating
             sum += row.get(i);
@@ -51,7 +52,7 @@ public class BrickWallLineDraw {
         if( _wallWidth <= 1 ) return _wallWidth;
         int retValue = 0;
 
-        for( int i=1; i<_wallWidth -1 ; i++ ) {
+        for( int i=1; i<_wallWidth; i++ ) {
             int tmp = getCrossingScore(i);
 
             // This is to update the mininum
