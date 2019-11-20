@@ -1,6 +1,4 @@
-// Strachpad.cpp : This file contains the 'main' function. Program execution begins and ends there.
-
-#include "pch.h"
+// Problem URL: https://leetcode.com/problems/2-keys-keyboard/
 
 #include <iostream>
 #include <vector>
@@ -9,7 +7,6 @@
 
 using namespace std;
 
-// https://leetcode.com/problems/2-keys-keyboard/
 class Solution {
 private:
     unordered_map<int, int> _returnValueCache;
