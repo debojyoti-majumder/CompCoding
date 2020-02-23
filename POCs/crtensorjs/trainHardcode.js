@@ -1,4 +1,6 @@
-// This module uses the tfjs version which is slowest of them all
+// This sample Node.js program which uses the tfjs version which is slowest of them all
+
+// Obtaining the package for tensorflow JS
 const tf = require('@tensorflow/tfjs');
 
 // This is the model which would be used later 
