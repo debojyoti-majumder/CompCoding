@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <set>
+#include <gtest/gtest.h>
 
 using namespace std;
 
@@ -50,8 +51,18 @@ private:
         auto subMatLength { length - 1 };
         const auto subProblems { 4 };
 
-        // This is a base case
-        if( length == 1 ) return mat.getAt(0,0) == 1;
+        // This is a base case, checking against 1
+        if( length == 1 ) {
+            auto isOne { mat.getAt(0,0) == 1 };
+            auto retValue { false };
+
+            if( isOne ) {
+                _returnValue += 1;
+                retValue = true;
+            }
+            
+            return retValue;
+        }
         
         // Building the submatrixs
         Point origins[subProblems];
@@ -123,21 +134,7 @@ public:
     }
 };
 
-void runTestCases() {
-    //Input: matrix =
-    //    [
-    //        [0, 1, 1, 1],
-    //        [1, 1, 1, 1],
-    //        [0, 1, 1, 1]
-    //    ]
-    //       Output : 15
-    //           Explanation :
-    //           There are 10 squares of side 1.
-    //           There are 4 squares of side 2.
-    //           There is  1 square of side 3.
-    //           Total number of squares = 10 + 4 + 1 = 15.
-
-
+TEST(Prob1277, basicCases) {
     Solution s;
     auto retValue { 0 };
 
@@ -152,23 +149,10 @@ void runTestCases() {
         vector<int> {1,1,0},
         vector<int> {1,1,0}
     };
- 
+
     retValue = s.countSquares(matrix2);
-    if (7 == retValue)
-        cout << "Test 2 Pased\n";
-    else
-        cout << "Test 2 Failed\n";
+    EXPECT_EQ(retValue, 7);
 
-   retValue = s.countSquares(matrix);
-    if (15 == retValue)
-        cout << "Test 1 Pased\n";
-    else
-        cout << "Test 1 Failed\n";    
-}
-
-int main(int, char**) {
-    cout << "Running for leet code\n";
-    runTestCases();
-
-    return 0;
+    retValue = s.countSquares(matrix);
+    EXPECT_EQ(retValue, 15);
 }
