@@ -69,7 +69,7 @@ private:
 
         // This is a base case, checking against 1
         if( length == 1 ) {
-            auto zeroItem { mat.getAt(0,0) };
+            auto& zeroItem { mat.getAt(0,0) };
             auto retValue { false };
 
             if( 1 == zeroItem.first ) {
@@ -94,7 +94,7 @@ private:
 
         // This is BFS
         for( auto i=0; i<subProblems; i++ ) {
-            SquareMatrix subMat{mat};
+            SquareMatrix& subMat{mat};
             subMat.setBounds(origins[i], subMatLength);
 
             // Recusrive call
@@ -102,7 +102,10 @@ private:
         }
 
         // Would return true if all the submatrix are true 
-        return counter == 4;
+        auto isCompleteOnes{counter == 4};
+        if( isCompleteOnes ) _returnValue += 1;
+        
+        return isCompleteOnes;
     }
 
 public:
@@ -148,8 +151,7 @@ public:
             // This is the ideal case as we if it a squreMatrix
             SquareMatrix m(matCells);
             m.setBounds(Point{0,0}, numberOfRows);
-
-            if( isAllOneInSquareMatrix(m) ) _returnValue += 1;
+            isAllOneInSquareMatrix(m);
         }
 
         return _returnValue;
@@ -167,7 +169,7 @@ TEST(Prob1277, basicCases) {
     };
 
     vector<vector<int>> matrix2 = {
-        vector<int> {0,1,0},
+        vector<int> {1,0,1},
         vector<int> {1,1,0},
         vector<int> {1,1,0}
     };
