@@ -3,8 +3,7 @@
 
 #include <iostream>
 #include <vector>
-#include <unordered_set>
-#include <sstream>
+#include <unordered_map>
 #include <gtest/gtest.h>
 
 using namespace std;
@@ -74,7 +73,7 @@ class Solution
 {
 private:
     int _returnValue;
-    unordered_set<size_t> _resultCache;
+    unordered_map<size_t, bool> _dpTable;
 
     // This method would always expect a square matrix, and work on it based on that
     // a squre matrix of n an be broken into 4 sub-matrixes of size n - 1. 
@@ -102,6 +101,16 @@ private:
             
             return retValue;
         }
+
+        // Doing the cache lookup
+        CalculatedResult res{startingPoint, length};
+        auto hash = res.getHash();
+        auto it = _dpTable.find(hash);
+
+        // We have already calculated the result
+        if( it != _dpTable.end() ) {
+            return it->second;
+        }
         
         // Building the submatrixs
         Point origins[subProblems];
@@ -119,28 +128,18 @@ private:
             if( isAllOneInSquareMatrix(subMat) ) counter += 1;
         }
 
-        // Would return true if all the submatrix are true 
+        // Once we know the result it can be stored
         auto isCompleteOnes{counter == 4};
+        if( isCompleteOnes ) _returnValue += 1;
+        _dpTable.insert(make_pair(hash, isCompleteOnes));
 
-        if( isCompleteOnes ) {
-            CalculatedResult res{startingPoint, length};
-            auto hash = res.getHash();
-            auto it = _resultCache.find(hash);
-            
-            // This means it is a new square we have found
-            if( it == _resultCache.end() ) {
-                _returnValue += 1;
-                _resultCache.insert(hash);
-            }
-        }
-        
         return isCompleteOnes;
     }
 
 public:
     int countSquares(vector<vector<int>>& matrix) {
         // This is for solution object being reused
-        _resultCache.clear();
+        _dpTable.clear();
         _returnValue = 0;
 
         // Initialization for iretaions to be done    
@@ -230,4 +229,22 @@ TEST(Prob1277, basicCases) {
     Solution m;
     retValue = m.countSquares(smallerMatrix);
     EXPECT_EQ(retValue,4);
+}
+
+TEST(Prob1277, TLECase) {
+    auto matrixLength{400};
+    vector<vector<int>> mat;
+
+    for(int i = 0; i < matrixLength; i++ ) {
+        vector<int> row(matrixLength);
+        mat.emplace_back(row);
+    }
+
+    Solution s;
+    const clock_t t0 = clock(); // or gettimeofday or whatever
+    int res = s.countSquares(mat);
+    const clock_t t1 = clock();
+    
+    const double elapsedSec = (t1 - t0) / (double)CLOCKS_PER_SEC;
+    EXPECT_LE(elapsedSec,2);
 }
