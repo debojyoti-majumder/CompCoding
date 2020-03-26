@@ -123,7 +123,6 @@ private:
         auto isCompleteOnes{counter == 4};
 
         if( isCompleteOnes ) {
-            
             CalculatedResult res{startingPoint, length};
             auto hash = res.getHash();
             auto it = _resultCache.find(hash);
@@ -170,7 +169,7 @@ public:
             auto allOnes{ true };
 
             // Sliding with square matrix based on 
-            for( int i=0; i<difference; i++ ) {
+            for( int i=0; i<=difference; i++ ) {
                 SquareMatrix subMatrix(matCells);
                 subMatrix.setBounds(Point{i,0}, numberOfColumns);
 
@@ -212,6 +211,12 @@ TEST(Prob1277, basicCases) {
         vector<int> {1,1,1}
     };
 
+    vector<vector<int>> smallerMatrix = {
+        vector<int> {1,1},
+        vector<int> {0,0},
+        vector<int> {1,1}
+    };
+
     // This is a testcase added by me
     retValue = s.countSquares(smallMatrix);
     EXPECT_EQ(retValue,6);
@@ -221,4 +226,8 @@ TEST(Prob1277, basicCases) {
 
     retValue = s.countSquares(matrix);
     EXPECT_EQ(retValue, 15);
+
+    Solution m;
+    retValue = m.countSquares(smallerMatrix);
+    EXPECT_EQ(retValue,4);
 }
