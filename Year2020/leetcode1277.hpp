@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include <vector>
-#include <set>
+#include <unordered_set>
+#include <sstream>
 #include <gtest/gtest.h>
 
 using namespace std;
@@ -53,10 +54,27 @@ class SquareMatrix {
         inline Point getOrigin() const { return _originPoint; }
 };
 
+struct CalculatedResult {
+    Point p;
+    size_t length;
+
+    size_t getHash() {
+        size_t retValue{0};
+        
+        retValue += (p.first)*31;
+        retValue += (p.second)*53;
+        retValue += (length);
+
+        return hash<size_t>{}(retValue);
+    }
+};
+
+
 class Solution 
 {
 private:
     int _returnValue;
+    unordered_set<size_t> _resultCache;
 
     // This method would always expect a square matrix, and work on it based on that
     // a squre matrix of n an be broken into 4 sub-matrixes of size n - 1. 
@@ -103,15 +121,30 @@ private:
 
         // Would return true if all the submatrix are true 
         auto isCompleteOnes{counter == 4};
-        if( isCompleteOnes ) _returnValue += 1;
+
+        if( isCompleteOnes ) {
+            
+            CalculatedResult res{startingPoint, length};
+            auto hash = res.getHash();
+            auto it = _resultCache.find(hash);
+            
+            // This means it is a new square we have found
+            if( it == _resultCache.end() ) {
+                _returnValue += 1;
+                _resultCache.insert(hash);
+            }
+        }
         
         return isCompleteOnes;
     }
 
 public:
     int countSquares(vector<vector<int>>& matrix) {
-        // Initialization for iretaions to be done    
+        // This is for solution object being reused
+        _resultCache.clear();
         _returnValue = 0;
+
+        // Initialization for iretaions to be done    
         auto numberOfColumns { matrix[0].size() };
         auto numberOfRows { matrix.size() };
         auto matCells { SquareMatrix::buildMatrixCells(matrix) };
@@ -121,7 +154,7 @@ public:
             auto allOnes{ true };
 
             // Sliding windoing through the sub matrixes
-            for( int i=0; i<difference; i++ ) {
+            for( int i=0; i<=difference; i++ ) {
                 SquareMatrix submatrix(matCells);
                 submatrix.setBounds(Point{0,i}, numberOfRows);
 
@@ -173,6 +206,15 @@ TEST(Prob1277, basicCases) {
         vector<int> {1,1,0},
         vector<int> {1,1,0}
     };
+
+    vector<vector<int>> smallMatrix = {
+        vector<int> {0,1,1},
+        vector<int> {1,1,1}
+    };
+
+    // This is a testcase added by me
+    retValue = s.countSquares(smallMatrix);
+    EXPECT_EQ(retValue,6);
 
     retValue = s.countSquares(matrix2);
     EXPECT_EQ(retValue, 7);
