@@ -1,8 +1,12 @@
 // Problem URL: https://leetcode.com/problems/deepest-leaves-sum/
 // Problem ID: 1302
 
+// TODO 1: Might be the sum can be calulated with out looping through
+// TODO 2: Might be using a bfs technique would have been better, which can combined with the above one
+
 #include <iostream>
 #include <vector>
+#include <gtest/gtest.h>
 
 using namespace std;
 
@@ -18,7 +22,7 @@ struct TreeNodeWithDepth {
     int depth;
 };
 
-class Solution {
+class Solution1302 {
 private:
     vector<TreeNodeWithDepth> _leafNodes;
     
@@ -79,7 +83,7 @@ public:
     }
 };
 
-int main(int, char**) {
+TEST(Prob1302, BasicTest) {
     TreeNode nd1(1);
     TreeNode nd2(2);
     TreeNode nd3(3);
@@ -89,7 +93,7 @@ int main(int, char**) {
     TreeNode nd7(7);
     TreeNode nd8(8);
     
-    Solution s;
+    Solution1302 s;
     
     // Building the tree connection
     nd1.left = &nd2, nd1.right = &nd3;
@@ -98,7 +102,6 @@ int main(int, char**) {
     nd4.left = &nd7;
     nd6.right = &nd8;
 
-    // Should output 15
-    cout << s.deepestLeavesSum(&nd1);
-    return 0;
+    auto sum = s.deepestLeavesSum(&nd1);
+    EXPECT_EQ(sum, 15);
 }
