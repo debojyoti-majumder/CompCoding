@@ -1,8 +1,10 @@
 // Problem URL: https://leetcode.com/problems/minimum-path-sum/
 
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include <queue>
+#include <functional>
+#include <iostream>
 
 using namespace std;
 
@@ -10,14 +12,29 @@ struct OriginPoint {
     int x;
     int y;
     int calValue;
+
+    bool operator==(const OriginPoint& p) const noexcept {
+        return x == p.x && y == p.y;
+    }
 };
+
+struct OriginPointHash {
+    std::size_t operator()(const OriginPoint& obj) const noexcept {
+        auto h1 { hash<int>{} (obj.x) };
+        auto h2 { hash<int>{} (obj.y) };
+
+        return h1 ^ h2;
+    }
+};
+
+typedef unordered_map<OriginPoint, int, OriginPointHash> DpTable;
 
 class Solution064 {
 private:
-    // map<OriginPoint, int>   _dpTable;
-    queue<OriginPoint>      _points;
-    size_t                  _rowSize;
-    size_t                  _colSize;
+    DpTable             _dpTable;
+    queue<OriginPoint>  _points;
+    size_t              _rowSize;
+    size_t              _colSize;
 
     vector<OriginPoint> getValiMoves(const OriginPoint& p) {
         OriginPoint down { p.x , p.y + 1 };
@@ -39,6 +56,23 @@ private:
         return false;
     }
 
+    bool updateDPTable(const OriginPoint& point) {
+        auto it { _dpTable.find(point) };
+        auto retValue { false };
+
+        if( it != _dpTable.end() ) {
+            if( it->second > point.calValue ) {
+                retValue = true;
+                it->second = point.calValue;
+            }
+        }
+        else {
+            _dpTable.insert(make_pair(point, point.calValue));
+        }
+
+        return retValue;
+    }
+
     int getMinCostFromPoint(const vector<vector<int>>& inp) {
         auto minVal {0};
 
@@ -53,7 +87,11 @@ private:
                 // This is where the search branching is happeing
                 for(const auto& p : moves ) { 
                     auto newCalcVal = pt.calValue + inp[p.x][p.y];
-                    _points.push(OriginPoint{ p.x,p.y, newCalcVal});
+                    OriginPoint newPoint{ p.x,p.y, newCalcVal};
+
+                    // Add this to the sreach queue
+                    if( false == updateDPTable(newPoint) ) _points.push(newPoint);
+                    
                 }
             }
             // Updaing the mininum value
