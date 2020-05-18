@@ -8,12 +8,14 @@
     <artifactId>JaredApplication</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <!-- Was getting some warning in windows hence changed to UTF-8 -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <build>
         <plugins>
+            <!-- Compiler plugin to compile source code -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -25,6 +27,7 @@
                 </configuration>
             </plugin>
 
+            <!-- Creating a JAR and specifying it's entry point -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
