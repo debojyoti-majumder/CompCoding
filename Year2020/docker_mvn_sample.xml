@@ -1,11 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    This section helps to describe how to create a docker image from a simple JAR file
+    we can run locally 
+
+    To create a basic JAR file which runs on a local system use "mvn clean package"
+    This should create a docker-application-1.0-SNAPSHOT.jar file
+
+    To build a docker image use this command "mvn docker:build"
+    This should create a image called docker-application:1.0-SNAPSHOT
+    You can check that by typing this command "docker image ls -a"
+
+    To do a total rebuild of the image use this command
+    "mvn clean package docker:build"
+
+    To run the application through maven use this command
+    "mvn docker:run"
+    This would also ensure that the container is removed after the execution has been done
+
+    Of course it would also run using the same docker command
+    "docker run docker-application:1.0-SNAPSHOT"
+
+    The one go run command would be
+    mvn clean package docker:build docker:run
+
+    To remove the image use this command
+    mvn docker:remove
+
+    This sample does not have any port mappings.
+-->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.debojyoti</groupId>
-    <artifactId>JaredApplication</artifactId>
+    <artifactId>docker-application</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <!-- Was getting some warning in windows hence changed to UTF-8 -->
@@ -53,15 +84,21 @@
                 <configuration>
                     <images>
                         <image>
-                            <alias>hellomvndocker</alias>
-                            <name>hellomvndocker:${project.version}</name>
+                            <alias>${project.name}</alias>
+                            <name>${project.name}:${project.version}</name>
 
                             <!-- Describes how the image is going to get build -->
                             <build>
+                                <!-- This is the base image from which the artifacts are going to get build -->
                                 <from>openjdk:11.0.7-jre-slim</from>
-
+                                <assembly>
+                                    <!-- This line allows copy all the artifacts to the docker image-->
+                                    <descriptorRef>artifact</descriptorRef>
+                                </assembly>
+                                
+                                <!-- This is the command that get passed in the CMD section of the Dockerfile -->
                                 <cmd>
-                                    <shell>java -jar /maven/hellomvndocker.jar</shell>
+                                    <shell>java -jar /maven/${project.name}-${project.version}.jar</shell>
                                 </cmd>
                             </build>
                         </image>
