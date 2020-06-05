@@ -66,21 +66,37 @@ public class TwinCity {
         }
     }
 
-    private int getMinVal(ArrayList<CityCost> costs, boolean isA) {
+    private CityCost getMinVal(ArrayList<CityCost> costs, boolean isA) {
         int minValue = Integer.MAX_VALUE;
+        CityCost retObject = null;
 
         for( CityCost c : costs ) {
             int val = isA ? c.getCostOfA() : c.getCostOfB();
-            if( val < minValue ) minValue = val;
+
+            if( val < minValue ) {
+                minValue = val;
+                retObject = c;
+            };
         }
 
-        return minValue;
+        return retObject;
     }
 
-    private int recusriveSolver(ArrayList<CityCost> cost, int leftInA, int leftInB) {
+    private int recursiveSolver(ArrayList<CityCost> cost, int leftInA, int leftInB) {
+        if( cost.isEmpty() ) return 0;
+
         // These are my base cases
-        if (leftInA == 1) return getMinVal(cost, true);
-        if (leftInB == 1) return getMinVal(cost, false);
+        if (leftInA == 1) {
+            CityCost minCosted = getMinVal(cost, true);
+            cost.remove(minCosted);
+            return minCosted.getCostOfA() + recursiveSolver(cost, 0, leftInB);
+        };
+
+        if (leftInB == 1) {
+            CityCost minCosted = getMinVal(cost, false);
+            cost.remove(minCosted);
+            return minCosted.getCostOfB() + recursiveSolver(cost, leftInA, 0);
+        }
 
         CityCost currentCost = cost.get(0);
         cost.remove(currentCost);
@@ -88,8 +104,15 @@ public class TwinCity {
         int cost2 = Integer.MAX_VALUE;
 
         // These are the recursive solvers
-        if (leftInA > 1) cost1 = currentCost.getCostOfA() + recusriveSolver(cost, leftInA - 1, leftInB);
-        if (leftInB > 1) cost2 = currentCost.getCostOfB() + recusriveSolver(cost, leftInA, leftInB - 1);
+        if (leftInA > 1) {
+            cost1 = currentCost.getCostOfA() + recursiveSolver((ArrayList<CityCost>) cost.clone(),
+                    leftInA - 1, leftInB);
+        }
+
+        if (leftInB > 1) {
+            cost2 = currentCost.getCostOfB() + recursiveSolver((ArrayList<CityCost>) cost.clone(),
+                    leftInA, leftInB - 1);
+        }
 
         if( cost1 < cost2 ) return cost1;
         else return cost2;
@@ -105,7 +128,7 @@ public class TwinCity {
             cityCosts.add(new CityCost(costs[i][0], costs[i][1]));
         }
 
-        return recusriveSolver(cityCosts, slotsLeft, slotsLeft);
+        return recursiveSolver(cityCosts, slotsLeft, slotsLeft);
     }
 
     @Test
@@ -130,5 +153,12 @@ public class TwinCity {
         System.out.println("Return value: " + retValue);
         System.out.println("Bad algo output: " + twoCitySchedCostNeive(input2));
         assert(retValue == 1859);
+    }
+
+    @Test
+    public void extendedTest() {
+       int[][] input = {{918,704},{77,778},{239,457},{284,263},{872,779},{976,416},{860,518},{13,351},
+            {137,238},{557,596},{890,227},{548,143},{384,585},{165,54}};
+       assert(twoCitySchedCost(input) == 4532);
     }
 }
