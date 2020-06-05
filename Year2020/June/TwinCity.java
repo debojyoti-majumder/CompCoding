@@ -1,10 +1,12 @@
 // Problem URL: https://leetcode.com/problems/two-city-scheduling/
 // Problem ID: 1029
+
 package com.debojyoti;
 
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class TwinCity {
     private boolean isLess(int a, int b) {
@@ -48,7 +50,7 @@ public class TwinCity {
         return totalCost;
     }
 
-    private class CityCost {
+    private class CityCost implements Comparable<CityCost> {
         private int costOfA;
         private int costOfB;
 
@@ -63,6 +65,13 @@ public class TwinCity {
 
         public int getCostOfB() {
             return this.costOfB;
+        }
+
+        @Override
+        public int compareTo(CityCost o) {
+            Integer costLhs = Math.abs(this.costOfA - this.costOfB);
+            Integer costRhs = Math.abs(o.getCostOfA() - o.getCostOfB());
+            return costLhs.compareTo(costRhs);
         }
     }
 
@@ -118,7 +127,7 @@ public class TwinCity {
         else return cost2;
     }
 
-    public int twoCitySchedCost(int[][] costs) {
+    public int twoCitySchedCostRec(int[][] costs) {
         int totalNumberOfPeople = costs.length;
         int slotsLeft = totalNumberOfPeople / 2;
 
@@ -129,6 +138,58 @@ public class TwinCity {
         }
 
         return recursiveSolver(cityCosts, slotsLeft, slotsLeft);
+    }
+
+    private int performSortedAllocation(ArrayList<CityCost> costs) {
+        int numberOfPeople = costs.size();
+        int slotsLeftInA = numberOfPeople / 2;
+        int slotsLeftInB = slotsLeftInA;
+        int totalCost = 0;
+
+        // Sorting based on difference in cost value
+        Collections.sort(costs, Collections.reverseOrder());
+
+        for(int index=0; index<numberOfPeople; index ++ ) {
+            CityCost currentItem = costs.get(index);
+            int aCost = currentItem.getCostOfA();
+            int bCost = currentItem.getCostOfB();
+
+            if( aCost < bCost ) {
+                if( slotsLeftInA > 0 ) {
+                    totalCost += aCost;
+                    slotsLeftInA--;
+                }
+                else {
+                    totalCost += bCost;
+                    slotsLeftInB--;
+                }
+            }
+            else {
+                if( slotsLeftInB > 0 ) {
+                    totalCost += bCost;
+                    slotsLeftInB--;
+                }
+                else {
+                    totalCost += aCost;
+                    slotsLeftInA--;
+                }
+            }
+        }
+
+        return totalCost;
+    }
+
+    public int twoCitySchedCost(int[][] costs) {
+        int totalNumberOfPeople = costs.length;
+        int slotsLeft = totalNumberOfPeople / 2;
+
+        ArrayList<CityCost> cityCosts = new ArrayList<>();
+
+        for( int i=0; i<totalNumberOfPeople; i++ ) {
+            cityCosts.add(new CityCost(costs[i][0], costs[i][1]));
+        }
+
+        return performSortedAllocation(cityCosts);
     }
 
     @Test
@@ -144,6 +205,7 @@ public class TwinCity {
         int retValue = twoCitySchedCost(input);
         System.out.println("Return value: " + retValue);
         System.out.println("Bad algo output: " + twoCitySchedCostNeive(input));
+        System.out.println("Recusor algo output: " + twoCitySchedCostRec(input));
         assert(retValue == 110);
 
         // Second test case
@@ -152,13 +214,16 @@ public class TwinCity {
         retValue = twoCitySchedCost(input2);
         System.out.println("Return value: " + retValue);
         System.out.println("Bad algo output: " + twoCitySchedCostNeive(input2));
+        System.out.println("Recusor algo output: " + twoCitySchedCostRec(input));
         assert(retValue == 1859);
     }
 
     @Test
     public void extendedTest() {
-       int[][] input = {{918,704},{77,778},{239,457},{284,263},{872,779},{976,416},{860,518},{13,351},
+       int[][] input = {
+               {918,704},{77,778},{239,457},{284,263},{872,779},{976,416},{860,518},{13,351},
             {137,238},{557,596},{890,227},{548,143},{384,585},{165,54}};
+       System.out.println("Re cursor algo output: " + twoCitySchedCostRec(input));
        assert(twoCitySchedCost(input) == 4532);
     }
 }
