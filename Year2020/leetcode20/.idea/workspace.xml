@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a4a74994-5c4e-44af-a373-91f23b26b3cf" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/leetcode20.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ApplicationRunner.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/alpha/SimpleSolution.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/alpha/SimpleTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../leetcodeJava/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../leetcodeJava/.idea/description.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../leetcodeJava/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../leetcodeJava/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../leetcodeJava/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../leetcodeJava/.idea/project-template.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../leetcodeJava/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../leetcodeJava/leetcodeJava.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../leetcodeJava/src/com/debojyoti/Main.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectId" id="1f21I0UEjZSW8IBfgihVWIe6Wtc" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="alpha" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="ApplicationRunner" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ApplicationRunner" />
+      <module name="leetcode20" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.ApplicationRunner" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a4a74994-5c4e-44af-a373-91f23b26b3cf" name="Default Changelist" comment="" />
+      <created>1595401289631</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1595401289631</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="121" y="0" key="#Project_Structure" timestamp="1595401328077">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="121" y="0" key="#Project_Structure/0.0.1280.680@0.0.1280.680" timestamp="1595401328077" />
+    <state x="424" y="209" width="432" height="268" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1595401596172">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="424" y="209" width="432" height="268" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1280.680@0.0.1280.680" timestamp="1595401596172" />
+  </component>
+</project>
