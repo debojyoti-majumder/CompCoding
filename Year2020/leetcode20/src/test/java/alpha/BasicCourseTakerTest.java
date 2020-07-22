@@ -21,5 +21,11 @@ public class BasicCourseTakerTest {
     @Test
     public void myAddedTests() {
         BasicCourseTaker sol = new BasicCourseTaker();
+
+        int[][] withoutLoop = {{1,2},{1,3},{1,4},{3,5},{3,6}};
+        Assertions.assertTrue(sol.canFinish(6, withoutLoop));
+
+        int[][] withLoop = {{1,2},{1,3},{1,4},{3,5},{3,6},{6,4}};
+        Assertions.assertFalse(sol.canFinish(6,withLoop));
     }
 }

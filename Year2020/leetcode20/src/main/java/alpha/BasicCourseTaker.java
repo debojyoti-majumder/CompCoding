@@ -3,35 +3,32 @@ package alpha;
 // Problem URL: https://leetcode.com/problems/course-schedule/
 // Problem ID: 207
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class BasicCourseTaker {
-    private Map<Integer,Integer> prereqs;
+    private Map<Integer, List<Integer>> prereqs;
 
     private void buildPreReqMap(int[][] reqs) {
-        prereqs = new HashMap<Integer, Integer>();
-        for(var req : reqs ) prereqs.put(req[0], req[1]);
+        prereqs = new HashMap<Integer, List<Integer>>();
+
+        for(var req : reqs ) {
+            var nd = prereqs.get(req[0]);
+            if( nd != null ) nd.add(req[1]);
+            else prereqs.put(req[0], new ArrayList<>(req[1]));
+        };
     }
 
-    private int checkForCourse(int courseId, int threshold) {
+    private int checkForCourse(int courseId, int threshold, Set<Integer> visitedNodes) {
         int pathCount = 0;
         Integer currentCourse = courseId;
-        Set<Integer> visitedNodes = new HashSet<>();
         visitedNodes.add(currentCourse);
 
-        while( currentCourse != null ) {
-            pathCount++;
-            currentCourse = prereqs.get(currentCourse);
+        var decedentsCourses = prereqs.get(currentCourse);
+        for( var cr : decedentsCourses ) {
+            int val = checkForCourse(cr, threshold - 1,visitedNodes);
+            if( val == -1 ) return -1;
 
-            if( visitedNodes.contains(currentCourse) ) {
-                pathCount = -1;
-                break;
-            }
-
-            visitedNodes.add(currentCourse);
+            pathCount += val;
         }
 
         return pathCount;
@@ -48,7 +45,9 @@ public class BasicCourseTaker {
 
         // Going through each test cases
         for(var req : prerequisites ) {
-            int retVal = checkForCourse(req[0], coursesLeft);
+            var visitSet = new HashSet<Integer>();
+
+            int retVal = checkForCourse(req[0], coursesLeft, visitSet);
             if( retVal != -1 ) coursesLeft -= retVal;
 
             // Basic criteria satisfied
