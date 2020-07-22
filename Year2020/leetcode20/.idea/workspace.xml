@@ -2,25 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a4a74994-5c4e-44af-a373-91f23b26b3cf" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/leetcode20.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ApplicationRunner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/alpha/SimpleSolution.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/alpha/SimpleTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../leetcodeJava/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../leetcodeJava/.idea/description.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../leetcodeJava/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../leetcodeJava/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../leetcodeJava/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../leetcodeJava/.idea/project-template.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../leetcodeJava/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../leetcodeJava/leetcodeJava.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../leetcodeJava/src/com/debojyoti/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/alpha/SimpleTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/alpha/SimpleTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +41,7 @@
       <recent name="alpha" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.SimpleTest">
     <configuration name="ApplicationRunner" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ApplicationRunner" />
       <module name="leetcode20" />
@@ -65,8 +49,24 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="SimpleTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="leetcode20" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="alpha.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="alpha" />
+      <option name="MAIN_CLASS_NAME" value="alpha.SimpleTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.SimpleTest" />
         <item itemvalue="Application.ApplicationRunner" />
       </list>
     </recent_temporary>
@@ -93,5 +93,21 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="424" y="209" width="432" height="268" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1280.680@0.0.1280.680" timestamp="1595401596172" />
+    <state width="1237" height="163" key="GridCell.Tab.0.bottom" timestamp="1595401854763">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1595401854763" />
+    <state width="1237" height="163" key="GridCell.Tab.0.center" timestamp="1595401854762">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="163" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1595401854762" />
+    <state width="1237" height="163" key="GridCell.Tab.0.left" timestamp="1595401854761">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="163" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1595401854761" />
+    <state width="1237" height="163" key="GridCell.Tab.0.right" timestamp="1595401854762">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1595401854762" />
   </component>
 </project>
