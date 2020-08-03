@@ -20,9 +20,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a4a74994-5c4e-44af-a373-91f23b26b3cf" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/alpha/DetectCapital.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/alpha/DetectCapitalTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/alpha/CustomHashImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/alpha/CustomHashImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/alpha/CustomHashImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/alpha/CustomHashImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/alpha/BasicCourseTakerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/alpha/BasicCourseTakerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +60,7 @@
       <recent name="alpha" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.CustomHashImplTest">
+  <component name="RunManager" selected="JUnit.alpha in leetcode20">
     <configuration name="BasicCourseTakerTest.basicTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="leetcode20" />
       <extension name="coverage">
@@ -71,22 +72,6 @@
       <option name="PACKAGE_NAME" value="alpha" />
       <option name="MAIN_CLASS_NAME" value="alpha.BasicCourseTakerTest" />
       <option name="METHOD_NAME" value="basicTest" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="BasicCourseTakerTest.myAddedTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="leetcode20" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="alpha.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="alpha" />
-      <option name="MAIN_CLASS_NAME" value="alpha.BasicCourseTakerTest" />
-      <option name="METHOD_NAME" value="myAddedTests" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -123,7 +108,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SimpleTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="DetectCapitalTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="leetcode20" />
       <extension name="coverage">
         <pattern>
@@ -132,19 +117,33 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="alpha" />
-      <option name="MAIN_CLASS_NAME" value="alpha.SimpleTest" />
+      <option name="MAIN_CLASS_NAME" value="alpha.DetectCapitalTest" />
       <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="alpha in leetcode20" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="leetcode20" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="alpha.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="alpha" />
+      <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.alpha in leetcode20" />
+        <item itemvalue="JUnit.DetectCapitalTest" />
         <item itemvalue="JUnit.CustomHashImplTest" />
         <item itemvalue="JUnit.CustomHashImplTest.simpleTest" />
         <item itemvalue="JUnit.BasicCourseTakerTest.basicTest" />
-        <item itemvalue="JUnit.BasicCourseTakerTest.myAddedTests" />
-        <item itemvalue="JUnit.SimpleTest" />
       </list>
     </recent_temporary>
   </component>
@@ -188,30 +187,34 @@
     <state width="412" height="466" key="DebuggerActiveHint/-1920.0.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1595411162389" />
     <state width="450" height="466" key="DebuggerActiveHint/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1596375599624" />
     <state width="412" height="305" key="DebuggerActiveHint/0.0.1280.680@0.0.1280.680" timestamp="1595407721147" />
-    <state width="1877" height="281" key="GridCell.Tab.0.bottom" timestamp="1596376397091">
+    <state width="1877" height="162" key="GridCell.Tab.0.bottom" timestamp="1596431828104">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1877" height="234" key="GridCell.Tab.0.bottom/-1920.0.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1595411102062" />
     <state width="1877" height="281" key="GridCell.Tab.0.bottom/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1596376397091" />
     <state width="1237" height="162" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1595408630762" />
-    <state width="1877" height="281" key="GridCell.Tab.0.center" timestamp="1596376397091">
+    <state width="1877" height="162" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1596431828104" />
+    <state width="1877" height="162" key="GridCell.Tab.0.center" timestamp="1596431828104">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1877" height="234" key="GridCell.Tab.0.center/-1920.0.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1595411102062" />
     <state width="1877" height="281" key="GridCell.Tab.0.center/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1596376397091" />
     <state width="1237" height="162" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1595408630762" />
-    <state width="1877" height="281" key="GridCell.Tab.0.left" timestamp="1596376397091">
+    <state width="1877" height="162" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1596431828104" />
+    <state width="1877" height="162" key="GridCell.Tab.0.left" timestamp="1596431828103">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1877" height="234" key="GridCell.Tab.0.left/-1920.0.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1595411102062" />
     <state width="1877" height="281" key="GridCell.Tab.0.left/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1596376397091" />
     <state width="1237" height="162" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1595408630762" />
-    <state width="1877" height="281" key="GridCell.Tab.0.right" timestamp="1596376397091">
+    <state width="1877" height="162" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1596431828103" />
+    <state width="1877" height="162" key="GridCell.Tab.0.right" timestamp="1596431828104">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1877" height="234" key="GridCell.Tab.0.right/-1920.0.1280.693/0.0.1920.1040@0.0.1920.1040" timestamp="1595411102062" />
     <state width="1877" height="281" key="GridCell.Tab.0.right/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1596376397091" />
     <state width="1237" height="162" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1595408630762" />
+    <state width="1877" height="162" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1596431828104" />
     <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1596375873126">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -240,5 +243,9 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1596365316115" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1596431471852">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1596431471852" />
   </component>
 </project>
