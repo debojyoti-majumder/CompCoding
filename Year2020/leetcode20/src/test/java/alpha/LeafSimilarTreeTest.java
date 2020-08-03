@@ -10,19 +10,12 @@ public class LeafSimilarTreeTest {
     @Test
     public void basicTest() {
         TreeNode n1 = new TreeNode(1);
-        TreeNode n2 = new TreeNode(2);
-        TreeNode n3 = new TreeNode(3);
-        TreeNode n4 = new TreeNode(1);
-        TreeNode n5 = new TreeNode(1);
-        TreeNode n6 = new TreeNode(1);
-        TreeNode n7 = new TreeNode(1);
-        TreeNode n8 = new TreeNode(1);
-
         TreeNode m1 = new TreeNode(1);
-        TreeNode m2 = new TreeNode(1);
-        TreeNode m3 = new TreeNode(1);
-        TreeNode m4 = new TreeNode(1);
 
+        /*
+        * [3,5,1,6,2,9,8,null,null,7,4]
+        * [3,5,1,6,7,4,2,null,null,null,null,null,null,9,8]
+        * */
         LeafSimilarTree solver = new LeafSimilarTree();
         Assertions.assertTrue(solver.leafSimilar(m1, n1));
     }
