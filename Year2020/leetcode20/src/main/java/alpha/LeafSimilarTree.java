@@ -1,16 +1,13 @@
 // Problem URL: https://leetcode.com/problems/leaf-similar-trees/
 // Problem ID: 872
 // Difficulty Easy
-// Status: Not Impl
+// Status: Accepted
 
 package alpha;
 
 import common.TreeNode;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class LeafSimilarTree {
     private static boolean isLeafNode(TreeNode nd) {
@@ -19,13 +16,13 @@ public class LeafSimilarTree {
 
     private static List<TreeNode> buildVisitList(TreeNode nodeRoot) {
         List<TreeNode> retValue = new ArrayList<>();
-        Queue<TreeNode> visitQueue = new LinkedList<>();
+        Stack<TreeNode> visitQueue = new Stack<>();
 
         if( nodeRoot == null ) return retValue;
         visitQueue.add(nodeRoot);
 
         while(!visitQueue.isEmpty()) {
-            TreeNode currentNode = visitQueue.remove();
+            TreeNode currentNode = visitQueue.pop();
 
             if( currentNode.left != null ) visitQueue.add(currentNode.left);
             if( currentNode.right != null ) visitQueue.add(currentNode.right);
@@ -45,14 +42,10 @@ public class LeafSimilarTree {
         int compareLength = firstLeafVisit.size();
         if( compareLength != secondLeafVisit.size() ) return false;
 
-        for (TreeNode treeNode : firstLeafVisit) {
-            int val = treeNode.val;
-
-            if (!secondLeafVisit.contains(val)) {
+        for( int i=0; i<compareLength; i++ ) {
+            if( firstLeafVisit.get(i).val != secondLeafVisit.get(i).val ) {
                 retVal = false;
                 break;
-            } else {
-                secondLeafVisit.remove(val);
             }
         }
 
