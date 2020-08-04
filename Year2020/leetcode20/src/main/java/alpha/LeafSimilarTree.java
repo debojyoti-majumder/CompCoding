@@ -17,7 +17,7 @@ public class LeafSimilarTree {
         return nd.left == null && nd.right == null;
     }
 
-    private List<TreeNode> buildVisitList(TreeNode nodeRoot) {
+    private static List<TreeNode> buildVisitList(TreeNode nodeRoot) {
         List<TreeNode> retValue = new ArrayList<>();
         Queue<TreeNode> visitQueue = new LinkedList<>();
 
@@ -37,16 +37,25 @@ public class LeafSimilarTree {
     }
 
     public boolean leafSimilar(TreeNode root1, TreeNode root2) {
+        boolean retVal = true;
+
         var firstLeafVisit = buildVisitList(root1);
         var secondLeafVisit = buildVisitList(root2);
 
         int compareLength = firstLeafVisit.size();
         if( compareLength != secondLeafVisit.size() ) return false;
 
-        for( int i=0; i<compareLength; i++ ) {
-            if( firstLeafVisit.get(i).val != secondLeafVisit.get(i).val ) return false;
+        for (TreeNode treeNode : firstLeafVisit) {
+            int val = treeNode.val;
+
+            if (!secondLeafVisit.contains(val)) {
+                retVal = false;
+                break;
+            } else {
+                secondLeafVisit.remove(val);
+            }
         }
 
-        return true;
+        return retVal;
     }
 }
