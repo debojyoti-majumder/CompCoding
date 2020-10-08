@@ -6,33 +6,64 @@
 #include <random>
 #include <chrono>
 #include <vector>
+#include <list>
 
 using namespace std;
 
 #define ARR_SIZE 10000
 
-// TODO 1: Create a hand written hash function for an array
-// TODO 2: 
-
 class RandomizedSet {
-public:
-    /** Initialize your data structure here. */
-    RandomizedSet() {
+private:
+    list<int> _container[ARR_SIZE];
 
-    }
+public:
+    RandomizedSet() = default;
+
+    RandomizedSet(const RandomizedSet&) = delete;
 
     /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
     bool insert(int val) {
-        return true;
+        int hashedKey = val * (val * 3) % ARR_SIZE;
+        list<int>& bucket{ _container[hashedKey] };
+
+
+        if (bucket.size() == 0) {
+            bucket.emplace_back(val);
+            return true;
+        }
+
+        // This means there is a collision, have to see if the value is present on the system or not
+        auto it = find(bucket.begin(), bucket.end(), val);
+        if (it == bucket.end()) {
+            bucket.emplace_back(val);
+            return true;
+        }
+
+        return false;
     }
 
     /** Removes a value from the set. Returns true if the set contained the specified element. */
     bool remove(int val) {
-        return true;
+        int hashedKey = val * (val * 3) % ARR_SIZE;
+        list<int>& bucket{ _container[hashedKey] };
+
+        if (bucket.size() == 0) return false;
+
+        auto it = find(bucket.begin(), bucket.end(), val);
+        if (it != bucket.end()) {
+            bucket.erase(it);
+            return true;
+        }
+
+        return false;
     }
 
     /** Get a random element from the set. */
     int getRandom() {
+        while (false) {
+            uniform_int_distribution<int> distribution(1, ARR_SIZE);
+        }
+
         return 0;
     }
 };
@@ -64,7 +95,13 @@ public:
 
     /** Removes a value from the set. Returns true if the set contained the specified element. */
     bool remove(int val) {
-        return true;
+        auto it = find(_numbers.begin(), _numbers.end(), val);
+        if (it != _numbers.end()) {
+            _numbers.erase(it);
+            return true;
+        }
+
+        return false;
     }
 
     /** Get a random element from the set. */
@@ -85,7 +122,7 @@ vector<int> testRandomSet() {
     mt19937 generator(rd());
     uniform_int_distribution<int> distribution(1, ARR_SIZE);
 
-    for (int i = 0; i < 3000; i++) {
+    for (int i = 1; i <= 3000; i++) {
         int number = distribution(generator);
         randomSource->insert(number);
 
@@ -114,7 +151,7 @@ vector<int> testRandomVector() {
     mt19937 generator(rd());
     uniform_int_distribution<int> distribution(1, ARR_SIZE);
 
-    for (int i = 0; i < 30000; i++) {
+    for (int i = 1; i <= 30000; i++) {
         int number = distribution(generator);
         randomSource->insert(number);
 
