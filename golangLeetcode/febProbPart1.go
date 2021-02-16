@@ -50,3 +50,55 @@ func diagonalSum(mat [][]int) int {
 
 	return diagSum
 }
+
+func getMinIndex(nums []int) int {
+	idx := 0
+	min := nums[0]
+
+	for i, value := range nums {
+		// If we have got the minimum value so far
+		if value < min {
+			min = value
+			idx = i
+		}
+	}
+
+	return idx
+}
+
+func checkIncRotaed(nums []int) bool {
+	sliceLength := len(nums)
+	isOkay := true
+
+	if sliceLength == 0 {
+		return isOkay
+	}
+
+	startIndex := getMinIndex(nums)
+	itemCount := 0
+	iterIndex := startIndex
+
+	for itemCount < sliceLength-1 {
+		// This means a rotation have happened, we need to see reset the scanning index
+		if iterIndex == sliceLength-1 && startIndex != 0 {
+
+			// Boundary condition
+			if nums[0] < nums[sliceLength-1] {
+				isOkay = false
+				break
+			}
+
+			iterIndex = 0
+			itemCount++
+		} else if nums[iterIndex+1] < nums[iterIndex] {
+			// The next number should always increase
+			isOkay = false
+			break
+		}
+
+		iterIndex++
+		itemCount++
+	}
+
+	return isOkay
+}
