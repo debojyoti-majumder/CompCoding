@@ -1,6 +1,6 @@
 """
 Problem URL: https://leetcode.com/problems/number-of-islands/
-Status : Not submitted
+Status : Needs debugging
 """
 
 from typing import List, Set
@@ -40,6 +40,10 @@ class Solution:
         self.numberOfCols : int = 0
         self.cellsList : List[List[Cell]]
 
+    """
+    Marks the cells which ones are water and which ones are 
+    island. If Id is zero then it is water
+    """
     def _initCells(self, grid: List[List[str]]) -> None:
         counter = 0
         self.cellsList = []
@@ -64,7 +68,8 @@ class Solution:
         
         for i in range(0, self.numberOfRows):
             for j in range(0, self.numberOfCols):
-                uniqueCells.add(self.cellsList[i][j].Id)
+                cellId = self.cellsList[i][j].Id
+                if cellId != 0: uniqueCells.add(cellId)
 
         return uniqueCells
 
@@ -80,12 +85,14 @@ class Solution:
         for i in range(0,self.numberOfRows):
             for j in range(0, self.numberOfCols):
                 currCell = self.cellsList[i][j]
+                
+                # No need to process 
+                if currCell.isIsland() == False:
+                    continue
 
                 # Getting all the adjacent cells which are islands
                 validCells : List[Cell] = []
-                adjItems : List[Cell] = currCell.getAdacentCells(
-                    self.numberOfRows,
-                    self.numberOfCols)
+                adjItems : List[Cell] = currCell.getAdacentCells(self.numberOfRows, self.numberOfCols)
 
                 for item in adjItems:
                     adjNode = self.cellsList[item.x][item.y]
@@ -111,10 +118,8 @@ grid1 = [
   ["1","1","0","0","0"],
   ["0","0","0","0","0"]
 ]
-print(len(grid1))
-print(len(grid1[0]))
 retValue = s1.numIslands(grid1)
-print("Output:{0}".format(retValue))
+print("Input 1:{0}".format(retValue))
 
 grid2 = [
   ["1","1","0","0","0"],
@@ -122,4 +127,11 @@ grid2 = [
   ["0","0","1","0","0"],
   ["0","0","0","1","1"]
 ]
-print(s1.numIslands(grid2))
+
+retValue = s1.numIslands(grid2)
+print("Input 2:{0}".format(retValue))
+
+# Should output 1
+grid3 = [["1","0","1","1","1"],["1","0","1","0","1"],["1","1","1","0","1"]]
+retValue = s1.numIslands(grid3)
+print("Input 3:{0}".format(retValue))
