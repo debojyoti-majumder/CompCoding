@@ -1,9 +1,11 @@
 # Problem URL : https://leetcode.com/problems/unique-paths/
 # This should again get a TLE Error
-# TBD : Adding a DP table where if we find the destination node we are done
+# Sumission log: Accepted Used DP
+# I tkink we can just use a map instead of a matrix because we would not
+# be needing older values. The values of top row only
+# Related problems: https://leetcode.com/problems/minimum-path-sum/
 
 from typing import List
-
 
 class Pathfinder:
     def __init__(self,m:int, n:int) -> None:
@@ -39,7 +41,19 @@ class Pathfinder:
         
 
 class Solution:
-    def uniquePaths(self, m:int, n:int) -> int:
+    def __init__(self) -> None:
+        self.numberOfRows:int = 0
+        self.numberOfCols:int = 0
+
+        # Can we define a type for this
+        self.dpTable = None
+
+    """
+    This method calculates the path by iterating it. The below method
+    which uses DP would only work the the robot moves to right and down 
+    only. If it make other moves it would create a loop
+    """
+    def iteratePath(self,m:int, n:int) -> int:
         if m == 0 or n == 0: return 0
         visitQueue:List[tuple[int,int]] = []
         pathFinder = Pathfinder(m,n)
@@ -53,7 +67,40 @@ class Solution:
             
         return pathFinder.getLastCellOutput()
 
+    """
+    Uses values from cell top and from left
+    """
+    def uniquePaths(self, m:int, n:int) -> int:
+        # Basic validity
+        if m == 0 or n == 0: return 0
+        
+        # Will create a 2D array for the DP table
+        self.numberOfRows = m
+        self.numberOfCols = n
+        self.dpTable = [ [0] * n for _ in range(m)]
+
+        # If it is a 1/1 matrix then this value is 1
+        self.dpTable[0][0] = 1
+
+        # The runtime of the method is simply m*n
+        for i in range(0,self.numberOfRows):
+            for j in range(0,self.numberOfCols):
+                calculatedSum = self.dpTable[i][j]
+
+                # This is for the left cell
+                if i > 0: calculatedSum += self.dpTable[i-1][j]
+                # This is for the top cell
+                if j > 0: calculatedSum += self.dpTable[i][j-1]
+
+                self.dpTable[i][j] = calculatedSum
+
+        # Last cell is our target location to reach
+        lastCellx = self.numberOfRows - 1
+        lastCelly = self.numberOfCols - 1
+        return self.dpTable[lastCellx][lastCelly]
+
 sol = Solution()
 
 print(sol.uniquePaths(4,2))
 print(sol.uniquePaths(20,7))
+print(sol.uniquePaths(22,7))
