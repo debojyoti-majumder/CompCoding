@@ -1,0 +1,117 @@
+#include <iostream>
+#include <vector>
+#include <limits>
+#include <unordered_map>
+#include <set>
+
+using namespace std;
+
+// Problem ID: 149
+class Solution {
+private:
+    struct Point {
+        int x;
+        int y;
+
+        bool isEquals(const Point& rhs) const {
+            if ( this->x == rhs.x ) return this->y == rhs.y;
+            else return false;
+        }
+
+        double calculateSlope(const Point otherPoint) const {
+            if( this->x == otherPoint.x ) return numeric_limits<double>::max();
+            
+            double slope = ( double ) (this->y - otherPoint.y);
+            slope = slope / (this->x - otherPoint.x);
+
+            return slope;
+        }
+
+        bool operator==(const Point& rhs) const {
+            return isEquals(rhs);
+        }
+
+        bool operator<(const Point& rhs) const {
+            if( x < rhs.x ) return true;
+            else return y < rhs.y;
+        }
+
+        int hashCode() const {
+            return 31*x + y;
+        }
+    };
+
+public:
+    int maxPoints(vector<vector<int>>& points) {
+        int numberOfPoints = points.size();
+        if( numberOfPoints < 2 ) return numberOfPoints;
+
+        int maxNumberOfPoints = 0;
+        set<Point> currentMaxSet;
+
+        for( int i=0; i<numberOfPoints; i++ ) {
+            Point currentPoint{ points[i][0], points[i][1] };
+            
+            unordered_map<double, set<Point>> slopeToPointMap;
+
+            for( int j=0; j<numberOfPoints; j++ ) {
+                // Would not be comparing with itself
+                if( j == i ) continue;
+
+                Point p{ points[j][0], points[j][1] };
+
+                auto isAlreadyInSet = currentMaxSet.find(p);
+                if( isAlreadyInSet != currentMaxSet.end() ) continue;
+
+                // Calculating the slope
+                double slope = currentPoint.calculateSlope(p);
+                auto it { slopeToPointMap.find(slope) };
+                
+                if( it == slopeToPointMap.end() ) {
+                    set<Point> newPoints;
+                    newPoints.insert({currentPoint, p});
+
+                    slopeToPointMap.insert(make_pair(slope, newPoints));
+                }
+                else {
+                    it->second.insert(p);
+                }
+            }
+
+            int localMaxNumberOfPoints = 0;
+            for ( const auto& item : slopeToPointMap ) {
+                int numPoints { (int) item.second.size() };
+
+                if( numPoints > localMaxNumberOfPoints ) {
+                    currentMaxSet = item.second; 
+                    localMaxNumberOfPoints = numPoints;
+                }
+            }
+
+            if( localMaxNumberOfPoints > maxNumberOfPoints ) maxNumberOfPoints = localMaxNumberOfPoints;
+        }
+
+        return maxNumberOfPoints;        
+    }
+};
+
+
+void test149() {
+    vector<vector<int>> inp2 = vector<vector<int>> {{1,1},{3,2},{5,3},{4,1},{2,3},{1,4}};
+    vector<vector<int>> inp = vector<vector<int>> {{1,1}, {2,2}, {3,3}};
+
+    Solution s;
+    cout << s.maxPoints(inp) << endl;
+
+    // Should output 4
+    cout << s.maxPoints(inp2) << endl;
+
+    // Only this failing should output 7
+    vector<vector<int>> inp3 {{0,1},{0,0},{0,4},{0,-2},{0,-1},{0,3},{0,-4}};
+    cout << s.maxPoints(inp3) << endl;
+}
+
+int main() {
+    test149();
+    return 0;
+}
